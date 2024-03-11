@@ -13,13 +13,13 @@ type alias Model = {departure : Stop,
                     loading : LoadingState,
                     time : (Time.Posix, Time.Zone)}
 
-type Stop = Stop Int
+type Stop = Stop Int (() -> String)
           | NoStop String
 
 type Direction = Departure
                | Destination
 
-type Bus = Bus Int
+type Bus = Bus Int (() -> String)
          | NoBus String
 
 type LoadingState = Loading
