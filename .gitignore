@@ -134,3 +134,8 @@ fabric.properties
 .ionide
 
 # End of https://www.toptal.com/developers/gitignore/api/haskell,visualstudiocode,intellij+all
+
+# elm-package generated files
+elm-stuff
+# elm-repl generated files
+repl-temp-*
