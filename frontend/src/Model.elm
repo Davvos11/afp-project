@@ -3,7 +3,7 @@ module Model exposing (..)
 import Time
 import Dict
 
-type alias Model = {departure : Stop,
+type Model = Model {departure : Stop,
                     destination : Stop,
                     bus : Bus,
                     moment : {day : Time.Weekday, hour : Int, minute : Int},

@@ -5219,6 +5219,9 @@ var $elm$core$Task$perform = F2(
 				A2($elm$core$Task$map, toMessage, task)));
 	});
 var $elm$browser$Browser$element = _Browser_element;
+var $author$project$Model$Model = function (a) {
+	return {$: 'Model', a: a};
+};
 var $elm$time$Time$Mon = {$: 'Mon'};
 var $author$project$Msg$NewTime = F2(
 	function (a, b) {
@@ -5406,19 +5409,20 @@ var $author$project$Main$toDict = function (xs) {
 var $elm$time$Time$utc = A2($elm$time$Time$Zone, 0, _List_Nil);
 var $author$project$Main$init = function (_v0) {
 	return _Utils_Tuple2(
-		{
-			bus: $author$project$Model$NoBus(''),
-			buses: $author$project$Main$toDict($author$project$StopBusExample$exampleBuses),
-			delays: $elm$core$Maybe$Nothing,
-			departure: $author$project$Model$NoStop(''),
-			destination: $author$project$Model$NoStop(''),
-			loading: $author$project$Model$NotLoading,
-			moment: {day: $elm$time$Time$Mon, hour: 0, minute: 0},
-			stops: $author$project$Main$toDict($author$project$StopBusExample$exampleStops),
-			time: _Utils_Tuple2(
-				$elm$time$Time$millisToPosix(0),
-				$elm$time$Time$utc)
-		},
+		$author$project$Model$Model(
+			{
+				bus: $author$project$Model$NoBus(''),
+				buses: $author$project$Main$toDict($author$project$StopBusExample$exampleBuses),
+				delays: $elm$core$Maybe$Nothing,
+				departure: $author$project$Model$NoStop(''),
+				destination: $author$project$Model$NoStop(''),
+				loading: $author$project$Model$NotLoading,
+				moment: {day: $elm$time$Time$Mon, hour: 0, minute: 0},
+				stops: $author$project$Main$toDict($author$project$StopBusExample$exampleStops),
+				time: _Utils_Tuple2(
+					$elm$time$Time$millisToPosix(0),
+					$elm$time$Time$utc)
+			}),
 		A2(
 			$elm$core$Task$perform,
 			$elm$core$Basics$identity,
@@ -5429,6 +5433,7 @@ var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
 var $author$project$Main$subscriptions = function (model) {
 	return $elm$core$Platform$Sub$none;
 };
+var $author$project$Model$Loading = {$: 'Loading'};
 var $author$project$Main$addMinute = F2(
 	function (m, x) {
 		return _Utils_update(
@@ -5440,6 +5445,10 @@ var $author$project$Main$addMinute = F2(
 	});
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
+var $author$project$Main$requestBuses = $elm$core$Platform$Cmd$none;
+var $author$project$Main$requestDelays = function (m) {
+	return $elm$core$Platform$Cmd$none;
+};
 var $author$project$Main$requestStops = $elm$core$Platform$Cmd$none;
 var $author$project$Main$subMinute = F2(
 	function (m, x) {
@@ -5638,148 +5647,192 @@ var $author$project$Main$tryParseStop = F2(
 		}
 	});
 var $author$project$Main$update = F2(
-	function (msg, m) {
+	function (msg, _v0) {
+		var m = _v0.a;
 		switch (msg.$) {
 			case 'ReverseStops':
 				return _Utils_Tuple2(
-					_Utils_update(
-						m,
-						{departure: m.destination, destination: m.departure}),
+					$author$project$Model$Model(
+						_Utils_update(
+							m,
+							{departure: m.destination, destination: m.departure})),
 					$elm$core$Platform$Cmd$none);
 			case 'NewTime':
 				var t = msg.a;
 				var z = msg.b;
 				return _Utils_Tuple2(
-					_Utils_update(
-						m,
-						{
-							moment: {
-								day: A2($elm$time$Time$toWeekday, z, t),
-								hour: A2($elm$time$Time$toHour, z, t),
-								minute: A2($elm$time$Time$toMinute, z, t)
-							},
-							time: _Utils_Tuple2(t, z)
-						}),
+					$author$project$Model$Model(
+						_Utils_update(
+							m,
+							{
+								moment: {
+									day: A2($elm$time$Time$toWeekday, z, t),
+									hour: A2($elm$time$Time$toHour, z, t),
+									minute: A2($elm$time$Time$toMinute, z, t)
+								},
+								time: _Utils_Tuple2(t, z)
+							})),
 					$author$project$Main$requestStops);
 			case 'TimeChange':
 				var t = msg.a;
-				switch (t.$) {
-					case 'Minus5Min':
-						return _Utils_Tuple2(
-							_Utils_update(
-								m,
-								{
-									moment: A2($author$project$Main$subMinute, m.moment, 5)
-								}),
-							$elm$core$Platform$Cmd$none);
-					case 'Minus15Min':
-						return _Utils_Tuple2(
-							_Utils_update(
-								m,
-								{
-									moment: A2($author$project$Main$subMinute, m.moment, 15)
-								}),
-							$elm$core$Platform$Cmd$none);
-					case 'MinusHour':
-						return _Utils_Tuple2(
-							_Utils_update(
-								m,
-								{
-									moment: A2($author$project$Main$subMinute, m.moment, 60)
-								}),
-							$elm$core$Platform$Cmd$none);
-					case 'Plus5Min':
-						return _Utils_Tuple2(
-							_Utils_update(
-								m,
-								{
-									moment: A2($author$project$Main$addMinute, m.moment, 5)
-								}),
-							$elm$core$Platform$Cmd$none);
-					case 'Plus15Min':
-						return _Utils_Tuple2(
-							_Utils_update(
-								m,
-								{
-									moment: A2($author$project$Main$addMinute, m.moment, 15)
-								}),
-							$elm$core$Platform$Cmd$none);
-					default:
-						return _Utils_Tuple2(
-							_Utils_update(
-								m,
-								{
-									moment: A2($author$project$Main$addMinute, m.moment, 60)
-								}),
-							$elm$core$Platform$Cmd$none);
-				}
+				return _Utils_Tuple2(
+					$author$project$Model$Model(
+						function () {
+							switch (t.$) {
+								case 'Minus5Min':
+									return _Utils_update(
+										m,
+										{
+											moment: A2($author$project$Main$subMinute, m.moment, 5)
+										});
+								case 'Minus15Min':
+									return _Utils_update(
+										m,
+										{
+											moment: A2($author$project$Main$subMinute, m.moment, 15)
+										});
+								case 'MinusHour':
+									return _Utils_update(
+										m,
+										{
+											moment: A2($author$project$Main$subMinute, m.moment, 60)
+										});
+								case 'Plus5Min':
+									return _Utils_update(
+										m,
+										{
+											moment: A2($author$project$Main$addMinute, m.moment, 5)
+										});
+								case 'Plus15Min':
+									return _Utils_update(
+										m,
+										{
+											moment: A2($author$project$Main$addMinute, m.moment, 15)
+										});
+								default:
+									return _Utils_update(
+										m,
+										{
+											moment: A2($author$project$Main$addMinute, m.moment, 60)
+										});
+							}
+						}()),
+					$elm$core$Platform$Cmd$none);
 			case 'DayChange':
 				var d = msg.a;
 				return _Utils_Tuple2(
-					_Utils_update(
-						m,
-						{
-							moment: {day: d, hour: m.moment.hour, minute: m.moment.minute}
-						}),
+					$author$project$Model$Model(
+						_Utils_update(
+							m,
+							{
+								moment: function (moment) {
+									return _Utils_update(
+										moment,
+										{day: d});
+								}(m.moment)
+							})),
 					$elm$core$Platform$Cmd$none);
 			case 'StopChange':
 				var x = msg.a;
 				var d = msg.b;
 				return _Utils_Tuple2(
-					function () {
-						if (d.$ === 'Departure') {
-							return _Utils_update(
-								m,
-								{
-									departure: $author$project$Model$NoStop(x)
-								});
-						} else {
-							return _Utils_update(
-								m,
-								{
-									destination: $author$project$Model$NoStop(x)
-								});
-						}
-					}(),
+					$author$project$Model$Model(
+						function () {
+							if (d.$ === 'Departure') {
+								return _Utils_update(
+									m,
+									{
+										departure: $author$project$Model$NoStop(x)
+									});
+							} else {
+								return _Utils_update(
+									m,
+									{
+										destination: $author$project$Model$NoStop(x)
+									});
+							}
+						}()),
 					$elm$core$Platform$Cmd$none);
 			case 'BusChange':
 				var x = msg.a;
 				return _Utils_Tuple2(
-					_Utils_update(
-						m,
-						{
-							bus: $author$project$Model$NoBus(x)
-						}),
+					$author$project$Model$Model(
+						_Utils_update(
+							m,
+							{
+								bus: $author$project$Model$NoBus(x)
+							})),
 					$elm$core$Platform$Cmd$none);
 			case 'ValidateBus':
 				return _Utils_Tuple2(
-					_Utils_update(
-						m,
-						{
-							bus: A2($author$project$Main$tryParseBus, m.bus, m.buses)
-						}),
+					$author$project$Model$Model(
+						_Utils_update(
+							m,
+							{
+								bus: A2($author$project$Main$tryParseBus, m.bus, m.buses)
+							})),
 					$elm$core$Platform$Cmd$none);
 			case 'ValidateStop':
 				var d = msg.a;
 				return _Utils_Tuple2(
-					function () {
-						if (d.$ === 'Departure') {
-							return _Utils_update(
-								m,
-								{
-									departure: A2($author$project$Main$tryParseStop, m.departure, m.stops)
-								});
-						} else {
-							return _Utils_update(
-								m,
-								{
-									destination: A2($author$project$Main$tryParseStop, m.destination, m.stops)
-								});
-						}
-					}(),
+					$author$project$Model$Model(
+						function () {
+							if (d.$ === 'Departure') {
+								return _Utils_update(
+									m,
+									{
+										departure: A2($author$project$Main$tryParseStop, m.departure, m.stops)
+									});
+							} else {
+								return _Utils_update(
+									m,
+									{
+										destination: A2($author$project$Main$tryParseStop, m.destination, m.stops)
+									});
+							}
+						}()),
+					$elm$core$Platform$Cmd$none);
+			case 'CalcDelay':
+				return _Utils_Tuple2(
+					$author$project$Model$Model(
+						_Utils_update(
+							m,
+							{loading: $author$project$Model$Loading})),
+					$author$project$Main$requestDelays(
+						$author$project$Model$Model(m)));
+			case 'GotStops':
+				var stops = msg.a;
+				return _Utils_Tuple2(
+					$author$project$Model$Model(
+						_Utils_update(
+							m,
+							{
+								stops: $author$project$Main$toDict(stops)
+							})),
+					$author$project$Main$requestBuses);
+			case 'GotBuses':
+				var buses = msg.a;
+				return _Utils_Tuple2(
+					$author$project$Model$Model(
+						_Utils_update(
+							m,
+							{
+								buses: $author$project$Main$toDict(buses)
+							})),
 					$elm$core$Platform$Cmd$none);
 			default:
-				return _Utils_Tuple2(m, $elm$core$Platform$Cmd$none);
+				var d1 = msg.a;
+				var d2 = msg.b;
+				return _Utils_Tuple2(
+					$author$project$Model$Model(
+						_Utils_update(
+							m,
+							{
+								delays: $elm$core$Maybe$Just(
+									_Utils_Tuple2(d1, d2)),
+								loading: $author$project$Model$NotLoading
+							})),
+					$elm$core$Platform$Cmd$none);
 		}
 	});
 var $author$project$Msg$BusChange = function (a) {
@@ -5894,7 +5947,8 @@ var $author$project$Main$today = function (t) {
 	}() + 'dag';
 };
 var $elm$html$Html$Attributes$value = $elm$html$Html$Attributes$stringProperty('value');
-var $author$project$Main$view = function (m) {
+var $author$project$Main$view = function (_v0) {
+	var m = _v0.a;
 	return A2(
 		$elm$html$Html$div,
 		_List_Nil,
@@ -6056,43 +6110,70 @@ var $author$project$Main$view = function (m) {
 				A2(
 				$elm$html$Html$div,
 				_List_Nil,
-				_List_fromArray(
-					[
-						A2(
-						$elm$html$Html$input,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$placeholder('Vertrekhalte'),
-								$elm$html$Html$Attributes$value(
-								function () {
-									var _v0 = m.departure;
-									if (_v0.$ === 'Stop') {
-										var i = _v0.a;
-										var f = _v0.b;
-										return f(_Utils_Tuple0);
-									} else {
-										var x = _v0.a;
-										return x;
-									}
-								}()),
-								$elm$html$Html$Events$onInput(
-								function (x) {
-									return A2($author$project$Msg$StopChange, x, $author$project$Model$Departure);
-								})
-							]),
-						_List_Nil),
-						A2(
-						$elm$html$Html$button,
-						_List_fromArray(
-							[
-								$elm$html$Html$Events$onClick(
-								$author$project$Msg$ValidateStop($author$project$Model$Departure))
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text('Check')
-							]))
-					])),
+				_Utils_ap(
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$input,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$placeholder('Vertrekhalte'),
+									$elm$html$Html$Attributes$value(
+									function () {
+										var _v1 = m.departure;
+										if (_v1.$ === 'Stop') {
+											var i = _v1.a;
+											var f = _v1.b;
+											return f(_Utils_Tuple0);
+										} else {
+											var x = _v1.a;
+											return x;
+										}
+									}()),
+									$elm$html$Html$Events$onInput(
+									function (x) {
+										return A2($author$project$Msg$StopChange, x, $author$project$Model$Departure);
+									})
+								]),
+							_List_Nil),
+							A2(
+							$elm$html$Html$button,
+							_List_fromArray(
+								[
+									$elm$html$Html$Events$onClick(
+									$author$project$Msg$ValidateStop($author$project$Model$Departure))
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text('Check')
+								]))
+						]),
+					function () {
+						var _v2 = m.departure;
+						if (_v2.$ === 'NoStop') {
+							var x = _v2.a;
+							return _List_Nil;
+						} else {
+							var i = _v2.a;
+							var f = _v2.b;
+							var _v3 = m.delays;
+							if (_v3.$ === 'Nothing') {
+								return _List_fromArray(
+									[
+										$elm$html$Html$text('Geldige halte')
+									]);
+							} else {
+								var _v4 = _v3.a;
+								var d1 = _v4.a;
+								var d2 = _v4.b;
+								return _List_fromArray(
+									[
+										$elm$html$Html$text(
+										(!d1) ? 'Op tijd!' : ('+' + $elm$core$String$fromInt(d1)))
+									]);
+							}
+						}
+					}())),
 				A2(
 				$elm$html$Html$div,
 				_List_Nil,
@@ -6112,82 +6193,124 @@ var $author$project$Main$view = function (m) {
 				A2(
 				$elm$html$Html$div,
 				_List_Nil,
-				_List_fromArray(
-					[
-						A2(
-						$elm$html$Html$input,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$placeholder('Aankomsthalte'),
-								$elm$html$Html$Attributes$value(
-								function () {
-									var _v1 = m.destination;
-									if (_v1.$ === 'Stop') {
-										var i = _v1.a;
-										var f = _v1.b;
-										return f(_Utils_Tuple0);
-									} else {
-										var x = _v1.a;
-										return x;
-									}
-								}()),
-								$elm$html$Html$Events$onInput(
-								function (x) {
-									return A2($author$project$Msg$StopChange, x, $author$project$Model$Destination);
-								})
-							]),
-						_List_Nil),
-						A2(
-						$elm$html$Html$button,
-						_List_fromArray(
-							[
-								$elm$html$Html$Events$onClick(
-								$author$project$Msg$ValidateStop($author$project$Model$Destination))
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text('Check')
-							]))
-					])),
+				_Utils_ap(
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$input,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$placeholder('Aankomsthalte'),
+									$elm$html$Html$Attributes$value(
+									function () {
+										var _v5 = m.destination;
+										if (_v5.$ === 'Stop') {
+											var i = _v5.a;
+											var f = _v5.b;
+											return f(_Utils_Tuple0);
+										} else {
+											var x = _v5.a;
+											return x;
+										}
+									}()),
+									$elm$html$Html$Events$onInput(
+									function (x) {
+										return A2($author$project$Msg$StopChange, x, $author$project$Model$Destination);
+									})
+								]),
+							_List_Nil),
+							A2(
+							$elm$html$Html$button,
+							_List_fromArray(
+								[
+									$elm$html$Html$Events$onClick(
+									$author$project$Msg$ValidateStop($author$project$Model$Destination))
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text('Check')
+								]))
+						]),
+					function () {
+						var _v6 = m.destination;
+						if (_v6.$ === 'NoStop') {
+							var x = _v6.a;
+							return _List_Nil;
+						} else {
+							var i = _v6.a;
+							var f = _v6.b;
+							var _v7 = m.delays;
+							if (_v7.$ === 'Nothing') {
+								return _List_fromArray(
+									[
+										$elm$html$Html$text('Geldige halte')
+									]);
+							} else {
+								var _v8 = _v7.a;
+								var d1 = _v8.a;
+								var d2 = _v8.b;
+								return _List_fromArray(
+									[
+										$elm$html$Html$text(
+										(!d2) ? 'Op tijd!' : ('+' + $elm$core$String$fromInt(d2)))
+									]);
+							}
+						}
+					}())),
 				A2(
 				$elm$html$Html$div,
 				_List_Nil,
-				_List_fromArray(
-					[
-						A2(
-						$elm$html$Html$input,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$placeholder('Bus'),
-								$elm$html$Html$Attributes$value(
-								function () {
-									var _v2 = m.bus;
-									if (_v2.$ === 'Bus') {
-										var i = _v2.a;
-										var f = _v2.b;
-										return f(_Utils_Tuple0);
-									} else {
-										var x = _v2.a;
-										return x;
-									}
-								}()),
-								$elm$html$Html$Events$onInput(
-								function (x) {
-									return $author$project$Msg$BusChange(x);
-								})
-							]),
-						_List_Nil),
-						A2(
-						$elm$html$Html$button,
-						_List_fromArray(
-							[
-								$elm$html$Html$Events$onClick($author$project$Msg$ValidateBus)
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text('Check')
-							]))
-					])),
+				_Utils_ap(
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$input,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$placeholder('Bus'),
+									$elm$html$Html$Attributes$value(
+									function () {
+										var _v9 = m.bus;
+										if (_v9.$ === 'Bus') {
+											var i = _v9.a;
+											var f = _v9.b;
+											return f(_Utils_Tuple0);
+										} else {
+											var x = _v9.a;
+											return x;
+										}
+									}()),
+									$elm$html$Html$Events$onInput(
+									function (x) {
+										return $author$project$Msg$BusChange(x);
+									})
+								]),
+							_List_Nil),
+							A2(
+							$elm$html$Html$button,
+							_List_fromArray(
+								[
+									$elm$html$Html$Events$onClick($author$project$Msg$ValidateBus)
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text('Check')
+								]))
+						]),
+					function () {
+						var _v10 = m.bus;
+						if (_v10.$ === 'Bus') {
+							var i = _v10.a;
+							var f = _v10.b;
+							return _List_fromArray(
+								[
+									$elm$html$Html$text('Geldige bus')
+								]);
+						} else {
+							var x = _v10.a;
+							return _List_Nil;
+						}
+					}())),
 				A2(
 				$elm$html$Html$div,
 				_List_Nil,
