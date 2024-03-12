@@ -111,7 +111,7 @@ view (Model m) = div [] [button [onClick (TimeChange Minus5Min)] [text "-5"],
                                  button [onClick (DayChange Time.Fri)] [text "Vr"],
                                  button [onClick (DayChange Time.Sat)] [text "Za"],
                                  button [onClick (DayChange Time.Sun)] [text "Zo"],
-                                 text (today m.moment.day)],
+                                 text (toDutchWeekday m.moment.day)],
                          div [] ([input [placeholder "Vertrekhalte",
                                          value (case m.departure of
                                                   Stop i f -> f ()
@@ -151,16 +151,16 @@ subMinute m x = {m | hour=if m.minute - x < 0 then (if m.hour - 1 < 0 then m.hou
 addMinute : {day : Time.Weekday, hour : Int, minute : Int} -> Int -> {day : Time.Weekday, hour : Int, minute : Int}
 addMinute m x = {m | hour=if m.minute + x > 59 then (if m.hour + 1 > 23 then m.hour - 23 else m.hour + 1) else m.hour, minute=if m.minute + x > 59 then m.minute + x - 60 else m.minute + x}
 
-today : Time.Weekday -> String
-today t = (case t of
-            Time.Mon -> "Maan"
-            Time.Tue -> "Dins"
-            Time.Wed -> "Woens"
-            Time.Thu -> "Donder"
-            Time.Fri -> "Vrij"
-            Time.Sat -> "Zater"
-            Time.Sun -> "Zon")
-          ++ "dag"
+toDutchWeekday : Time.Weekday -> String
+toDutchWeekday t = (case t of
+                      Time.Mon -> "Maan"
+                      Time.Tue -> "Dins"
+                      Time.Wed -> "Woens"
+                      Time.Thu -> "Donder"
+                      Time.Fri -> "Vrij"
+                      Time.Sat -> "Zater"
+                      Time.Sun -> "Zon")
+                    ++ "dag"
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
