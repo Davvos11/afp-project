@@ -101,7 +101,8 @@ executable afp-project
         warp ^>=3.4.0,
         wai ^>=3.2.4,
         http-types ^>= 0.12.4,
-        aeson ^>= 2.2.1.0
+        aeson ^>= 2.2.1.0,
+        wai-cors ^>= 0.2.7
 
     -- Directories containing source files.
     hs-source-dirs:   app

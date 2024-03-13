@@ -32,7 +32,8 @@ init _ = (Model {departure   = NoStop "",
                  stops       = Dict.empty,
                  buses       = Dict.empty,
                  loading     = NotLoading,
-                 time        = (Time.millisToPosix 0, utc)},
+                 time        = (Time.millisToPosix 0, utc)
+                },
           Task.perform identity (Task.map2 NewTime Time.now Time.here))
 
 
@@ -101,7 +102,7 @@ requestStops = Http.request { method = "GET",
                               url = "http://localhost:3000/stops",
                               body = Http.emptyBody,
                               expect = Http.expectJson GotStops (field "stops" (list (Json.Decode.map2 (\a b -> (a, b)) (field "stopName" string) (field "stopId" int)))),
-                              timeout = Just 1000,
+                              timeout = Nothing,
                               tracker = Nothing
                             }
 
