@@ -6,12 +6,14 @@ import Dict
 type Model = Model {departure : Stop,
                     destination : Stop,
                     bus : Bus,
-                    moment : {day : Time.Weekday, hour : Int, minute : Int},
+                    moment : Moment,
                     delays : DelayInfo,
                     stops : Dict.Dict String (Int, String),
                     buses : Dict.Dict String (Int, String),
                     loading : LoadingState,
                     time : (Time.Posix, Time.Zone)}
+
+type Moment = Moment {day : Time.Weekday, hour : Int, minute : Int}
 
 type Stop = Stop Int (() -> String)
           | NoStop String

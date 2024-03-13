@@ -26,7 +26,7 @@ init : () -> (Model, Cmd Msg)
 init _ = (Model {departure   = NoStop "",
                  destination = NoStop "",
                  bus         = NoBus "",
-                 moment      = {day = Time.Mon, hour = 0, minute = 0},
+                 moment      = Moment {day = Time.Mon, hour = 0, minute = 0},
                  delays      = Nothing,
                  stops       = toDict StopBusExample.exampleStops,
                  buses       = toDict StopBusExample.exampleBuses,
@@ -41,17 +41,16 @@ toDict xs = Dict.fromList (List.map (\(x, i) -> (String.toLower x, (i, x))) xs)
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg (Model m) = case msg of
     ReverseStops    -> (Model {m | departure = m.destination, destination = m.departure}, Cmd.none)
-    NewTime t z     -> (Model {m | time = (t, z), moment = {day = toWeekday z t, hour = toHour z t, minute = toMinute z t}}, requestStops)
-    TimeChange t    -> (Model (case t of
-                                 -- Todo refactor
-                                 Minus5Min  -> {m | moment = subMinute m.moment 5}
-                                 Minus15Min -> {m | moment = subMinute m.moment 15}
-                                 MinusHour  -> {m | moment = subMinute m.moment 60}
-                                 Plus5Min   -> {m | moment = addMinute m.moment 5}
-                                 Plus15Min  -> {m | moment = addMinute m.moment 15}
-                                 PlusHour   -> {m | moment = addMinute m.moment 60}
-                        ), Cmd.none)
-    DayChange d     -> (Model {m | moment = (\moment -> {moment | day = d}) m.moment}, Cmd.none)
+    NewTime t z     -> (Model {m | time = (t, z), moment = Moment {day = toWeekday z t, hour = toHour z t, minute = toMinute z t}}, requestStops)
+    TimeChange t    -> (Model {m | moment = (case t of
+                                               Minus5Min  -> subMinute m.moment 5
+                                               Minus15Min -> subMinute m.moment 15
+                                               MinusHour  -> subMinute m.moment 60
+                                               Plus5Min   -> addMinute m.moment 5
+                                               Plus15Min  -> addMinute m.moment 15
+                                               PlusHour   -> addMinute m.moment 60
+                        )}, Cmd.none)
+    DayChange d     -> (Model {m | moment = (\(Moment moment) -> Moment {moment | day = d}) m.moment}, Cmd.none)
     StopChange x d  -> (Model (case d of
                            -- Halte changed, needs to be revalidated
                            -- Todo reset delays when these change
@@ -100,7 +99,7 @@ view : Model -> Html Msg
 view (Model m) = div [] [button [onClick (TimeChange Minus5Min)] [text "-5"],
                          button [onClick (TimeChange Minus15Min)] [text "-15"],
                          button [onClick (TimeChange MinusHour)] [text "-60"],
-                         text ((if m.moment.hour < 10 then "0" else "") ++ String.fromInt m.moment.hour ++ ":" ++ (if m.moment.minute < 10 then "0" else "") ++ String.fromInt m.moment.minute),
+                         text ((\(Moment moment) -> (if moment.hour < 10 then "0" else "") ++ String.fromInt moment.hour ++ ":" ++ (if moment.minute < 10 then "0" else "") ++ String.fromInt moment.minute) m.moment),
                          button [onClick (TimeChange PlusHour)] [text "+60"],
                          button [onClick (TimeChange Plus15Min)] [text "+15"],
                          button [onClick (TimeChange Plus5Min)] [text "+5"],
@@ -111,7 +110,7 @@ view (Model m) = div [] [button [onClick (TimeChange Minus5Min)] [text "-5"],
                                  button [onClick (DayChange Time.Fri)] [text "Vr"],
                                  button [onClick (DayChange Time.Sat)] [text "Za"],
                                  button [onClick (DayChange Time.Sun)] [text "Zo"],
-                                 text (toDutchWeekday m.moment.day)],
+                                 text (toDutchWeekday ((\(Moment moment) -> moment.day) m.moment))],
                          div [] ([input [placeholder "Vertrekhalte",
                                          value (case m.departure of
                                                   Stop i f -> f ()
@@ -144,12 +143,11 @@ view (Model m) = div [] [button [onClick (TimeChange Minus5Min)] [text "-5"],
                          div [] [button [onClick CalcDelay] [text "Voorspel vertraging"]]
                 ]
 
--- These are sooooooo similar this could easily be refactored to both calling a "factory" function
-subMinute : {day : Time.Weekday, hour : Int, minute : Int} -> Int -> {day : Time.Weekday, hour : Int, minute : Int}
-subMinute m x = {m | hour=if m.minute - x < 0 then (if m.hour - 1 < 0 then m.hour + 23 else m.hour - 1) else m.hour, minute=if m.minute - x < 0 then m.minute - x + 60 else m.minute - x}
+subMinute : Moment -> Int -> Moment
+subMinute (Moment m) x = Moment {m | hour=if m.minute - x < 0 then (if m.hour - 1 < 0 then m.hour + 23 else m.hour - 1) else m.hour, minute=if m.minute - x < 0 then m.minute - x + 60 else m.minute - x}
 
-addMinute : {day : Time.Weekday, hour : Int, minute : Int} -> Int -> {day : Time.Weekday, hour : Int, minute : Int}
-addMinute m x = {m | hour=if m.minute + x > 59 then (if m.hour + 1 > 23 then m.hour - 23 else m.hour + 1) else m.hour, minute=if m.minute + x > 59 then m.minute + x - 60 else m.minute + x}
+addMinute : Moment -> Int -> Moment
+addMinute (Moment m) x = Moment {m | hour=if m.minute + x > 59 then (if m.hour + 1 > 23 then m.hour - 23 else m.hour + 1) else m.hour, minute=if m.minute + x > 59 then m.minute + x - 60 else m.minute + x}
 
 toDutchWeekday : Time.Weekday -> String
 toDutchWeekday t = (case t of
