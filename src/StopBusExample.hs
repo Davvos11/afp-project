@@ -2,7 +2,6 @@
 module StopBusExample (stopData, busData) where
 
 import Data.Aeson
-import Data.Aeson.Types
 import GHC.Generics
 
 data StopPair = StopPair {stopName :: String, stopId :: Int} deriving Generic

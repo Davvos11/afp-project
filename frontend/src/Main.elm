@@ -95,8 +95,8 @@ requestDelays : Model -> Cmd Msg
 -- Todo: Request delays using model data
 requestDelays m = Cmd.none
 
+-- The below two could be factoried away slightly
 requestStops : Cmd Msg
--- Todo: http request the stops for demo hardcode some examples
 requestStops = Http.request { method = "GET",
                               headers = [],
                               url = "http://localhost:3000/stops",
@@ -107,8 +107,14 @@ requestStops = Http.request { method = "GET",
                             }
 
 requestBuses : Cmd Msg
--- Todo: http request the buses, for demo hardcode some examples
-requestBuses = Cmd.none
+requestBuses = Http.request { method = "GET",
+                              headers = [],
+                              url = "http://localhost:3000/buses",
+                              body = Http.emptyBody,
+                              expect = Http.expectJson GotStops (field "buses" (list (Json.Decode.map2 (\a b -> (a, b)) (field "busName" string) (field "busId" int)))),
+                              timeout = Nothing,
+                              tracker = Nothing
+                            }
 
 view : Model -> Html Msg
 view (Model m) = div [] [button [onClick (TimeChange Minus5Min)] [text "-5"],

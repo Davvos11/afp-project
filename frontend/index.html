@@ -5441,7 +5441,6 @@ var $author$project$Main$init = function (_v0) {
 				delays: $elm$core$Maybe$Nothing,
 				departure: $author$project$Model$NoStop(''),
 				destination: $author$project$Model$NoStop(''),
-				error: $elm$core$Maybe$Nothing,
 				loading: $author$project$Model$NotLoading,
 				moment: $author$project$Model$Moment(
 					{day: $elm$time$Time$Mon, hour: 0, minute: 0}),
@@ -5474,10 +5473,6 @@ var $author$project$Main$addMinute = F2(
 	});
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
-var $author$project$Main$requestBuses = $elm$core$Platform$Cmd$none;
-var $author$project$Main$requestDelays = function (m) {
-	return $elm$core$Platform$Cmd$none;
-};
 var $author$project$Msg$GotStops = function (a) {
 	return {$: 'GotStops', a: a};
 };
@@ -6266,6 +6261,33 @@ var $elm$http$Http$request = function (r) {
 			{allowCookiesFromOtherDomains: false, body: r.body, expect: r.expect, headers: r.headers, method: r.method, timeout: r.timeout, tracker: r.tracker, url: r.url}));
 };
 var $elm$json$Json$Decode$string = _Json_decodeString;
+var $author$project$Main$requestBuses = $elm$http$Http$request(
+	{
+		body: $elm$http$Http$emptyBody,
+		expect: A2(
+			$elm$http$Http$expectJson,
+			$author$project$Msg$GotStops,
+			A2(
+				$elm$json$Json$Decode$field,
+				'buses',
+				$elm$json$Json$Decode$list(
+					A3(
+						$elm$json$Json$Decode$map2,
+						F2(
+							function (a, b) {
+								return _Utils_Tuple2(a, b);
+							}),
+						A2($elm$json$Json$Decode$field, 'busName', $elm$json$Json$Decode$string),
+						A2($elm$json$Json$Decode$field, 'busId', $elm$json$Json$Decode$int))))),
+		headers: _List_Nil,
+		method: 'GET',
+		timeout: $elm$core$Maybe$Nothing,
+		tracker: $elm$core$Maybe$Nothing,
+		url: 'http://localhost:3000/buses'
+	});
+var $author$project$Main$requestDelays = function (m) {
+	return $elm$core$Platform$Cmd$none;
+};
 var $author$project$Main$requestStops = $elm$http$Http$request(
 	{
 		body: $elm$http$Http$emptyBody,
@@ -6654,7 +6676,7 @@ var $author$project$Main$update = F2(
 						$author$project$Model$Model(m),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 'GotDelays':
+			default:
 				var res = msg.a;
 				if (res.$ === 'Ok') {
 					var _v9 = res.a;
@@ -6678,24 +6700,6 @@ var $author$project$Main$update = F2(
 								{loading: $author$project$Model$NotLoading})),
 						$elm$core$Platform$Cmd$none);
 				}
-			default:
-				var t = msg.a;
-				return _Utils_Tuple2(
-					function () {
-						if (t.$ === 'Ok') {
-							var s = t.a;
-							return $author$project$Model$Model(m);
-						} else {
-							var e = t.a;
-							return $author$project$Model$Model(
-								_Utils_update(
-									m,
-									{
-										error: $elm$core$Maybe$Just(e)
-									}));
-						}
-					}(),
-					$elm$core$Platform$Cmd$none);
 		}
 	});
 var $author$project$Msg$BusChange = function (a) {
@@ -7193,49 +7197,7 @@ var $author$project$Main$view = function (_v0) {
 						_List_fromArray(
 							[
 								$elm$html$Html$text('Voorspel vertraging')
-							])),
-						A2(
-						$elm$html$Html$div,
-						_List_Nil,
-						function () {
-							var _v13 = m.error;
-							if (_v13.$ === 'Nothing') {
-								return _List_Nil;
-							} else {
-								var e = _v13.a;
-								switch (e.$) {
-									case 'BadBody':
-										var s = e.a;
-										return _List_fromArray(
-											[
-												$elm$html$Html$text(s)
-											]);
-									case 'BadUrl':
-										var s = e.a;
-										return _List_fromArray(
-											[
-												$elm$html$Html$text(s)
-											]);
-									case 'NetworkError':
-										return _List_fromArray(
-											[
-												$elm$html$Html$text('network')
-											]);
-									case 'BadStatus':
-										var i = e.a;
-										return _List_fromArray(
-											[
-												$elm$html$Html$text(
-												$elm$core$String$fromInt(i))
-											]);
-									default:
-										return _List_fromArray(
-											[
-												$elm$html$Html$text('timeout')
-											]);
-								}
-							}
-						}())
+							]))
 					]))
 			]));
 };

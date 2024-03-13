@@ -21,4 +21,5 @@ app req respond = do
   respond $ case pathInfo req of
     ["stops"] -> responseLBS status200 [(hContentType, "application/json")] $ encode stopData
     ["buses"] -> responseLBS status200 [(hContentType, "application/json")] $ encode busData
+    -- Todo add a case here for delay calculation requests
     _         -> responseLBS status200 [(hContentType, "text/plain")] "Hello World!"
