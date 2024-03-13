@@ -5,6 +5,7 @@ import Html exposing (text, div, Html, button, input)
 import Html.Events exposing (onClick, onInput)
 import Html.Attributes exposing (value, placeholder)
 import Http
+import Json.Decode exposing (field, string, int, list)
 import Task
 
 import Time exposing (utc, toHour, toMinute, toWeekday)
@@ -28,8 +29,8 @@ init _ = (Model {departure   = NoStop "",
                  bus         = NoBus "",
                  moment      = Moment {day = Time.Mon, hour = 0, minute = 0},
                  delays      = Nothing,
-                 stops       = toDict StopBusExample.exampleStops,
-                 buses       = toDict StopBusExample.exampleBuses,
+                 stops       = Dict.empty,
+                 buses       = Dict.empty,
                  loading     = NotLoading,
                  time        = (Time.millisToPosix 0, utc)},
           Task.perform identity (Task.map2 NewTime Time.now Time.here))
@@ -65,9 +66,15 @@ update msg (Model m) = case msg of
                            Destination -> {m | destination = tryParseStop m.destination m.stops}
                         ), Cmd.none)
     CalcDelay       -> (Model {m | loading = Loading}, requestDelays (Model m))
-    GotStops stops  -> (Model {m | stops = toDict stops}, requestBuses)
-    GotBuses buses  -> (Model {m | buses = toDict buses}, Cmd.none)
-    GotDelays d1 d2 -> (Model {m | delays = Just (d1, d2), loading = NotLoading}, Cmd.none)
+    GotStops res    -> case res of
+                         Ok stops -> (Model {m | stops = toDict stops}, requestBuses)
+                         Err _    -> (Model m, Cmd.none)
+    GotBuses res    -> case res of
+                         Ok buses -> (Model {m | buses = toDict buses}, Cmd.none)
+                         Err _    -> (Model m, Cmd.none)
+    GotDelays res   -> case res of
+                         Ok (d1, d2) -> (Model {m | delays = Just (d1, d2), loading = NotLoading}, Cmd.none)
+                         Err _       -> (Model {m | loading = NotLoading}, Cmd.none)
 
 tryParseBus : Bus -> Dict.Dict String (Int, String) -> Bus
 tryParseBus b dict = case b of
@@ -89,7 +96,14 @@ requestDelays m = Cmd.none
 
 requestStops : Cmd Msg
 -- Todo: http request the stops for demo hardcode some examples
-requestStops = Cmd.none
+requestStops = Http.request { method = "GET",
+                              headers = [],
+                              url = "http://localhost:3000/stops",
+                              body = Http.emptyBody,
+                              expect = Http.expectJson GotStops (field "stops" (list (Json.Decode.map2 (\a b -> (a, b)) (field "stopName" string) (field "stopId" int)))),
+                              timeout = Just 1000,
+                              tracker = Nothing
+                            }
 
 requestBuses : Cmd Msg
 -- Todo: http request the buses, for demo hardcode some examples
