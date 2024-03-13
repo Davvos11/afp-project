@@ -15,7 +15,6 @@ import String
 
 import Model exposing (..)
 import Msg exposing (..)
-import StopBusExample exposing (..)
 
 main : Program () Model Msg
 main = Browser.element {init = init,
