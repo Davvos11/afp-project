@@ -6,7 +6,7 @@ import Network.HTTP.Types
 import Network.Wai.Middleware.Cors
 import Data.Aeson
 
-import StopBusExample
+import ExampleData
 
 runServer :: IO ()
 runServer = do
@@ -18,8 +18,13 @@ runServer = do
 app :: Application
 app req respond = do
   print req
-  respond $ case pathInfo req of
-    ["stops"] -> responseLBS status200 [(hContentType, "application/json")] $ encode stopData
-    ["buses"] -> responseLBS status200 [(hContentType, "application/json")] $ encode busData
-    -- Todo add a case here for delay calculation requests
-    _         -> responseLBS status200 [(hContentType, "text/plain")] "Hello World!"
+  case pathInfo req of
+    ["stops"]  -> respond $ responseLBS status200 [(hContentType, "application/json")] $ encode stopData
+    ["buses"]  -> respond $ responseLBS status200 [(hContentType, "application/json")] $ encode busData
+    ["delays"] -> {- case parseRequest (queryString req) of
+                       Nothing      -> respond $ responseLBS status400 [(hContentType, "text/plain")] "Couldn't parse request" --: Ideally you'd say here what didn't correctly get parsed/what was missing entirely
+                       Just request -> getServerData >>= \serverData -> if not $ validateDelayRequest request serverData
+                                       then respond $ responseLBS status404 [(hContentType, "text/plain")] "Data parsed but requests data not in the database"
+                                       else calculationWithServerData >>= (\data -> respond $ responseLBS status200 [(hContentType, "application/json")] $ encode data)
+                  -}respond $ responseLBS status200 [(hContentType, "application/json")] $ encode delayData
+    _          -> respond $ responseLBS status400 [(hContentType, "text/plain")] "Unsupported request"

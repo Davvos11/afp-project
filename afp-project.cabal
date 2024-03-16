@@ -61,7 +61,8 @@ library
     -- Modules exported by the library.
     exposed-modules:  Subscriber,
                       Parser,
-                      StopBusExample
+                      MessageFormat,
+                      ExampleData
 
     -- Modules included in this library but not exported.
     -- other-modules:
@@ -71,7 +72,8 @@ library
 
     -- Other library packages from which modules are imported.
     build-depends:    base ^>=4.17.2.1,
-                      aeson ^>=2.2.1.0
+                      aeson ^>=2.2.1.0,
+                      http-types ^>= 0.12.4
 
     -- Directories containing source files.
     hs-source-dirs:   src
