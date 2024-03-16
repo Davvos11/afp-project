@@ -5,6 +5,7 @@ import Html exposing (text, div, Html, button, input)
 import Html.Events exposing (onClick, onInput)
 import Html.Attributes exposing (value, placeholder)
 import Http
+import Url.Builder
 import Json.Decode exposing (field, string, int, list)
 import Task
 
@@ -92,7 +93,24 @@ tryParseStop s dict = case s of
 
 requestDelays : Model -> Cmd Msg
 -- Todo: Request delays using model data
-requestDelays m = Cmd.none
+requestDelays (Model m) = case (m.departure, m.destination, m.bus) of
+  (Stop i1 _, Stop i2 _, Bus i3 _) -> Http.request
+    { method = "GET",
+      headers = [],
+      url = Url.Builder.crossOrigin "http://localhost:3000" ["delays"] [Url.Builder.int "departure" i1,
+                                                                        Url.Builder.int "destination" i2,
+                                                                        Url.Builder.int "bus" i3,
+                                                                        Url.Builder.int "day" ((\(Moment moment) -> toDayNumber moment.day) m.moment),
+                                                                        Url.Builder.int "hour" ((\(Moment moment) -> moment.hour) m.moment),
+                                                                        Url.Builder.int "minute" ((\(Moment moment) -> moment.minute) m.moment)
+                                                                       ],
+      body = Http.emptyBody,
+      expect = Http.expectJson GotDelays
+      (Json.Decode.map2 (\a b -> (a, b)) (field "departureDelay" int) (field "destinationDelay" int)),
+      timeout = Nothing,
+      tracker = Nothing
+    }
+  (_, _, _) -> Cmd.none
 
 -- The below two could be factoried away slightly
 requestStops : Cmd Msg
@@ -110,7 +128,7 @@ requestBuses = Http.request { method = "GET",
                               headers = [],
                               url = "http://localhost:3000/buses",
                               body = Http.emptyBody,
-                              expect = Http.expectJson GotStops (field "buses" (list (Json.Decode.map2 (\a b -> (a, b)) (field "busName" string) (field "busId" int)))),
+                              expect = Http.expectJson GotBuses (field "buses" (list (Json.Decode.map2 (\a b -> (a, b)) (field "busName" string) (field "busId" int)))),
                               timeout = Nothing,
                               tracker = Nothing
                             }

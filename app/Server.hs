@@ -17,7 +17,7 @@ runServer = do
 
 app :: Application
 app req respond = do
-  print $ pathInfo req
+  print req
   respond $ case pathInfo req of
     ["stops"] -> responseLBS status200 [(hContentType, "application/json")] $ encode stopData
     ["buses"] -> responseLBS status200 [(hContentType, "application/json")] $ encode busData

@@ -4605,6 +4605,23 @@ function _Http_track(router, xhr, tracker)
 			size: event.lengthComputable ? $elm$core$Maybe$Just(event.total) : $elm$core$Maybe$Nothing
 		}))));
 	});
+}
+
+function _Url_percentEncode(string)
+{
+	return encodeURIComponent(string);
+}
+
+function _Url_percentDecode(string)
+{
+	try
+	{
+		return $elm$core$Maybe$Just(decodeURIComponent(string));
+	}
+	catch (e)
+	{
+		return $elm$core$Maybe$Nothing;
+	}
 }var $elm$core$Basics$EQ = {$: 'EQ'};
 var $elm$core$Basics$GT = {$: 'GT'};
 var $elm$core$Basics$LT = {$: 'LT'};
@@ -5473,8 +5490,8 @@ var $author$project$Main$addMinute = F2(
 	});
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
-var $author$project$Msg$GotStops = function (a) {
-	return {$: 'GotStops', a: a};
+var $author$project$Msg$GotBuses = function (a) {
+	return {$: 'GotBuses', a: a};
 };
 var $elm$http$Http$BadStatus_ = F2(
 	function (a, b) {
@@ -6266,7 +6283,7 @@ var $author$project$Main$requestBuses = $elm$http$Http$request(
 		body: $elm$http$Http$emptyBody,
 		expect: A2(
 			$elm$http$Http$expectJson,
-			$author$project$Msg$GotStops,
+			$author$project$Msg$GotBuses,
 			A2(
 				$elm$json$Json$Decode$field,
 				'buses',
@@ -6285,8 +6302,125 @@ var $author$project$Main$requestBuses = $elm$http$Http$request(
 		tracker: $elm$core$Maybe$Nothing,
 		url: 'http://localhost:3000/buses'
 	});
-var $author$project$Main$requestDelays = function (m) {
-	return $elm$core$Platform$Cmd$none;
+var $author$project$Msg$GotDelays = function (a) {
+	return {$: 'GotDelays', a: a};
+};
+var $elm$url$Url$Builder$toQueryPair = function (_v0) {
+	var key = _v0.a;
+	var value = _v0.b;
+	return key + ('=' + value);
+};
+var $elm$url$Url$Builder$toQuery = function (parameters) {
+	if (!parameters.b) {
+		return '';
+	} else {
+		return '?' + A2(
+			$elm$core$String$join,
+			'&',
+			A2($elm$core$List$map, $elm$url$Url$Builder$toQueryPair, parameters));
+	}
+};
+var $elm$url$Url$Builder$crossOrigin = F3(
+	function (prePath, pathSegments, parameters) {
+		return prePath + ('/' + (A2($elm$core$String$join, '/', pathSegments) + $elm$url$Url$Builder$toQuery(parameters)));
+	});
+var $elm$url$Url$Builder$QueryParameter = F2(
+	function (a, b) {
+		return {$: 'QueryParameter', a: a, b: b};
+	});
+var $elm$url$Url$percentEncode = _Url_percentEncode;
+var $elm$url$Url$Builder$int = F2(
+	function (key, value) {
+		return A2(
+			$elm$url$Url$Builder$QueryParameter,
+			$elm$url$Url$percentEncode(key),
+			$elm$core$String$fromInt(value));
+	});
+var $author$project$Model$toDayNumber = function (t) {
+	switch (t.$) {
+		case 'Mon':
+			return 0;
+		case 'Tue':
+			return 1;
+		case 'Wed':
+			return 2;
+		case 'Thu':
+			return 3;
+		case 'Fri':
+			return 4;
+		case 'Sat':
+			return 5;
+		default:
+			return 6;
+	}
+};
+var $author$project$Main$requestDelays = function (_v0) {
+	var m = _v0.a;
+	var _v1 = _Utils_Tuple3(m.departure, m.destination, m.bus);
+	if (((_v1.a.$ === 'Stop') && (_v1.b.$ === 'Stop')) && (_v1.c.$ === 'Bus')) {
+		var _v2 = _v1.a;
+		var i1 = _v2.a;
+		var _v3 = _v1.b;
+		var i2 = _v3.a;
+		var _v4 = _v1.c;
+		var i3 = _v4.a;
+		return $elm$http$Http$request(
+			{
+				body: $elm$http$Http$emptyBody,
+				expect: A2(
+					$elm$http$Http$expectJson,
+					$author$project$Msg$GotDelays,
+					A3(
+						$elm$json$Json$Decode$map2,
+						F2(
+							function (a, b) {
+								return _Utils_Tuple2(a, b);
+							}),
+						A2($elm$json$Json$Decode$field, 'departureDelay', $elm$json$Json$Decode$int),
+						A2($elm$json$Json$Decode$field, 'destinationDelay', $elm$json$Json$Decode$int))),
+				headers: _List_Nil,
+				method: 'GET',
+				timeout: $elm$core$Maybe$Nothing,
+				tracker: $elm$core$Maybe$Nothing,
+				url: A3(
+					$elm$url$Url$Builder$crossOrigin,
+					'http://localhost:3000',
+					_List_fromArray(
+						['delays']),
+					_List_fromArray(
+						[
+							A2($elm$url$Url$Builder$int, 'departure', i1),
+							A2($elm$url$Url$Builder$int, 'destination', i2),
+							A2($elm$url$Url$Builder$int, 'bus', i3),
+							A2(
+							$elm$url$Url$Builder$int,
+							'day',
+							function (_v5) {
+								var moment = _v5.a;
+								return $author$project$Model$toDayNumber(moment.day);
+							}(m.moment)),
+							A2(
+							$elm$url$Url$Builder$int,
+							'hour',
+							function (_v6) {
+								var moment = _v6.a;
+								return moment.hour;
+							}(m.moment)),
+							A2(
+							$elm$url$Url$Builder$int,
+							'minute',
+							function (_v7) {
+								var moment = _v7.a;
+								return moment.minute;
+							}(m.moment))
+						]))
+			});
+	} else {
+		return $elm$core$Platform$Cmd$none;
+	}
+};
+var $author$project$Msg$GotStops = function (a) {
+	return {$: 'GotStops', a: a};
 };
 var $author$project$Main$requestStops = $elm$http$Http$request(
 	{

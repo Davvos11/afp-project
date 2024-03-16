@@ -15,6 +15,16 @@ type Model = Model {departure : Stop,
 
 type Moment = Moment {day : Time.Weekday, hour : Int, minute : Int}
 
+toDayNumber : Time.Weekday -> Int
+toDayNumber t = case t of
+                  Time.Mon -> 0
+                  Time.Tue -> 1
+                  Time.Wed -> 2
+                  Time.Thu -> 3
+                  Time.Fri -> 4
+                  Time.Sat -> 5
+                  Time.Sun -> 6
+
 type Stop = Stop Int (() -> String)
           | NoStop String
 
