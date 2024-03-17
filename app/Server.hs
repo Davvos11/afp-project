@@ -7,6 +7,7 @@ import Network.Wai.Middleware.Cors
 import Data.Aeson
 
 import ExampleData
+import MessageFormat
 
 runServer :: IO ()
 runServer = do
@@ -21,10 +22,10 @@ app req respond = do
   case pathInfo req of
     ["stops"]  -> respond $ responseLBS status200 [(hContentType, "application/json")] $ encode stopData
     ["buses"]  -> respond $ responseLBS status200 [(hContentType, "application/json")] $ encode busData
-    ["delays"] -> {- case parseRequest (queryString req) of
-                       Nothing      -> respond $ responseLBS status400 [(hContentType, "text/plain")] "Couldn't parse request" --: Ideally you'd say here what didn't correctly get parsed/what was missing entirely
-                       Just request -> getServerData >>= \serverData -> if not $ validateDelayRequest request serverData
+    ["delays"] -> case parseDelayRequest (queryString req) of
+                       Nothing      -> respond $ responseLBS status400 [(hContentType, "text/plain")] "Couldn't parse request" -- : *Ideally* you'd say here what didn't correctly get parsed/what was missing entirely
+                       Just request -> {-getServerData >>= \serverData -> if not $ validateDelayRequest request serverData
                                        then respond $ responseLBS status404 [(hContentType, "text/plain")] "Data parsed but requests data not in the database"
-                                       else calculationWithServerData >>= (\data -> respond $ responseLBS status200 [(hContentType, "application/json")] $ encode data)
-                  -}respond $ responseLBS status200 [(hContentType, "application/json")] $ encode delayData
+                                       else calculationWithServerData >>= (\data -> respond $ responseLBS status200 [(hContentType, "application/json")] $ encode data) -}
+                                       respond $ responseLBS status200 [(hContentType, "application/json")] $ encode delayData
     _          -> respond $ responseLBS status400 [(hContentType, "text/plain")] "Unsupported request"
