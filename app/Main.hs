@@ -7,7 +7,7 @@ import Server
 
 main :: IO ()
 main = do
-  --x <- Database.getFrequenciesForBusStop 1
-  --mapM_ print x
+  x <- Database.getFrequenciesForBusStop 1
+  mapM_ print x
   Subscriber.run
   runServer

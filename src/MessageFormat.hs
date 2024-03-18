@@ -17,6 +17,9 @@ data Stops = Stops {stops :: [StopPair]} deriving Generic
 instance ToJSON StopPair where
 instance ToJSON Stops where
 
+-- | Packs a string and int together into a json-encodable StopPair
+-- The string is the stop name
+-- The int is the id as used in the database
 toStopPair :: (String, Int) -> StopPair
 toStopPair (s, i) = StopPair s i
 
@@ -25,13 +28,24 @@ data Buses = Buses {buses :: [BusPair]} deriving Generic
 instance ToJSON BusPair where
 instance ToJSON Buses where
 
+-- | Packs a string and int together into a json-encodable BusPair
+-- The string is a textual representation of the bus name/line number
+-- The int is the id as used in the database
 toBusPair :: (String, Int) -> BusPair
 toBusPair (s, i) = BusPair s i
 
-data Delays = Delays {departureDelay :: Int, destinationDelay :: Int} deriving Generic
+data Delays = Delays { -- | Average delay at the departure stop, in minutes
+                      departureDelay :: Int,
+                      -- | Average delay at the destination stop, in minutes
+                      destinationDelay :: Int} deriving Generic
 instance ToJSON Delays where
 
-data DelayRequest = DelayRequest {departure :: Int, destination :: Int, bus :: Int, weekday :: DayOfWeek, hour :: Int, minute :: Int}
+data DelayRequest = DelayRequest { -- | Id of queried departure stop
+                                  departure :: Int,
+                                  -- | Id of queried destination stop
+                                  destination :: Int,
+                                  -- | Id of queried bus
+                                  bus :: Int, weekday :: DayOfWeek, hour :: Int, minute :: Int}
 
 -- | Tries to parse a string to a weekday according to the encoded representation.
 -- Week starts at Monday, index 0, and so on.
@@ -55,9 +69,12 @@ validMinute :: Int -> Maybe Int
 validMinute h | h >= 0 && h < 60 = Just h
             | otherwise        = Nothing
 
--- Todo, also temp location
+-- | Temporary Type / Location for this type, just to serve as illustration for validateDelayRequest.
+-- It is likely that method will use IO instead in its final implementation.
 type ServerData = ()
 
+-- | Takes a query and attempts to extract all the necessary information for a delay request.
+-- Doesn't fail if the request contains additional query items
 parseDelayRequest :: Query -> Maybe DelayRequest
 parseDelayRequest q = do
   qDeparture   <- find ((== "departure")   . fst) q >>= snd >>= readMaybe @Int . unpack . decodeUtf8
@@ -68,5 +85,8 @@ parseDelayRequest q = do
   qMinute      <- find ((== "minute")      . fst) q >>= snd >>= readMaybe @Int . unpack . decodeUtf8 >>= validMinute
   return $ DelayRequest qDeparture qDestination qBus qWeekday qHour qMinute
 
+-- | Checks whether the bus and stop ids in the delay request make sense:
+-- i.e. are keys in the database and the stops correspond to stops on the route of that bus
+-- Unimplemented at the moment.
 validateDelayRequest :: DelayRequest -> ServerData -> Bool
 validateDelayRequest r sd = undefined
