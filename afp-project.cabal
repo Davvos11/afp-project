@@ -74,7 +74,8 @@ library
     build-depends:    base ^>=4.17.2.1,
                       aeson ^>=2.2.1.0,
                       http-types ^>= 0.12.4,
-                      text ^>= 1.2.2.1
+                      text ^>= 1.2.2.1,
+                      time ^>= 1.12.2
 
     -- Directories containing source files.
     hs-source-dirs:   src
@@ -105,7 +106,8 @@ executable afp-project
         wai ^>=3.2.4,
         http-types ^>= 0.12.4,
         aeson ^>= 2.2.1.0,
-        wai-cors ^>= 0.2.7
+        wai-cors ^>= 0.2.7,
+        time ^>= 1.12.2
 
     -- Directories containing source files.
     hs-source-dirs:   app
