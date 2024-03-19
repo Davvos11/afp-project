@@ -35,29 +35,35 @@ weekToNumber Fri = "5"
 weekToNumber Sat = "6"
 weekToNumber Sun = "7"
 
+likeString :: String -> String
+likeString s = "%" ++ s ++ "%"
+
 data Filter = Filter {
-    stopId :: Maybe Int,
+    stopName :: Maybe String,
+    linePlanningNumber :: Maybe String,
     timeOfDay :: Maybe TimeOfDay,
     dayOfWeek :: Maybe DayOfWeek
 } deriving Show
 
 -- | Get the frequency distribution of the punctualities for a given bus stop
 getFrequencies :: Filter -> IO [Frequency]
-getFrequencies (Filter mStopId mTime mDay) = do
-    conn <- open "database.db"
+getFrequencies (Filter mStop mLine mTime mDay) = do
+    conn <- open "database-prod.db"
     print queryString
     print parameters
     result <- queryNamed conn (Query queryString) parameters :: IO [Frequency]
     close conn
     return result
     where 
-        baseQuery = "SELECT punctuality, COUNT(*) AS frequency \
-                            \FROM actual_arrivals "
+        baseQuery = "SELECT a.lineplanningnumber, a.punctuality / 60 AS punctuality_min, COUNT(*) AS frequency \
+                            \FROM actual_arrivals AS a \
+                            \JOIN stops as s ON s.stop_code = a.stop_code"
         
         (conditions, parameters) = foldr addFilter ([], []) [
-                fmap (\s -> ("stop_id = :stop_id", Text.pack ":stop_id" := s)) mStopId,
-                fmap (\t -> ("time(timestamp) >= time(:time_of_day_0, '-30 minutes')", ":time_of_day_0" := show t)) mTime,
-                fmap (\t -> ("time(timestamp) <= time(:time_of_day_1, '+30 minutes')", ":time_of_day_1" := show t)) mTime,
+                fmap (\s -> ("s.name LIKE :stop_name", ":stop_name" := likeString s)) mStop,
+                fmap (\l -> ("a.lineplanningnumber = :line_number", ":line_number" := l)) mLine,
+                fmap (\t -> ("time(timestamp) >= time(:time_of_day_0, '-15 minutes')", ":time_of_day_0" := show t)) mTime,
+                fmap (\t -> ("time(timestamp) <= time(:time_of_day_1, '+15 minutes')", ":time_of_day_1" := show t)) mTime,
                 fmap (\d -> ("strftime('%w', timestamp) = :day_of_week", ":day_of_week" := weekToNumber d)) mDay
             ]
 
@@ -68,4 +74,4 @@ getFrequencies (Filter mStopId mTime mDay) = do
             then baseQuery
             else Text.concat [baseQuery, " WHERE ", Text.intercalate " AND " conditions]
 
-        queryString = intermediateQuery <> " GROUP BY punctuality"
+        queryString = intermediateQuery <> " GROUP BY punctuality_min ORDER BY frequency DESC"

@@ -1,3 +1,5 @@
+{-# LANGUAGE DuplicateRecordFields #-}
+
 module Database.Models (ActualArrival, Frequency) where
 
 import Database.SQLite.Simple
@@ -7,7 +9,7 @@ data ActualArrival = ActualArrival { timestamp :: Int, stopId :: Int, punctualit
 instance FromRow ActualArrival where
     fromRow = ActualArrival <$> field <*> field <*> field <*> field
 
-data Frequency = Frequency { value :: Int, frequency :: Int} deriving Show
+data Frequency = Frequency { lineNumber :: String, punctuality :: Int, frequency :: Int} deriving Show
 
 instance FromRow Frequency where
-    fromRow = Frequency <$> field <*> field
+    fromRow = Frequency <$> field <*> field <*> field
