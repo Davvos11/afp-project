@@ -80,7 +80,7 @@ parseDelayRequest q = do
   qDeparture   <- find ((== "departure")   . fst) q >>= snd >>= readMaybe @Int . unpack . decodeUtf8
   qDestination <- find ((== "destination") . fst) q >>= snd >>= readMaybe @Int . unpack . decodeUtf8
   qBus         <- find ((== "bus")         . fst) q >>= snd >>= readMaybe @Int . unpack . decodeUtf8
-  qWeekday     <- find ((== "weekday")     . fst) q >>= snd >>= validWeekday   . unpack . decodeUtf8
+  qWeekday     <- find ((== "day")         . fst) q >>= snd >>= validWeekday   . unpack . decodeUtf8
   qHour        <- find ((== "hour")        . fst) q >>= snd >>= readMaybe @Int . unpack . decodeUtf8 >>= validHour
   qMinute      <- find ((== "minute")      . fst) q >>= snd >>= readMaybe @Int . unpack . decodeUtf8 >>= validMinute
   return $ DelayRequest qDeparture qDestination qBus qWeekday qHour qMinute
