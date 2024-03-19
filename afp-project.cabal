@@ -84,7 +84,7 @@ executable afp-project
     main-is:          Main.hs
 
     -- Modules included in this executable, other than Main.
-    other-modules: Database
+    other-modules: Database, Database.Models
 
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:
@@ -93,7 +93,9 @@ executable afp-project
     build-depends:
         base ^>=4.17.2.1,
         afp-project,
-        sqlite-simple
+        sqlite-simple,
+        text ^>=2.0.2,
+        time ^>=1.12.2
 
     -- Directories containing source files.
     hs-source-dirs:   app

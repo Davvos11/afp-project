@@ -2,34 +2,45 @@
 
 module Database where
 
+import Database.Models
 import Database.SQLite.Simple
+import qualified Data.Text as Text
+import Text.Printf
 
-data ActualArrival = ActualArrival { timestamp :: Int, stopId :: Int, punctuality :: Int, journeyId :: Int} deriving Show
+data TimeOfDay = TimeOfDay { hours :: Int, minutes :: Int }
+    deriving (Show)
 
-instance FromRow ActualArrival where
-    fromRow = ActualArrival <$> field <*> field <*> field <*> field
+timeToString :: TimeOfDay -> String
+timeToString (TimeOfDay h m) = printf "%02d" h ++ ":" ++ printf "%02d" m ++ ":00"
 
-data Frequency = Frequency { value :: Int, frequency :: Int} deriving Show
-
-instance FromRow Frequency where
-    fromRow = Frequency <$> field <*> field
-
--- | Example function to select all data
-getData :: IO [ActualArrival]
-getData = do
-    conn <- open "database.db"
-    result <- query_ conn "SELECT * FROM actual_arrivals" :: IO [ActualArrival]
-    close conn
-    return result
+data Filter = Filter {
+    stopId :: Maybe Int,
+    timeOfDay :: Maybe TimeOfDay
+} deriving Show
 
 -- | Get the frequency distribution of the punctualities for a given bus stop
-getFrequenciesForBusStop :: Int -> IO [Frequency]
-getFrequenciesForBusStop stop = do
+getFrequencies :: Filter -> IO [Frequency]
+getFrequencies (Filter mStopId mTimeOfDay) = do
     conn <- open "database.db"
-    result <- query conn "SELECT punctuality, COUNT(*) AS frequency \
-                            \FROM actual_arrivals \
-                            \WHERE journey_id = ? \
-                            \GROUP BY punctuality"
-                            (Only stop) :: IO [Frequency]
+    print queryString
+    result <- queryNamed conn (Query queryString) parameters :: IO [Frequency]
     close conn
     return result
+    where 
+        baseQuery = "SELECT punctuality, COUNT(*) AS frequency \
+                            \FROM actual_arrivals "
+        
+        (conditions, parameters) = foldr addFilter ([], []) [
+                fmap (\s -> ("stop_id = :stop_id", Text.pack ":stop_id" := s)) mStopId,
+                fmap (\t -> ("time(timestamp) >= time(:time_of_day_0, '-30 minutes')", ":time_of_day_0" := timeToString t)) mTimeOfDay,
+                fmap (\t -> ("time(timestamp) <= time(:time_of_day_1, '+30 minutes')", ":time_of_day_1" := timeToString t)) mTimeOfDay
+            ]
+
+        addFilter Nothing acc = acc
+        addFilter (Just (condition, parameter)) (condition_list, parameter_list) = (condition : condition_list, parameter: parameter_list)
+
+        intermediateQuery = if null conditions
+            then baseQuery
+            else Text.concat [baseQuery, " WHERE ", Text.intercalate " AND " conditions]
+
+        queryString = intermediateQuery <> " GROUP BY punctuality"
