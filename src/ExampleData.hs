@@ -1,6 +1,8 @@
-module StopBusExample exposing (..)
+module ExampleData (stopData, busData, delayData) where
 
-exampleStops : List (String, Int)
+import MessageFormat
+
+exampleStops :: [(String, Int)]
 exampleStops = [("P+R Science Park", 0),
                 ("WKZ / Máxima", 1),
                 ("UMC Utrecht", 2),
@@ -10,10 +12,19 @@ exampleStops = [("P+R Science Park", 0),
                 ("Rijnsweerd-Noord", 6)
                 ]
 
-exampleBuses : List (String, Int)
+stopData :: Stops
+stopData = Stops $ map toStopPair exampleStops
+
+exampleBuses :: [(String, Int)]
 exampleBuses = [("28", 0),
                 ("202", 1),
                 ("200", 2),
                 ("30", 3),
                 ("34", 5)
                ]
+
+busData :: Buses
+busData = Buses $ map toBusPair exampleBuses
+
+delayData :: Delays
+delayData = Delays {departureDelay = 2, destinationDelay = 4}
