@@ -59,7 +59,10 @@ library
     import:           warnings
 
     -- Modules exported by the library.
-    exposed-modules:  Subscriber, Parser
+    exposed-modules:  Subscriber,
+                      Parser,
+                      MessageFormat,
+                      ExampleData
 
     -- Modules included in this library but not exported.
     -- other-modules:
@@ -68,7 +71,11 @@ library
     -- other-extensions:
 
     -- Other library packages from which modules are imported.
-    build-depends:    base ^>=4.17.2.1
+    build-depends:    base ^>=4.17.2.1,
+                      aeson ^>=2.2.1.0,
+                      http-types ^>= 0.12.4,
+                      text ^>= 1.2.2.1,
+                      time ^>= 1.12.2
 
     -- Directories containing source files.
     hs-source-dirs:   src
@@ -84,7 +91,9 @@ executable afp-project
     main-is:          Main.hs
 
     -- Modules included in this executable, other than Main.
-    other-modules: Database, Database.Models
+    other-modules: Database,
+                   Database.Models,
+                   Server
 
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:
@@ -94,8 +103,13 @@ executable afp-project
         base ^>=4.17.2.1,
         afp-project,
         sqlite-simple,
-        text ^>=2.0.2,
-        time ^>=1.12.2
+        text ^>=1.2.2.1,
+        time ^>=1.12.2,
+        warp ^>=3.4.0,
+        wai ^>=3.2.4,
+        http-types ^>= 0.12.4,
+        aeson ^>= 2.2.1.0,
+        wai-cors ^>= 0.2.7,
 
     -- Directories containing source files.
     hs-source-dirs:   app
