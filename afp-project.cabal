@@ -75,7 +75,12 @@ library
                       aeson ^>=2.2.1.0,
                       http-types ^>= 0.12.4,
                       text ^>= 1.2.2.1,
-                      time ^>= 1.12.2
+                      time ^>= 1.12.2,
+                      websockets ^>=0.13.0.0,
+                      network ^>=3.1.4.0,
+                      mtl ^>=2.2.2,
+                      bytestring ^>=0.11.5.3,
+                      utf8-string ^>=1.0.2
 
     -- Directories containing source files.
     hs-source-dirs:   src
@@ -107,7 +112,9 @@ executable afp-project
         http-types ^>= 0.12.4,
         aeson ^>= 2.2.1.0,
         wai-cors ^>= 0.2.7,
-        time ^>= 1.12.2
+        time ^>= 1.12.2,
+        websockets ^>=0.13.0.0,
+        network ^>=3.1.4.0
 
     -- Directories containing source files.
     hs-source-dirs:   app
