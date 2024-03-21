@@ -1,0 +1,1056 @@
+[
+    Elem (
+        Element {
+            elName = QName {qName = "?xml", qURI = Nothing, qPrefix =
+Nothing},
+            elAttribs = [
+                Attr {attrKey = QName {qName = "version", qURI = Nothing, qPrefix = Nothing}, attrVal = "1.0"},
+                Attr {attrKey = QName {qName = "encoding", qURI = Nothing, qPrefix = Nothing}, attrVal = "UTF-8"},
+                Attr {attrKey = QName {qName = "standalone", qURI = Nothing, qPrefix = Nothing}, attrVal = "yes"}
+            ],
+            elContent = [],
+            elLine = Just 1
+        }
+    ),
+    Elem (
+        Element {
+            elName = QName {
+                qName = "VV_TM_PUSH",
+                qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg",
+                qPrefix = Nothing
+            },
+            elAttribs = [
+                Attr {
+                    attrKey = QName {
+                        qName = "xmlns", qURI = Nothing, qPrefix = Nothing
+                    },
+                    attrVal = "http://bison.connekt.nl/tmi8/kv6/msg"
+                },
+                Attr {
+                    attrKey = QName {qName = "ns2", qURI = Nothing, qPrefix = Just "xmlns"},
+                    attrVal = "http://bison.connekt.nl/tmi8/kv6/core"
+                }
+            ],
+            elContent = [
+                Elem (
+                    Element {
+                        elName = QName {
+                            qName = "SubscriberID", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing
+                        },
+                        elAttribs = [],
+                        elContent = [
+                            Text (CData {
+                                cdVerbatim = CDataText, cdData = "GVB",
+                                cdLine = Just 1
+                            })
+                        ],
+                        elLine = Just 1
+                    }),
+                Elem (
+                    Element {
+                        elName = QName {
+                            qName = "Version", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing
+                        },
+                        elAttribs = [],
+                        elContent = [
+                            Text (CData {
+                                cdVerbatim = CDataText,
+                                cdData = "BISON 8.1.1.0",
+                                cdLine = Just 1
+                            })
+                        ],
+                        elLine = Just 1
+                    }),
+                Elem (
+                    Element {
+                        elName = QName {
+                            qName = "DossierName", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing
+                        },
+                        elAttribs = [],
+                        elContent = [
+                            Text (CData {
+                                cdVerbatim = CDataText,
+                                cdData = "KV6posinfo",
+                                cdLine = Just 1
+                            })],
+                        elLine = Just 1
+                    }),
+                Elem (
+                    Element {
+                        elName = QName {
+                            qName = "Timestamp", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing
+                        },
+                        elAttribs = [],
+                        elContent = [
+                            Text (CData {
+                                cdVerbatim = CDataText,
+                                cdData = "2024-03-21T21:48:08.319+01:00",
+                                cdLine = Just 1
+                            })],
+                        elLine = Just 1
+                    }),
+                Elem (
+                    Element {
+                        elName = QName {
+                            qName = "KV6posinfo", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing
+                        },
+                        elAttribs = [],
+                        elContent = [
+                            Elem (
+                                Element {
+                                    elName = QName {
+                                        qName = "ONROUTE",
+                                        qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg",
+                                        qPrefix = Nothing
+                                    },
+                                    elAttribs = [],
+                                    elContent = [
+                                        Elem (Element {
+                                            elName = QName {qName = "dataownercode",
+                                            qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing
+                                            },
+                                            elAttribs = [],
+                                            elContent = [
+                                                Text (CData {cdVerbatim = CDataText, cdData = "GVB", cdLine = Just 1})
+                                            ], elLine = Just 1}
+                                            ),
+                                        Elem (Element {
+                                            elName = QName {qName = "lineplanningnumber",
+                                            qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg",
+                                            qPrefix = Nothing
+                                            },
+                                            elAttribs = [],
+                                            elContent = [
+                                                Text (CData {cdVerbatim = CDataText, cdData = "47", cdLine = Just 1})
+                                            ],
+                                            elLine = Just 1
+                                        }),
+                                        Elem (Element
+{elName = QName {qName = "operatingday", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "2024-03-21", cdLine
+= Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"journeynumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix =
+Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText,
+cdData = "236", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName =
+QName {qName = "reinforcementnumber", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "0", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "userstopcode",
+qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing},
+elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText, cdData =
+"00147", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName = QName
+{qName = "passagesequencenumber", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "0", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "timestamp", qURI
+= Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs =
+[], elContent = [Text (CData {cdVerbatim = CDataText, cdData =
+"2024-03-21T21:48:07.2432638+01:00", cdLine = Just 1})], elLine = Just 1}),Elem
+(Element {elName = QName {qName = "source", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "SERVER", cdLine =
+Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"vehiclenumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix =
+Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText,
+cdData = "1110", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName =
+QName {qName = "punctuality", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "21", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"distancesincelastuserstop", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg",
+qPrefix = Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim =
+CDataText, cdData = "272", cdLine = Just 1})], elLine = Just 1}),Elem (Element
+{elName = QName {qName = "rd-x", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "126701", cdLine =
+Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "rd-y", qURI
+= Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs =
+[], elContent = [Text (CData {cdVerbatim = CDataText, cdData = "481080", cdLine
+= Just 1})], elLine = Just 1})], elLine = Just 1})], elLine = Just 1}),Elem
+(Element {elName = QName {qName = "KV6posinfo", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Elem (Element {elName = QName {qName = "ONROUTE", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Elem (Element {elName = QName {qName = "dataownercode", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "GVB", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"lineplanningnumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg",
+qPrefix = Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim =
+CDataText, cdData = "47", cdLine = Just 1})], elLine = Just 1}),Elem (Element
+{elName = QName {qName = "operatingday", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "2024-03-21", cdLine
+= Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"journeynumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix =
+Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText,
+cdData = "239", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName =
+QName {qName = "reinforcementnumber", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "0", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "userstopcode",
+qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing},
+elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText, cdData =
+"00211", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName = QName
+{qName = "passagesequencenumber", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "0", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "timestamp", qURI
+= Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs =
+[], elContent = [Text (CData {cdVerbatim = CDataText, cdData =
+"2024-03-21T21:48:07.2432638+01:00", cdLine = Just 1})], elLine = Just 1}),Elem
+(Element {elName = QName {qName = "source", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "SERVER", cdLine =
+Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"vehiclenumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix =
+Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText,
+cdData = "1157", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName =
+QName {qName = "punctuality", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "185", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"distancesincelastuserstop", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg",
+qPrefix = Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim =
+CDataText, cdData = "18", cdLine = Just 1})], elLine = Just 1}),Elem (Element
+{elName = QName {qName = "rd-x", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "125781", cdLine =
+Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "rd-y", qURI
+= Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs =
+[], elContent = [Text (CData {cdVerbatim = CDataText, cdData = "478884", cdLine
+= Just 1})], elLine = Just 1})], elLine = Just 1})], elLine = Just 1}),Elem
+(Element {elName = QName {qName = "KV6posinfo", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Elem (Element {elName = QName {qName = "ONROUTE", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Elem (Element {elName = QName {qName = "dataownercode", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "GVB", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"lineplanningnumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg",
+qPrefix = Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim =
+CDataText, cdData = "7", cdLine = Just 1})], elLine = Just 1}),Elem (Element
+{elName = QName {qName = "operatingday", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "2024-03-21", cdLine
+= Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"journeynumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix =
+Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText,
+cdData = "382", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName =
+QName {qName = "reinforcementnumber", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "0", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "userstopcode",
+qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing},
+elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText, cdData =
+"08053", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName = QName
+{qName = "passagesequencenumber", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "0", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "timestamp", qURI
+= Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs =
+[], elContent = [Text (CData {cdVerbatim = CDataText, cdData =
+"2024-03-21T21:48:07.2432638+01:00", cdLine = Just 1})], elLine = Just 1}),Elem
+(Element {elName = QName {qName = "source", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "SERVER", cdLine =
+Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"vehiclenumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix =
+Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText,
+cdData = "2044", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName =
+QName {qName = "punctuality", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "48", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"distancesincelastuserstop", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg",
+qPrefix = Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim =
+CDataText, cdData = "42", cdLine = Just 1})], elLine = Just 1}),Elem (Element
+{elName = QName {qName = "rd-x", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "122151", cdLine =
+Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "rd-y", qURI
+= Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs =
+[], elContent = [Text (CData {cdVerbatim = CDataText, cdData = "485965", cdLine
+= Just 1})], elLine = Just 1})], elLine = Just 1})], elLine = Just 1}),Elem
+(Element {elName = QName {qName = "KV6posinfo", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Elem (Element {elName = QName {qName = "ONROUTE", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Elem (Element {elName = QName {qName = "dataownercode", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "GVB", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"lineplanningnumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg",
+qPrefix = Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim =
+CDataText, cdData = "19", cdLine = Just 1})], elLine = Just 1}),Elem (Element
+{elName = QName {qName = "operatingday", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "2024-03-21", cdLine
+= Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"journeynumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix =
+Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText,
+cdData = "357", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName =
+QName {qName = "reinforcementnumber", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "0", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "userstopcode",
+qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing},
+elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText, cdData =
+"06054", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName = QName
+{qName = "passagesequencenumber", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "0", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "timestamp", qURI
+= Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs =
+[], elContent = [Text (CData {cdVerbatim = CDataText, cdData =
+"2024-03-21T21:48:07.2432638+01:00", cdLine = Just 1})], elLine = Just 1}),Elem
+(Element {elName = QName {qName = "source", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "SERVER", cdLine =
+Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"vehiclenumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix =
+Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText,
+cdData = "3048", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName =
+QName {qName = "punctuality", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "-3", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"distancesincelastuserstop", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg",
+qPrefix = Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim =
+CDataText, cdData = "440", cdLine = Just 1})], elLine = Just 1}),Elem (Element
+{elName = QName {qName = "rd-x", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "120626", cdLine =
+Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "rd-y", qURI
+= Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs =
+[], elContent = [Text (CData {cdVerbatim = CDataText, cdData = "486328", cdLine
+= Just 1})], elLine = Just 1})], elLine = Just 1})], elLine = Just 1}),Elem
+(Element {elName = QName {qName = "KV6posinfo", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Elem (Element {elName = QName {qName = "ONROUTE", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Elem (Element {elName = QName {qName = "dataownercode", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "GVB", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"lineplanningnumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg",
+qPrefix = Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim =
+CDataText, cdData = "18", cdLine = Just 1})], elLine = Just 1}),Elem (Element
+{elName = QName {qName = "operatingday", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "2024-03-21", cdLine
+= Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"journeynumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix =
+Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText,
+cdData = "348", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName =
+QName {qName = "reinforcementnumber", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "0", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "userstopcode",
+qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing},
+elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText, cdData =
+"03198", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName = QName
+{qName = "passagesequencenumber", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "0", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "timestamp", qURI
+= Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs =
+[], elContent = [Text (CData {cdVerbatim = CDataText, cdData =
+"2024-03-21T21:48:07.2432638+01:00", cdLine = Just 1})], elLine = Just 1}),Elem
+(Element {elName = QName {qName = "source", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "SERVER", cdLine =
+Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"vehiclenumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix =
+Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText,
+cdData = "2280", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName =
+QName {qName = "punctuality", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "51", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"distancesincelastuserstop", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg",
+qPrefix = Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim =
+CDataText, cdData = "414", cdLine = Just 1})], elLine = Just 1}),Elem (Element
+{elName = QName {qName = "rd-x", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "118446", cdLine =
+Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "rd-y", qURI
+= Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs =
+[], elContent = [Text (CData {cdVerbatim = CDataText, cdData = "487045", cdLine
+= Just 1})], elLine = Just 1})], elLine = Just 1})], elLine = Just 1}),Elem
+(Element {elName = QName {qName = "KV6posinfo", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Elem (Element {elName = QName {qName = "ONROUTE", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Elem (Element {elName = QName {qName = "dataownercode", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "GVB", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"lineplanningnumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg",
+qPrefix = Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim =
+CDataText, cdData = "22", cdLine = Just 1})], elLine = Just 1}),Elem (Element
+{elName = QName {qName = "operatingday", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "2024-03-21", cdLine
+= Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"journeynumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix =
+Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText,
+cdData = "362", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName =
+QName {qName = "reinforcementnumber", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "0", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "userstopcode",
+qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing},
+elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText, cdData =
+"05103", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName = QName
+{qName = "passagesequencenumber", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "0", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "timestamp", qURI
+= Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs =
+[], elContent = [Text (CData {cdVerbatim = CDataText, cdData =
+"2024-03-21T21:48:07.4549953+01:00", cdLine = Just 1})], elLine = Just 1}),Elem
+(Element {elName = QName {qName = "source", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "SERVER", cdLine =
+Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"vehiclenumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix =
+Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText,
+cdData = "1921", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName =
+QName {qName = "punctuality", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "6", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"distancesincelastuserstop", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg",
+qPrefix = Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim =
+CDataText, cdData = "8", cdLine = Just 1})], elLine = Just 1}),Elem (Element
+{elName = QName {qName = "rd-x", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "121885", cdLine =
+Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "rd-y", qURI
+= Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs =
+[], elContent = [Text (CData {cdVerbatim = CDataText, cdData = "488088", cdLine
+= Just 1})], elLine = Just 1})], elLine = Just 1})], elLine = Just 1}),Elem
+(Element {elName = QName {qName = "KV6posinfo", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Elem (Element {elName = QName {qName = "ONROUTE", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Elem (Element {elName = QName {qName = "dataownercode", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "GVB", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"lineplanningnumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg",
+qPrefix = Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim =
+CDataText, cdData = "21", cdLine = Just 1})], elLine = Just 1}),Elem (Element
+{elName = QName {qName = "operatingday", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "2024-03-21", cdLine
+= Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"journeynumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix =
+Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText,
+cdData = "478", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName =
+QName {qName = "reinforcementnumber", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "0", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "userstopcode",
+qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing},
+elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText, cdData =
+"03087", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName = QName
+{qName = "passagesequencenumber", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "0", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "timestamp", qURI
+= Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs =
+[], elContent = [Text (CData {cdVerbatim = CDataText, cdData =
+"2024-03-21T21:48:07.4549953+01:00", cdLine = Just 1})], elLine = Just 1}),Elem
+(Element {elName = QName {qName = "source", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "SERVER", cdLine =
+Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"vehiclenumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix =
+Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText,
+cdData = "2261", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName =
+QName {qName = "punctuality", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "263", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"distancesincelastuserstop", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg",
+qPrefix = Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim =
+CDataText, cdData = "202", cdLine = Just 1})], elLine = Just 1}),Elem (Element
+{elName = QName {qName = "rd-x", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "116327", cdLine =
+Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "rd-y", qURI
+= Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs =
+[], elContent = [Text (CData {cdVerbatim = CDataText, cdData = "488554", cdLine
+= Just 1})], elLine = Just 1})], elLine = Just 1})], elLine = Just 1}),Elem
+(Element {elName = QName {qName = "KV6posinfo", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Elem (Element {elName = QName {qName = "ONROUTE", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Elem (Element {elName = QName {qName = "dataownercode", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "GVB", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"lineplanningnumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg",
+qPrefix = Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim =
+CDataText, cdData = "19", cdLine = Just 1})], elLine = Just 1}),Elem (Element
+{elName = QName {qName = "operatingday", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "2024-03-21", cdLine
+= Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"journeynumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix =
+Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText,
+cdData = "355", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName =
+QName {qName = "reinforcementnumber", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "0", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "userstopcode",
+qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing},
+elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText, cdData =
+"08176", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName = QName
+{qName = "passagesequencenumber", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "0", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "timestamp", qURI
+= Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs =
+[], elContent = [Text (CData {cdVerbatim = CDataText, cdData =
+"2024-03-21T21:48:07.4549953+01:00", cdLine = Just 1})], elLine = Just 1}),Elem
+(Element {elName = QName {qName = "source", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "SERVER", cdLine =
+Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"vehiclenumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix =
+Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText,
+cdData = "3031", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName =
+QName {qName = "punctuality", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "105", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"distancesincelastuserstop", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg",
+qPrefix = Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim =
+CDataText, cdData = "2", cdLine = Just 1})], elLine = Just 1}),Elem (Element
+{elName = QName {qName = "rd-x", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "122782", cdLine =
+Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "rd-y", qURI
+= Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs =
+[], elContent = [Text (CData {cdVerbatim = CDataText, cdData = "486176", cdLine
+= Just 1})], elLine = Just 1})], elLine = Just 1})], elLine = Just 1}),Elem
+(Element {elName = QName {qName = "KV6posinfo", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Elem (Element {elName = QName {qName = "ONROUTE", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Elem (Element {elName = QName {qName = "dataownercode", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "GVB", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"lineplanningnumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg",
+qPrefix = Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim =
+CDataText, cdData = "17", cdLine = Just 1})], elLine = Just 1}),Elem (Element
+{elName = QName {qName = "operatingday", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "2024-03-21", cdLine
+= Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"journeynumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix =
+Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText,
+cdData = "477", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName =
+QName {qName = "reinforcementnumber", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "0", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "userstopcode",
+qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing},
+elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText, cdData =
+"06013", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName = QName
+{qName = "passagesequencenumber", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "0", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "timestamp", qURI
+= Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs =
+[], elContent = [Text (CData {cdVerbatim = CDataText, cdData =
+"2024-03-21T21:48:07.4549953+01:00", cdLine = Just 1})], elLine = Just 1}),Elem
+(Element {elName = QName {qName = "source", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "SERVER", cdLine =
+Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"vehiclenumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix =
+Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText,
+cdData = "2031", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName =
+QName {qName = "punctuality", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "6", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"distancesincelastuserstop", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg",
+qPrefix = Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim =
+CDataText, cdData = "2", cdLine = Just 1})], elLine = Just 1}),Elem (Element
+{elName = QName {qName = "rd-x", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "118628", cdLine =
+Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "rd-y", qURI
+= Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs =
+[], elContent = [Text (CData {cdVerbatim = CDataText, cdData = "486118", cdLine
+= Just 1})], elLine = Just 1})], elLine = Just 1})], elLine = Just 1}),Elem
+(Element {elName = QName {qName = "KV6posinfo", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Elem (Element {elName = QName {qName = "ONROUTE", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Elem (Element {elName = QName {qName = "dataownercode", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "GVB", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"lineplanningnumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg",
+qPrefix = Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim =
+CDataText, cdData = "3", cdLine = Just 1})], elLine = Just 1}),Elem (Element
+{elName = QName {qName = "operatingday", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "2024-03-21", cdLine
+= Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"journeynumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix =
+Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText,
+cdData = "324", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName =
+QName {qName = "reinforcementnumber", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "0", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "userstopcode",
+qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing},
+elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText, cdData =
+"07002", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName = QName
+{qName = "passagesequencenumber", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "0", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "timestamp", qURI
+= Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs =
+[], elContent = [Text (CData {cdVerbatim = CDataText, cdData =
+"2024-03-21T21:48:07.4549953+01:00", cdLine = Just 1})], elLine = Just 1}),Elem
+(Element {elName = QName {qName = "source", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "SERVER", cdLine =
+Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"vehiclenumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix =
+Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText,
+cdData = "2064", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName =
+QName {qName = "punctuality", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "-35", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"distancesincelastuserstop", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg",
+qPrefix = Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim =
+CDataText, cdData = "2", cdLine = Just 1})], elLine = Just 1}),Elem (Element
+{elName = QName {qName = "rd-x", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "120337", cdLine =
+Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "rd-y", qURI
+= Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs =
+[], elContent = [Text (CData {cdVerbatim = CDataText, cdData = "485736", cdLine
+= Just 1})], elLine = Just 1})], elLine = Just 1})], elLine = Just 1}),Elem
+(Element {elName = QName {qName = "KV6posinfo", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Elem (Element {elName = QName {qName = "ONROUTE", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Elem (Element {elName = QName {qName = "dataownercode", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "GVB", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"lineplanningnumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg",
+qPrefix = Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim =
+CDataText, cdData = "13", cdLine = Just 1})], elLine = Just 1}),Elem (Element
+{elName = QName {qName = "operatingday", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "2024-03-21", cdLine
+= Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"journeynumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix =
+Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText,
+cdData = "493", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName =
+QName {qName = "reinforcementnumber", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "0", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "userstopcode",
+qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing},
+elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText, cdData =
+"05070", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName = QName
+{qName = "passagesequencenumber", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "0", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "timestamp", qURI
+= Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs =
+[], elContent = [Text (CData {cdVerbatim = CDataText, cdData =
+"2024-03-21T21:48:07.8432514+01:00", cdLine = Just 1})], elLine = Just 1}),Elem
+(Element {elName = QName {qName = "source", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "SERVER", cdLine =
+Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"vehiclenumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix =
+Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText,
+cdData = "2014", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName =
+QName {qName = "punctuality", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "63", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"distancesincelastuserstop", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg",
+qPrefix = Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim =
+CDataText, cdData = "6", cdLine = Just 1})], elLine = Just 1}),Elem (Element
+{elName = QName {qName = "rd-x", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "121438", cdLine =
+Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "rd-y", qURI
+= Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs =
+[], elContent = [Text (CData {cdVerbatim = CDataText, cdData = "487762", cdLine
+= Just 1})], elLine = Just 1})], elLine = Just 1})], elLine = Just 1}),Elem
+(Element {elName = QName {qName = "KV6posinfo", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Elem (Element {elName = QName {qName = "ONROUTE", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Elem (Element {elName = QName {qName = "dataownercode", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "GVB", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"lineplanningnumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg",
+qPrefix = Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim =
+CDataText, cdData = "2", cdLine = Just 1})], elLine = Just 1}),Elem (Element
+{elName = QName {qName = "operatingday", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "2024-03-21", cdLine
+= Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"journeynumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix =
+Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText,
+cdData = "494", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName =
+QName {qName = "reinforcementnumber", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "0", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "userstopcode",
+qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing},
+elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText, cdData =
+"07031", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName = QName
+{qName = "passagesequencenumber", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "0", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "timestamp", qURI
+= Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs =
+[], elContent = [Text (CData {cdVerbatim = CDataText, cdData =
+"2024-03-21T21:48:07.8432514+01:00", cdLine = Just 1})], elLine = Just 1}),Elem
+(Element {elName = QName {qName = "source", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "SERVER", cdLine =
+Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"vehiclenumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix =
+Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText,
+cdData = "2061", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName =
+QName {qName = "punctuality", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "6", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"distancesincelastuserstop", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg",
+qPrefix = Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim =
+CDataText, cdData = "7", cdLine = Just 1})], elLine = Just 1}),Elem (Element
+{elName = QName {qName = "rd-x", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "119329", cdLine =
+Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "rd-y", qURI
+= Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs =
+[], elContent = [Text (CData {cdVerbatim = CDataText, cdData = "485176", cdLine
+= Just 1})], elLine = Just 1})], elLine = Just 1})], elLine = Just 1}),Elem
+(Element {elName = QName {qName = "KV6posinfo", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Elem (Element {elName = QName {qName = "ONROUTE", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Elem (Element {elName = QName {qName = "dataownercode", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "GVB", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"lineplanningnumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg",
+qPrefix = Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim =
+CDataText, cdData = "3", cdLine = Just 1})], elLine = Just 1}),Elem (Element
+{elName = QName {qName = "operatingday", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "2024-03-21", cdLine
+= Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"journeynumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix =
+Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText,
+cdData = "325", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName =
+QName {qName = "reinforcementnumber", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "0", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "userstopcode",
+qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing},
+elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText, cdData =
+"08129", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName = QName
+{qName = "passagesequencenumber", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "0", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "timestamp", qURI
+= Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs =
+[], elContent = [Text (CData {cdVerbatim = CDataText, cdData =
+"2024-03-21T21:48:07.8432514+01:00", cdLine = Just 1})], elLine = Just 1}),Elem
+(Element {elName = QName {qName = "source", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "SERVER", cdLine =
+Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"vehiclenumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix =
+Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText,
+cdData = "2066", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName =
+QName {qName = "punctuality", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "0", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"distancesincelastuserstop", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg",
+qPrefix = Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim =
+CDataText, cdData = "70", cdLine = Just 1})], elLine = Just 1}),Elem (Element
+{elName = QName {qName = "rd-x", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "124189", cdLine =
+Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "rd-y", qURI
+= Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs =
+[], elContent = [Text (CData {cdVerbatim = CDataText, cdData = "486022", cdLine
+= Just 1})], elLine = Just 1})], elLine = Just 1})], elLine = Just 1}),Elem
+(Element {elName = QName {qName = "KV6posinfo", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Elem (Element {elName = QName {qName = "ONROUTE", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Elem (Element {elName = QName {qName = "dataownercode", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "GVB", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"lineplanningnumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg",
+qPrefix = Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim =
+CDataText, cdData = "38", cdLine = Just 1})], elLine = Just 1}),Elem (Element
+{elName = QName {qName = "operatingday", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "2024-03-21", cdLine
+= Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"journeynumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix =
+Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText,
+cdData = "190", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName =
+QName {qName = "reinforcementnumber", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "0", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "userstopcode",
+qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing},
+elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText, cdData =
+"01117", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName = QName
+{qName = "passagesequencenumber", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "0", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "timestamp", qURI
+= Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs =
+[], elContent = [Text (CData {cdVerbatim = CDataText, cdData =
+"2024-03-21T21:48:07.8432514+01:00", cdLine = Just 1})], elLine = Just 1}),Elem
+(Element {elName = QName {qName = "source", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "SERVER", cdLine =
+Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"vehiclenumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix =
+Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText,
+cdData = "1469", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName =
+QName {qName = "punctuality", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "88", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"distancesincelastuserstop", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg",
+qPrefix = Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim =
+CDataText, cdData = "609", cdLine = Just 1})], elLine = Just 1}),Elem (Element
+{elName = QName {qName = "rd-x", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "123787", cdLine =
+Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "rd-y", qURI
+= Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs =
+[], elContent = [Text (CData {cdVerbatim = CDataText, cdData = "489748", cdLine
+= Just 1})], elLine = Just 1})], elLine = Just 1})], elLine = Just 1}),Elem
+(Element {elName = QName {qName = "KV6posinfo", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Elem (Element {elName = QName {qName = "ARRIVAL", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Elem (Element {elName = QName {qName = "dataownercode", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "GVB", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"lineplanningnumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg",
+qPrefix = Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim =
+CDataText, cdData = "13", cdLine = Just 1})], elLine = Just 1}),Elem (Element
+{elName = QName {qName = "operatingday", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "2024-03-21", cdLine
+= Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"journeynumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix =
+Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText,
+cdData = "489", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName =
+QName {qName = "reinforcementnumber", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "0", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "userstopcode",
+qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing},
+elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText, cdData =
+"02157", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName = QName
+{qName = "passagesequencenumber", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "0", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "timestamp", qURI
+= Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs =
+[], elContent = [Text (CData {cdVerbatim = CDataText, cdData =
+"2024-03-21T21:48:07.8432514+01:00", cdLine = Just 1})], elLine = Just 1}),Elem
+(Element {elName = QName {qName = "source", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "SERVER", cdLine =
+Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"vehiclenumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix =
+Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText,
+cdData = "2065", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName =
+QName {qName = "punctuality", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "-37", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "rd-x", qURI =
+Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "119124", cdLine =
+Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "rd-y", qURI
+= Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs =
+[], elContent = [Text (CData {cdVerbatim = CDataText, cdData = "487193", cdLine
+= Just 1})], elLine = Just 1})], elLine = Just 1})], elLine = Just 1}),Elem
+(Element {elName = QName {qName = "KV6posinfo", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Elem (Element {elName = QName {qName = "DEPARTURE", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Elem (Element {elName = QName {qName = "dataownercode", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "GVB", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"lineplanningnumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg",
+qPrefix = Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim =
+CDataText, cdData = "13", cdLine = Just 1})], elLine = Just 1}),Elem (Element
+{elName = QName {qName = "operatingday", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "2024-03-21", cdLine
+= Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"journeynumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix =
+Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText,
+cdData = "489", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName =
+QName {qName = "reinforcementnumber", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "0", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "userstopcode",
+qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing},
+elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText, cdData =
+"02157", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName = QName
+{qName = "passagesequencenumber", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "0", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "timestamp", qURI
+= Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs =
+[], elContent = [Text (CData {cdVerbatim = CDataText, cdData =
+"2024-03-21T21:48:07.8432514+01:00", cdLine = Just 1})], elLine = Just 1}),Elem
+(Element {elName = QName {qName = "source", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "SERVER", cdLine =
+Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"vehiclenumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix =
+Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText,
+cdData = "2065", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName =
+QName {qName = "punctuality", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "-37", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "rd-x", qURI =
+Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "119124", cdLine =
+Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "rd-y", qURI
+= Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs =
+[], elContent = [Text (CData {cdVerbatim = CDataText, cdData = "487193", cdLine
+= Just 1})], elLine = Just 1})], elLine = Just 1})], elLine = Just 1}),Elem
+(Element {elName = QName {qName = "KV6posinfo", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Elem (Element {elName = QName {qName = "ONSTOP", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Elem (Element {elName = QName {qName = "dataownercode", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "GVB", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"lineplanningnumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg",
+qPrefix = Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim =
+CDataText, cdData = "13", cdLine = Just 1})], elLine = Just 1}),Elem (Element
+{elName = QName {qName = "operatingday", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "2024-03-21", cdLine
+= Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"journeynumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix =
+Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText,
+cdData = "495", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName =
+QName {qName = "reinforcementnumber", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "0", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "userstopcode",
+qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing},
+elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText, cdData =
+"03101", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName = QName
+{qName = "passagesequencenumber", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "0", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "timestamp", qURI
+= Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs =
+[], elContent = [Text (CData {cdVerbatim = CDataText, cdData =
+"2024-03-21T21:48:07.8432514+01:00", cdLine = Just 1})], elLine = Just 1}),Elem
+(Element {elName = QName {qName = "source", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "SERVER", cdLine =
+Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"vehiclenumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix =
+Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText,
+cdData = "2050", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName =
+QName {qName = "punctuality", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "0", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "rd-x", qURI =
+Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "115165", cdLine =
+Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "rd-y", qURI
+= Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs =
+[], elContent = [Text (CData {cdVerbatim = CDataText, cdData = "487893", cdLine
+= Just 1})], elLine = Just 1})], elLine = Just 1})], elLine = Just 1}),Elem
+(Element {elName = QName {qName = "KV6posinfo", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Elem (Element {elName = QName {qName = "ARRIVAL", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Elem (Element {elName = QName {qName = "dataownercode", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "GVB", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"lineplanningnumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg",
+qPrefix = Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim =
+CDataText, cdData = "18", cdLine = Just 1})], elLine = Just 1}),Elem (Element
+{elName = QName {qName = "operatingday", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "2024-03-21", cdLine
+= Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"journeynumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix =
+Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText,
+cdData = "352", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName =
+QName {qName = "reinforcementnumber", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "0", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "userstopcode",
+qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing},
+elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText, cdData =
+"04091", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName = QName
+{qName = "passagesequencenumber", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "0", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "timestamp", qURI
+= Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs =
+[], elContent = [Text (CData {cdVerbatim = CDataText, cdData =
+"2024-03-21T21:48:07.8432514+01:00", cdLine = Just 1})], elLine = Just 1}),Elem
+(Element {elName = QName {qName = "source", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "SERVER", cdLine =
+Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName =
+"vehiclenumber", qURI = Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix =
+Nothing}, elAttribs = [], elContent = [Text (CData {cdVerbatim = CDataText,
+cdData = "2281", cdLine = Just 1})], elLine = Just 1}),Elem (Element {elName =
+QName {qName = "punctuality", qURI = Just
+"http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "0", cdLine = Just
+1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "rd-x", qURI =
+Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs = [],
+elContent = [Text (CData {cdVerbatim = CDataText, cdData = "116563", cdLine =
+Just 1})], elLine = Just 1}),Elem (Element {elName = QName {qName = "rd-y", qURI
+= Just "http://bison.connekt.nl/tmi8/kv6/msg", qPrefix = Nothing}, elAttribs =
+[], elContent = [Text (CData {cdVerbatim = CDataText, cdData = "484432", cdLine
+= Just 1})], elLine = Just 1})], elLine = Just 1})], elLine = Just 1})], elLine
+= Just 1})]
