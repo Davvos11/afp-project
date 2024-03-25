@@ -57,7 +57,8 @@ getFrequencies (Filter mStop mLine mTime mDay) = do
     where 
         baseQuery = "SELECT a.lineplanningnumber, a.punctuality / 60 AS punctuality_min, COUNT(*) AS frequency \
                             \FROM actual_arrivals AS a \
-                            \JOIN stops as s ON s.stop_code = a.stop_code"
+                            \JOIN stops as s ON s.stop_code = a.stop_code \
+                            \WHERE a.type = 'DEPARTURE' "
         
         (conditions, parameters) = foldr addFilter ([], []) [
                 fmap (\s -> ("s.name LIKE :stop_name", ":stop_name" := likeString s)) mStop,
@@ -72,6 +73,6 @@ getFrequencies (Filter mStop mLine mTime mDay) = do
 
         intermediateQuery = if null conditions
             then baseQuery
-            else Text.concat [baseQuery, " WHERE ", Text.intercalate " AND " conditions]
+            else Text.concat [baseQuery, " AND ", Text.intercalate " AND " conditions]
 
         queryString = intermediateQuery <> " GROUP BY punctuality_min ORDER BY frequency DESC"

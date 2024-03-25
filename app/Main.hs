@@ -8,9 +8,9 @@ import Subscriber
 main :: IO ()
 main = do
   x <- Database.getFrequencies $ Filter {
-    stopName = Just "Utrecht, Kanaleneiland",
+    stopName = Just "Utrecht, CS Jaarbeurszijde",
     linePlanningNumber = Just "u085",
-    timeOfDay = Just (TimeOfDay 21 15),
+    timeOfDay = Just (TimeOfDay 17 00),
     dayOfWeek = Nothing
   }
   mapM_ print x
