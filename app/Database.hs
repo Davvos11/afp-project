@@ -39,7 +39,8 @@ likeString :: String -> String
 likeString s = "%" ++ s ++ "%"
 
 data Filter = Filter {
-    stopName :: Maybe String,
+    startStop :: Maybe String,
+    endStop :: Maybe String,
     linePlanningNumber :: Maybe String,
     timeOfDay :: Maybe TimeOfDay,
     dayOfWeek :: Maybe DayOfWeek
@@ -47,7 +48,7 @@ data Filter = Filter {
 
 -- | Get the frequency distribution of the punctualities for a given bus stop
 getFrequencies :: Filter -> IO [Frequency]
-getFrequencies (Filter mStop mLine mTime mDay) = do
+getFrequencies (Filter mStartStop mEndStop mLine mTime mDay) = do
     conn <- open "database-prod.db"
     print queryString
     print parameters
@@ -55,17 +56,28 @@ getFrequencies (Filter mStop mLine mTime mDay) = do
     close conn
     return result
     where 
-        baseQuery = "SELECT a.lineplanningnumber, a.punctuality / 60 AS punctuality_min, COUNT(*) AS frequency \
-                            \FROM actual_arrivals AS a \
-                            \JOIN stops as s ON s.stop_code = a.stop_code \
-                            \WHERE a.type = 'DEPARTURE' "
+        baseQuery = "SELECT a1.lineplanningnumber, a1.punctuality / 60 AS punctuality_min, COUNT(*) AS frequency \
+                            \FROM actual_arrivals AS a1 \
+                            \JOIN stops as s1 ON s1.stop_code = a1.stop_code \
+                            \WHERE a1.type = 'DEPARTURE' "
         
         (conditions, parameters) = foldr addFilter ([], []) [
-                fmap (\s -> ("s.name LIKE :stop_name", ":stop_name" := likeString s)) mStop,
-                fmap (\l -> ("a.lineplanningnumber = :line_number", ":line_number" := l)) mLine,
-                fmap (\t -> ("time(timestamp) >= time(:time_of_day_0, '-15 minutes')", ":time_of_day_0" := show t)) mTime,
-                fmap (\t -> ("time(timestamp) <= time(:time_of_day_1, '+15 minutes')", ":time_of_day_1" := show t)) mTime,
-                fmap (\d -> ("strftime('%w', timestamp) = :day_of_week", ":day_of_week" := weekToNumber d)) mDay
+                fmap (\s -> ("s1.name LIKE :end_stop_name", ":end_stop_name" := likeString s)) mEndStop,
+                fmap (\l -> ("a1.lineplanningnumber = :line_number", ":line_number" := l)) mLine,
+                fmap (\t -> ("time(a1.timestamp) >= time(:time_of_day_0, '-15 minutes')", ":time_of_day_0" := show t)) mTime,
+                fmap (\t -> ("time(a1.timestamp) <= time(:time_of_day_1, '+15 minutes')", ":time_of_day_1" := show t)) mTime,
+                fmap (\d -> ("strftime('%w', a1.timestamp) = :day_of_week", ":day_of_week" := weekToNumber d)) mDay,
+                fmap (\s -> 
+                    ("EXISTS (\
+                        \SELECT 1 \
+                        \FROM actual_arrivals AS a2 \
+                        \JOIN stops AS s2 ON s2.stop_code = a2.stop_code \
+                        \WHERE a2.journey_id = a1.journey_id \
+                        \AND a2.timestamp < a1.timestamp \
+                        \AND s2.name LIKE :start_stop_name \
+                    \)",
+                    ":start_stop_name" := likeString s)
+                ) mStartStop
             ]
 
         addFilter Nothing acc = acc
