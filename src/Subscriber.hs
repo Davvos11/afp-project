@@ -19,6 +19,8 @@ import           Data.Text.Lazy.Encoding as TLE
 import           Data.Text.Lazy as TL
 import qualified Codec.Compression.GZip as GZip
 import           Text.XML.Light.Input (parseXML, parseXMLDoc)
+import qualified Text.XML.Light.Types as XML
+import qualified Text.XML.Light.Proc as XMLProc
 
 run :: IO ()
 run = withSocketsDo $ WS.runClient "localhost" 9160 "/" app
@@ -32,10 +34,33 @@ limitText s =
         else a
        )
 
+posinfoElToMap :: XML.Element -> Map String String
+posinfoElToMap el =
+    let kv = ("type", (XML.qName . XML.elName) el):[
+            ((XML.qName . XML.elName) b, XMLProc.strContent b) |
+                a <- XML.elContent el,
+                b <- case a of
+                    XML.Elem c -> [c]
+                    _ -> []
+            ]
+    in
+        Map.fromList kv
+
 kv6posinfoToUpdates :: BS.ByteString -> [Map String String]
 kv6posinfoToUpdates rawS =
-    let content = parseXML rawS
-    in error $ show content
+    let (Just content) = parseXMLDoc rawS
+        posinfo = [
+                d |
+                    (XML.Elem a) <- XML.elContent content,
+                    (XML.qName . XML.elName) a == "KV6posinfo",
+                    b <- XML.elContent a,
+                    d <- case b of
+                        XML.Elem c -> [c]
+                        _ -> []
+            ]
+    in
+         error $ show $ Prelude.map posinfoElToMap posinfo
+        --  $ XML.elContent content
 
 app :: WS.ClientApp ()
 app conn = do
