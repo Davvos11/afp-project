@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE InstanceSigs #-}
 
-module Database where
+module Database (Filter (..), TimeOfDay (..), getFrequencies, generateLines, getLines, generateStops, getStops) where
 
 import Database.Models
 import Database.SQLite.Simple
@@ -55,19 +55,19 @@ getFrequencies (Filter mStartStop mEndStop mLine mTime mDay) = do
     result <- queryNamed conn (Query queryString) parameters :: IO [Frequency]
     close conn
     return result
-    where 
+    where
         baseQuery = "SELECT a1.lineplanningnumber, a1.punctuality / 60 AS punctuality_min, COUNT(*) AS frequency \
                             \FROM actual_arrivals AS a1 \
                             \JOIN stops as s1 ON s1.stop_code = a1.stop_code \
                             \WHERE a1.type = 'DEPARTURE' "
-        
+
         (conditions, parameters) = foldr addFilter ([], []) [
                 fmap (\s -> ("s1.name LIKE :end_stop_name", ":end_stop_name" := likeString s)) mEndStop,
                 fmap (\l -> ("a1.lineplanningnumber = :line_number", ":line_number" := l)) mLine,
                 fmap (\t -> ("time(a1.timestamp) >= time(:time_of_day_0, '-15 minutes')", ":time_of_day_0" := show t)) mTime,
                 fmap (\t -> ("time(a1.timestamp) <= time(:time_of_day_1, '+15 minutes')", ":time_of_day_1" := show t)) mTime,
                 fmap (\d -> ("strftime('%w', a1.timestamp) = :day_of_week", ":day_of_week" := weekToNumber d)) mDay,
-                fmap (\s -> 
+                fmap (\s ->
                     ("EXISTS (\
                         \SELECT 1 \
                         \FROM actual_arrivals AS a2 \
@@ -88,3 +88,29 @@ getFrequencies (Filter mStartStop mEndStop mLine mTime mDay) = do
             else Text.concat [baseQuery, " AND ", Text.intercalate " AND " conditions]
 
         queryString = intermediateQuery <> " GROUP BY punctuality_min ORDER BY frequency DESC"
+
+-- | Get an enumerated list of bus lines, from the `lines` db table.
+getLines :: IO [(String, Int)]
+getLines = do
+    conn <- open "database-prod.db"
+    result <- query_ conn queryString :: IO [(String, Int)]
+    close conn
+    return result
+    where
+        queryString = "SELECT lineplanningnumber, id FROM lines"
+
+-- | Generate a list of bus lines and save it to the `lines` db table.
+generateLines :: IO ()
+generateLines = do
+    conn <- open "database-prod.db"
+    execute_ conn createTable
+    execute_ conn insertLines
+    close conn
+    where
+        createTable = "CREATE TABLE IF NOT EXISTS \"lines\" (\
+	                        \ \"id\" INTEGER, \
+	                        \ \"lineplanningnumber\" TEXT UNIQUE, \
+	                        \PRIMARY KEY(\"id\" AUTOINCREMENT) \
+                            \);"
+        insertLines = "INSERT INTO lines (lineplanningnumber) \
+                        \SELECT DISTINCT lineplanningnumber FROM actual_arrivals;"
