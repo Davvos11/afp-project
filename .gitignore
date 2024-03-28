@@ -141,3 +141,4 @@ elm-stuff
 repl-temp-*
 
 /database.db
+/database2.db

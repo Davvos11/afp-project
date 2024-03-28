@@ -5,9 +5,9 @@ module Subscriber (run) where
 -- Contains code from
 -- https://github.com/jaspervdj/websockets/blob/master/example/client.hs
 
-import           Data.Map (Map)
+import           Data.Map (Map, (!))
 import qualified Data.Map as Map
-import           Control.Monad       (forever)
+import           Control.Monad       (forever, filterM)
 import           Control.Monad.Trans (liftIO)
 import           Network.Socket      (withSocketsDo)
 import           Data.Text           (Text)
@@ -18,9 +18,10 @@ import           Data.ByteString.Lazy as BS
 import           Data.Text.Lazy.Encoding as TLE
 import           Data.Text.Lazy as TL
 import qualified Codec.Compression.GZip as GZip
-import           Text.XML.Light.Input (parseXML, parseXMLDoc)
+import           Text.XML.Light.Input (parseXMLDoc)
 import qualified Text.XML.Light.Types as XML
 import qualified Text.XML.Light.Proc as XMLProc
+import Database.SQLite.Simple
 
 run :: IO ()
 run = withSocketsDo $ WS.runClient "localhost" 9160 "/" app
@@ -59,12 +60,24 @@ kv6posinfoToUpdates rawS =
                         _ -> []
             ]
     in
-         error $ show $ Prelude.map posinfoElToMap posinfo
-        --  $ XML.elContent content
+        Prelude.map posinfoElToMap posinfo
+
+includeUpdate :: Map String String -> Bool
+includeUpdate m =
+    let t = m ! "type"
+    in t == "DEPARTURE" || t == "ARRIVAL"
+
+data StopInfo = StopInfo { stopCode :: String, name :: String,
+gpsLat :: Float, gpsLon :: Float} deriving Show
+
+instance FromRow StopInfo where
+    fromRow = StopInfo <$> field <*> field <*> field <*> field
 
 app :: WS.ClientApp ()
 app conn = do
     putStrLn "Connected!"
+
+    dbconn <- liftIO $ open "database2.db"
     
     forever $ do
         msg <- WS.receiveDataMessage conn
@@ -85,13 +98,34 @@ app conn = do
                 WS.Text a _ -> ("text data (direct)", a)
                 )
 
-        let test = (if (msgType == "compressed text data") then
+        let updates = (if (msgType == "compressed text data") then
                 (kv6posinfoToUpdates msgData) else [])
-        liftIO $ putStrLn $ show test
 
-        liftIO $ T.putStrLn $ ("Received " <> msgType <> ": " <> limitText msgData)
+        let updates' = Prelude.filter includeUpdate updates :: [Map String String]
+
+        let isStopIncluded :: String -> IO Bool
+            isStopIncluded stop = do
+                result <- query dbconn "SELECT * FROM stops WHERE stop_code = ? LIMIT 1"
+                            [stop] :: IO [StopInfo]
+                -- let result = []
+                return (Prelude.length result > 0)
+
+        let includeUpdate' :: Map String String -> IO Bool
+            includeUpdate' m = isStopIncluded (m ! "userstopcode")
+
+        -- updates'' <- liftIO $ filterM (isStopIncluded . (Prelude.map (! "userstopcode"))) updates'
+        updates'' <- liftIO $ filterM includeUpdate' updates'
+
+        -- liftIO $ putStrLn $ show test
+
+        -- liftIO $ T.putStrLn $ ("Received " <> msgType <> ": " <> limitText msgData)
+
+        -- liftIO $ T.putStrLn $ show updates
+        liftIO $ putStrLn $ show updates''
 
         pure ()
+
+    close dbconn
     -- WS.sendClose conn ("Exit" :: Text)
 
 
