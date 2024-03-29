@@ -7,17 +7,19 @@ import Subscriber ( run )
 
 main :: IO ()
 main = do
+  print "Generating line and stop id's"
+  -- TODO run this periodically?
+  Database.generateLines
+  Database.generateStops
   -- x <- Database.getFrequencies $ Filter {
-  --   startStop = Just "Rijnsweerd Zuid",
-  --   endStop = Just "Kanaleneiland",
-  --   linePlanningNumber = Just "u034",
+  --   startStop = Just 183,
+  --   endStop = Just 100,
+  --   linePlanningNumber = Just 45,
   --   timeOfDay = Just (TimeOfDay 17 00),
   --   dayOfWeek = Nothing
   -- }
-  -- Database.generateLines
   -- x <- getLines
-  Database.generateStops
-  x <- getStops
-  mapM_ print x
+  -- x <- getStops
+  -- mapM_ print x
   Subscriber.run
   runServer

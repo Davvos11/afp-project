@@ -45,9 +45,9 @@ likeString :: String -> String
 likeString s = "%" ++ s ++ "%"
 
 data Filter = Filter {
-    startStop :: Maybe String,
-    endStop :: Maybe String,
-    linePlanningNumber :: Maybe String,
+    startStop :: Maybe Int,
+    endStop :: Maybe Int,
+    linePlanningNumber :: Maybe Int,
     timeOfDay :: Maybe TimeOfDay,
     dayOfWeek :: Maybe DayOfWeek
 } deriving Show
@@ -64,25 +64,26 @@ getFrequencies (Filter mStartStop mEndStop mLine mTime mDay) = do
     where
         baseQuery = "SELECT a1.lineplanningnumber, a1.punctuality / 60 AS punctuality_min, COUNT(*) AS frequency \
                             \FROM actual_arrivals AS a1 \
-                            \JOIN stops as s1 ON s1.stop_code = a1.stop_code \
+                            \JOIN stop_names as s1 ON s1.stop_code = a1.stop_code \
+                            \JOIN lines as l1 ON l1.lineplanningnumber = a1.lineplanningnumber \
                             \WHERE a1.type = 'DEPARTURE' "
 
         (conditions, parameters) = foldr addFilter ([], []) [
-                fmap (\s -> ("s1.name LIKE :end_stop_name", ":end_stop_name" := likeString s)) mEndStop,
-                fmap (\l -> ("a1.lineplanningnumber = :line_number", ":line_number" := l)) mLine,
+                fmap (\i -> ("s1.frontend_id = :end_stop_id", ":end_stop_id" := i)) mEndStop,
+                fmap (\l -> ("l1.id = :line_id", ":line_id" := l)) mLine,
                 fmap (\t -> ("time(a1.timestamp) >= time(:time_of_day_0, '-15 minutes')", ":time_of_day_0" := show t)) mTime,
                 fmap (\t -> ("time(a1.timestamp) <= time(:time_of_day_1, '+15 minutes')", ":time_of_day_1" := show t)) mTime,
                 fmap (\d -> ("strftime('%w', a1.timestamp) = :day_of_week", ":day_of_week" := weekToNumber d)) mDay,
-                fmap (\s ->
+                fmap (\i ->
                     ("EXISTS (\
                         \SELECT 1 \
                         \FROM actual_arrivals AS a2 \
-                        \JOIN stops AS s2 ON s2.stop_code = a2.stop_code \
+                        \JOIN stop_names AS s2 ON s2.stop_code = a2.stop_code \
                         \WHERE a2.journey_id = a1.journey_id \
                         \AND a2.timestamp < a1.timestamp \
-                        \AND s2.name LIKE :start_stop_name \
+                        \AND s2.frontend_id = :start_stop_id \
                     \)",
-                    ":start_stop_name" := likeString s)
+                    ":start_stop_id" := i)
                 ) mStartStop
             ]
 
