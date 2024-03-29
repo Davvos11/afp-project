@@ -8,6 +8,7 @@ import Data.Aeson
 
 import ExampleData
 import MessageFormat
+import Database (getStops, getLines)
 
 -- | Runs a simple http wai server on port 3000. Messages get wrapped with CORS headers.
 runServer :: IO ()
@@ -23,8 +24,10 @@ app req respond = do
   case pathInfo req of
     -- Frontend initialization, requests for the stops and buses as encoded in the database
     -- Example data for now
-    ["stops"]  -> respond $ responseLBS status200 [(hContentType, "application/json")] $ encode stopData
-    ["buses"]  -> respond $ responseLBS status200 [(hContentType, "application/json")] $ encode busData
+    ["stops"]  -> getStops >>= \ds ->
+      respond $ responseLBS status200 [(hContentType, "application/json")] $ encode $ Stops $ map toStopPair ds
+    ["buses"]  -> getLines >>= \ls ->
+      respond $ responseLBS status200 [(hContentType, "application/json")] $ encode $ Buses $ map toBusPair ls
     -- A delay calculation request
     ["delays"] -> case parseDelayRequest (queryString req) of
                        Nothing      -> respond $ responseLBS status400 [(hContentType, "text/plain")] "Couldn't parse request" -- *Ideally* you'd say here what didn't correctly get parsed/what was missing from the request

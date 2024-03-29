@@ -7,7 +7,7 @@ import Subscriber ( run )
 
 main :: IO ()
 main = do
-  print "Generating line and stop id's"
+  putStrLn "Generating line and stop id's..."
   -- TODO run this periodically?
   Database.generateLines
   Database.generateStops
@@ -21,5 +21,5 @@ main = do
   -- x <- getLines
   -- x <- getStops
   -- mapM_ print x
-  Subscriber.run
+  -- Subscriber.run
   runServer
