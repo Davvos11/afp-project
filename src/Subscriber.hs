@@ -10,7 +10,7 @@ import           Data.Maybe          (isJust)
 import qualified Data.Map as Map
 import qualified Data.Stream         as Stream
 import           Data.Stream         (Stream (..))
-import           Control.Monad       (forever, filterM)
+import           Control.Monad       (forever, filterM, liftM)
 import           Control.Monad.Trans (liftIO)
 import           Network.Socket      (withSocketsDo)
 import           Data.Text           (Text)
@@ -24,15 +24,31 @@ import qualified Codec.Compression.GZip as GZip
 import           Text.XML.Light.Input (parseXMLDoc)
 import qualified Text.XML.Light.Types as XML
 import qualified Text.XML.Light.Proc as XMLProc
+import qualified Data.Conduit             as C
+import           Data.Conduit
 import Database.SQLite.Simple
 
 run :: IO ()
 -- run = withSocketsDo $ WS.runClient "localhost" 9160 "/" app
 -- run = withSocketsDo $ WS.runClient "localhost" 9160 "/" listen'
+-- run = do
+--     _ <- listen
+--     return ()
+--     -- listen >>= (\_ -> ())
 run = do
-    _ <- listen
-    return ()
-    -- listen >>= (\_ -> ())
+    -- runConduit $ listen .| C.mapM_ (liftIO . print)
+    runConduit $ listen .| printPosInfo
+    -- return ()
+
+printPosInfo :: ConduitT PosInfo Void IO ()
+printPosInfo = do
+    posinfo <- await
+    case posinfo of
+        Nothing -> return ()
+        Just a -> do
+            liftIO $ print a
+            printPosInfo
+        
 
 type PosInfo = Map String String
 
@@ -106,22 +122,33 @@ decompressMessage (WS.Binary a) | (BS.head a) == 0x1f
 decompressMessage (WS.Binary a)
     = ("data", a)
 
-listen :: IO (Stream PosInfo)
-listen = withSocketsDo $ WS.runClient "localhost" 9160 "/" listen'
+-- listen :: IO (Stream PosInfo)
+-- listen = withSocketsDo $ WS.runClient "localhost" 9160 "/" listen'
+
+listen :: ConduitT () PosInfo IO ()
+listen = liftIO $ WS.runClient "localhost" 9160 "/" listen''
+
+listen'' :: WS.ClientApp ()
+listen'' conn = do
+    liftM $ listen' conn
+
+-- data PosInfoStream = 
+
+-- listenPosInfo :: PosInfoStream a -> IO a
 
 
-listen' :: WS.ClientApp (Stream PosInfo)
+listen' :: WS.Connection -> ConduitT () PosInfo IO ()
 listen' conn = do
-    putStrLn "Connected!"
+    liftIO $ putStrLn "Connected!"
 
     dbconn <- liftIO $ open "database2.db"
 
     let messages' :: IO (Stream WS.DataMessage)
         messages' = (Cons <$> WS.receiveDataMessage conn <*> messages')
 
-    putStrLn "aa"
+    liftIO $ putStrLn "aa"
     messages <- messages'
-    putStrLn "bb"
+    liftIO $ putStrLn "bb"
 
     let decompressed :: Stream (BS.ByteString)
         decompressed = 
