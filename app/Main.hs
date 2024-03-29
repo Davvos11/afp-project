@@ -15,7 +15,9 @@ main = do
   --   dayOfWeek = Nothing
   -- }
   -- Database.generateLines
-  x <- getLines
+  -- x <- getLines
+  Database.generateStops
+  x <- getStops
   mapM_ print x
   Subscriber.run
   runServer

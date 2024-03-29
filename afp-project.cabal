@@ -117,7 +117,8 @@ executable afp-project
         wai-cors ^>= 0.2.7,
         time ^>= 1.12.2,
         websockets ^>=0.13.0.0,
-        network ^>=3.1.4.0
+        network ^>=3.1.4.0,
+        containers ^>=0.6.7
 
     -- Directories containing source files.
     hs-source-dirs:   app
