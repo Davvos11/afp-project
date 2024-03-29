@@ -5,8 +5,11 @@ module Subscriber (run) where
 -- Contains code from
 -- https://github.com/jaspervdj/websockets/blob/master/example/client.hs
 
-import           Data.Map (Map, (!))
+import           Data.Map            (Map, (!))
+import           Data.Maybe          (isJust)
 import qualified Data.Map as Map
+import qualified Data.Stream         as Stream
+import           Data.Stream         (Stream (..))
 import           Control.Monad       (forever, filterM)
 import           Control.Monad.Trans (liftIO)
 import           Network.Socket      (withSocketsDo)
@@ -24,7 +27,16 @@ import qualified Text.XML.Light.Proc as XMLProc
 import Database.SQLite.Simple
 
 run :: IO ()
-run = withSocketsDo $ WS.runClient "localhost" 9160 "/" app
+-- run = withSocketsDo $ WS.runClient "localhost" 9160 "/" app
+-- run = withSocketsDo $ WS.runClient "localhost" 9160 "/" listen'
+run = do
+    _ <- listen
+    return ()
+    -- listen >>= (\_ -> ())
+
+type PosInfo = Map String String
+
+-- data Stream a = Cons a (Stream a)
 
 limitText :: BS.ByteString -> Data.Text.Text
 limitText s =
@@ -35,8 +47,8 @@ limitText s =
         else a
        )
 
-posinfoElToMap :: XML.Element -> Map String String
-posinfoElToMap el =
+parseXMLposinfo :: XML.Element -> PosInfo
+parseXMLposinfo el =
     let kv = ("type", (XML.qName . XML.elName) el):[
             ((XML.qName . XML.elName) b, XMLProc.strContent b) |
                 a <- XML.elContent el,
@@ -47,8 +59,8 @@ posinfoElToMap el =
     in
         Map.fromList kv
 
-kv6posinfoToUpdates :: BS.ByteString -> [Map String String]
-kv6posinfoToUpdates rawS =
+extractPosInfo :: BS.ByteString -> [PosInfo]
+extractPosInfo rawS =
     let (Just content) = parseXMLDoc rawS
         posinfo = [
                 d |
@@ -60,18 +72,68 @@ kv6posinfoToUpdates rawS =
                         _ -> []
             ]
     in
-        Prelude.map posinfoElToMap posinfo
+        Prelude.map parseXMLposinfo posinfo
 
-includeUpdate :: Map String String -> Bool
-includeUpdate m =
+getStop :: Connection -> String -> IO (Maybe StopInfo)
+getStop dbconn stopcode = do
+    stops <- query dbconn "SELECT * FROM stops WHERE stop_code = ? LIMIT 1"
+                            [stopcode] :: IO [StopInfo]
+    pure $ case stops of
+        [] -> Nothing
+        x:_ -> Just x
+    
+
+includeUpdate :: Connection -> PosInfo -> IO Bool
+includeUpdate dbconn m =
     let t = m ! "type"
-    in t == "DEPARTURE" || t == "ARRIVAL"
+    in (&&) <$> pure (t == "DEPARTURE" || t == "ARRIVAL")
+    <*> (isJust <$> (getStop dbconn (m ! "userstopcode")))
 
-data StopInfo = StopInfo { stopCode :: String, name :: String,
-gpsLat :: Float, gpsLon :: Float} deriving Show
+
+data StopInfo = StopInfo {
+        stopCode :: String, name :: String,
+        gpsLat :: Float, gpsLon :: Float
+    } deriving Show
 
 instance FromRow StopInfo where
     fromRow = StopInfo <$> field <*> field <*> field <*> field
+
+decompressMessage :: WS.DataMessage -> (String, BS.ByteString)
+decompressMessage (WS.Text a _)
+    = ("text data (direct)", a)
+decompressMessage (WS.Binary a) | (BS.head a) == 0x1f
+    = ("compressed data", GZip.decompress a)
+decompressMessage (WS.Binary a)
+    = ("data", a)
+
+listen :: IO (Stream PosInfo)
+listen = withSocketsDo $ WS.runClient "localhost" 9160 "/" listen'
+
+
+listen' :: WS.ClientApp (Stream PosInfo)
+listen' conn = do
+    putStrLn "Connected!"
+
+    dbconn <- liftIO $ open "database2.db"
+
+    let messages' :: IO (Stream WS.DataMessage)
+        messages' = (Cons <$> WS.receiveDataMessage conn <*> messages')
+
+    putStrLn "aa"
+    messages <- messages'
+    putStrLn "bb"
+
+    let decompressed :: Stream (BS.ByteString)
+        decompressed = 
+            Stream.map snd $
+            Stream.filter (\(t, _) -> t == "compressed data") $
+            Stream.map decompressMessage messages
+    
+    -- let updates :: Stream PosInfo
+    --     updates = 
+
+    error $ show decompressed
+
 
 app :: WS.ClientApp ()
 app conn = do
@@ -85,43 +147,15 @@ app conn = do
         -- For converting ByteString to Text or String, see
         -- https://stackoverflow.com/questions/3232074/what-is-the-best-way-to-convert-string-to-bytestring
 
-        let (msgType, msgData) = (
-                case msg of
-                WS.Binary a ->
-                    case BS.head a of
-                        0x1f ->
-                            let decompressed = GZip.decompress a
-                            in ("compressed text data", decompressed)
 
-                        _ -> ("text data", a)
+        let (msgType, msgData) = decompressMessage msg
 
-                WS.Text a _ -> ("text data (direct)", a)
-                )
+        let updates = (if (msgType == "compressed data") then
+                (extractPosInfo msgData) else [])
 
-        let updates = (if (msgType == "compressed text data") then
-                (kv6posinfoToUpdates msgData) else [])
+        updates' <- liftIO $ filterM (includeUpdate dbconn) updates
 
-        let updates' = Prelude.filter includeUpdate updates :: [Map String String]
-
-        let isStopIncluded :: String -> IO Bool
-            isStopIncluded stop = do
-                result <- query dbconn "SELECT * FROM stops WHERE stop_code = ? LIMIT 1"
-                            [stop] :: IO [StopInfo]
-                -- let result = []
-                return (Prelude.length result > 0)
-
-        let includeUpdate' :: Map String String -> IO Bool
-            includeUpdate' m = isStopIncluded (m ! "userstopcode")
-
-        -- updates'' <- liftIO $ filterM (isStopIncluded . (Prelude.map (! "userstopcode"))) updates'
-        updates'' <- liftIO $ filterM includeUpdate' updates'
-
-        -- liftIO $ putStrLn $ show test
-
-        -- liftIO $ T.putStrLn $ ("Received " <> msgType <> ": " <> limitText msgData)
-
-        -- liftIO $ T.putStrLn $ show updates
-        liftIO $ putStrLn $ show updates''
+        liftIO $ putStrLn $ show updates'
 
         pure ()
 

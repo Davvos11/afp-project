@@ -84,7 +84,8 @@ library
                       zlib ^>=0.6.3.0,
                       xml ^>=1.3.14,
                       containers ^>=0.6.7,
-                      sqlite-simple ^>=0.4.19.0
+                      sqlite-simple ^>=0.4.19.0,
+                      Stream ^>=0.4.7.2
 
     -- Directories containing source files.
     hs-source-dirs:   src
@@ -118,7 +119,8 @@ executable afp-project
         wai-cors ^>= 0.2.7,
         time ^>= 1.12.2,
         websockets ^>=0.13.0.0,
-        network ^>=3.1.4.0
+        network ^>=3.1.4.0,
+                      stream
 
     -- Directories containing source files.
     hs-source-dirs:   app
