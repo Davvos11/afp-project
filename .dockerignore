@@ -1,0 +1,5 @@
+/database*.db
+/docs
+/frontend
+/dist-newstyle
+Dockerfile
