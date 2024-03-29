@@ -8,7 +8,6 @@ import Database.SQLite.Simple
 import qualified Data.Text as Text
 import Text.Printf
 import Data.Char (isSpace)
-import Data.List (nub)
 import Data.Map.Strict (Map)
 import qualified Data.Map.Strict as Map
 import Data.List (foldl')
@@ -40,9 +39,6 @@ weekToNumber Thu = "4"
 weekToNumber Fri = "5"
 weekToNumber Sat = "6"
 weekToNumber Sun = "7"
-
-likeString :: String -> String
-likeString s = "%" ++ s ++ "%"
 
 data Filter = Filter {
     startStop :: Maybe Int,
@@ -132,7 +128,7 @@ getStops = do
     close conn
     return result
     where
-        queryString = "SELECT name, id FROM stop_names"
+        queryString = "SELECT DISTINCT name, frontend_id FROM stop_names"
 
 trim :: String -> String
 trim = f . f
