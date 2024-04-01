@@ -37,7 +37,8 @@ run :: IO ()
 --     -- listen >>= (\_ -> ())
 run = do
     -- runConduit $ listen .| C.mapM_ (liftIO . print)
-    runConduit $ listen .| printPosInfo
+    -- runConduit $ listen .| printPosInfo
+    listen printPosInfo
     -- return ()
 
 printPosInfo :: ConduitT PosInfo Void IO ()
@@ -101,9 +102,26 @@ getStop dbconn stopcode = do
 
 includeUpdate :: Connection -> PosInfo -> IO Bool
 includeUpdate dbconn m =
-    let t = m ! "type"
-    in (&&) <$> pure (t == "DEPARTURE" || t == "ARRIVAL")
-    <*> (isJust <$> (getStop dbconn (m ! "userstopcode")))
+    -- let t = m ! "type"
+    let t = case (Map.lookup "type" m) of
+            Just a -> a
+            Nothing -> error $ "Missing type in " ++ show m
+        isGoodType = t == "DEPARTURE" || t == "ARRIVAL"
+    in
+        case isGoodType of
+            False -> pure False
+            True -> do
+                stop <- getStop dbconn (
+                    case (Map.lookup "userstopcode" m) of
+                        Just a -> a
+                        Nothing -> error $ "Missing userstopcode in " ++ show m)
+                pure $ isJust stop
+        
+    -- in (&&) <$> pure (t == "DEPARTURE" || t == "ARRIVAL")
+    -- <*> (isJust <$> (getStop dbconn (
+    --     case (Map.lookup "userstopcode" m) of
+    --         Just a -> a
+    --         Nothing -> error $ "Missing userstopcode in " ++ show m)))
 
 
 data StopInfo = StopInfo {
@@ -125,41 +143,127 @@ decompressMessage (WS.Binary a)
 -- listen :: IO (Stream PosInfo)
 -- listen = withSocketsDo $ WS.runClient "localhost" 9160 "/" listen'
 
-listen :: ConduitT () PosInfo IO ()
-listen = liftIO $ WS.runClient "localhost" 9160 "/" listen''
+-- listen :: ConduitT PosInfo Void IO r -> IO r
+-- listen downstream =
+--     WS.runClient "localhost" 9160 "/" (
+--         \conn -> C.runConduit $ (listen' conn) .| downstream
+--     )
 
-listen'' :: WS.ClientApp ()
-listen'' conn = do
-    liftM $ listen' conn
+
+--  -> ConduitT a Void IO ()
+filterConduit :: (a -> IO Bool) -> ConduitT a a IO ()
+filterConduit f = do
+    a <- C.await
+    case a of
+        Nothing -> return ()
+        Just a' -> do
+            include <- liftIO $ f a'
+            if include then do
+                C.yield a'
+                filterConduit f
+            else
+                filterConduit f
+
+filterPosInfo :: (ConduitT PosInfo Void IO ()) -> ConduitT PosInfo Void IO ()
+filterPosInfo dst = do
+    dbconn <- liftIO $ open "database2.db"
+    filterConduit (includeUpdate dbconn) .| dst
+    -- close dbconn
+
+-- filterPosInfo downstream = do
+--     posinfo <- await
+--     case posinfo of
+--         Nothing -> return ()
+--         Just a -> do
+--             include <- liftIO $ includeUpdate dbconn a
+--             if include then do
+--                 yield a
+--                 filterPosInfo downstream
+--             else
+--                 filterPosInfo downstream
+
+listen :: ConduitT PosInfo Void IO () -> IO ()
+listen downstream = listenKV6 (filterPosInfo downstream)
+
+    -- listenKV6 (do
+    --     dbconn <- liftIO $ open "database2.db"
+    --     _ <- forever $ do
+    --         posinfo <- await
+    --         case posinfo of
+    --             Nothing -> return ()
+    --             Just a -> do
+    --                 include <- liftIO $ includeUpdate dbconn a
+    --                 if include then yield a else return ()
+    --     pure()
+    -- )
+
+-- listen'' :: (PosInfo -> IO ()) -> WS.ClientApp ()
+-- listen'' _ conn = do
+--     liftIO $ listen' conn
 
 -- data PosInfoStream = 
 
 -- listenPosInfo :: PosInfoStream a -> IO a
 
+listenKV6 :: ConduitT PosInfo Void IO r -> IO r
+listenKV6 downstream =
+    WS.runClient "localhost" 9160 "/" (
+        \conn -> C.runConduit $ (listenKV6' conn) .| downstream
+    )
 
-listen' :: WS.Connection -> ConduitT () PosInfo IO ()
-listen' conn = do
-    liftIO $ putStrLn "Connected!"
+listenKV6' :: WS.Connection -> ConduitT () PosInfo IO ()
+listenKV6' conn = do
+    _ <- forever $ do
+        message <- liftIO $ WS.receiveDataMessage conn
 
-    dbconn <- liftIO $ open "database2.db"
+        case decompressMessage message of
+            ("compressed data", msgData) -> do
+                let updates = extractPosInfo msgData
+                -- updates' <- liftIO $ filterM (includeUpdate dbconn) updates
+                mapM_ yield updates
+            _ -> return ()
+    pure ()
 
-    let messages' :: IO (Stream WS.DataMessage)
-        messages' = (Cons <$> WS.receiveDataMessage conn <*> messages')
 
-    liftIO $ putStrLn "aa"
-    messages <- messages'
-    liftIO $ putStrLn "bb"
+-- listen' :: WS.Connection -> ConduitT () PosInfo IO ()
+-- listen' conn = do
+--     liftIO $ putStrLn "Connected!"
 
-    let decompressed :: Stream (BS.ByteString)
-        decompressed = 
-            Stream.map snd $
-            Stream.filter (\(t, _) -> t == "compressed data") $
-            Stream.map decompressMessage messages
+--     dbconn <- liftIO $ open "database2.db"
+
+--     _ <- forever $ do
+--         message <- liftIO $ WS.receiveDataMessage conn
+
+--         case decompressMessage message of
+--             ("compressed data", msgData) -> do
+--                 let updates = extractPosInfo msgData
+--                 updates' <- liftIO $ filterM (includeUpdate dbconn) updates
+--                 mapM_ yield updates'
+--             _ -> return ()
+
+--         -- let decompressed :: BS.ByteString
+--         --     decompressed = snd $ decompressMessage message
+
+--         -- error "test"
+--     pure ()
+
+    -- let messages' :: IO (Stream WS.DataMessage)
+    --     messages' = (Cons <$> WS.receiveDataMessage conn <*> messages')
+
+    -- liftIO $ putStrLn "aa"
+    -- messages <- messages'
+    -- liftIO $ putStrLn "bb"
+
+    -- let decompressed :: Stream (BS.ByteString)
+    --     decompressed = 
+    --         Stream.map snd $
+    --         Stream.filter (\(t, _) -> t == "compressed data") $
+    --         Stream.map decompressMessage messages
     
     -- let updates :: Stream PosInfo
     --     updates = 
 
-    error $ show decompressed
+    -- error $ show decompressed
 
 
 app :: WS.ClientApp ()
