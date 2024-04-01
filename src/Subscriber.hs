@@ -26,21 +26,13 @@ import qualified Text.XML.Light.Types as XML
 import qualified Text.XML.Light.Proc as XMLProc
 import qualified Data.Conduit             as C
 import           Data.Conduit
-import Database.SQLite.Simple
+import qualified Database.SQLite.Simple   as SQL
+import Database.SQLite.Simple.ToField (toField)
 
 run :: IO ()
--- run = withSocketsDo $ WS.runClient "localhost" 9160 "/" app
--- run = withSocketsDo $ WS.runClient "localhost" 9160 "/" listen'
--- run = do
---     _ <- listen
---     return ()
---     -- listen >>= (\_ -> ())
 run = do
-    -- runConduit $ listen .| C.mapM_ (liftIO . print)
-    -- runConduit $ listen .| printPosInfo
-    listen printPosInfo
-    -- return ()
-
+    listen writeToDatabase
+    
 printPosInfo :: ConduitT PosInfo Void IO ()
 printPosInfo = do
     posinfo <- await
@@ -49,11 +41,44 @@ printPosInfo = do
         Just a -> do
             liftIO $ print a
             printPosInfo
-        
+
+writeToDatabase :: ConduitT PosInfo Void IO ()
+writeToDatabase = do
+    dbconn <- liftIO $ SQL.open "database2.db"
+    liftIO $ SQL.execute_ dbconn
+        "CREATE TABLE IF NOT EXISTS actual_arrivals ( \
+        \    timestamp TEXT,\
+        \    stop_code TEXT,\
+        \    punctuality INTEGER,\
+        \    journey_id INTEGER,\
+        \    lineplanningnumber TEXT,\
+        \    type TEXT\
+        \)"
+
+    posinfo <- await
+    case posinfo of
+        Nothing -> do
+            liftIO $ SQL.close dbconn
+            return ()
+
+        Just a -> do
+            liftIO $ SQL.execute dbconn
+                "INSERT INTO actual_arrivals (timestamp, stop_code, \
+                \punctuality, journey_id, lineplanningnumber, type) \
+                \VALUES (?, ?, ?, ?, ?, ?)"
+                [
+                    toField (a ! "timestamp"),
+                    toField (a ! "userstopcode"),
+                    toField ((read (a ! "punctuality")) :: Int),
+                    toField ((read (a ! "journeynumber")) :: Int),
+                    toField (a ! "lineplanningnumber"),
+                    toField (a ! "type")
+                ]
+
+            writeToDatabase
+
 
 type PosInfo = Map String String
-
--- data Stream a = Cons a (Stream a)
 
 limitText :: BS.ByteString -> Data.Text.Text
 limitText s =
@@ -91,18 +116,17 @@ extractPosInfo rawS =
     in
         Prelude.map parseXMLposinfo posinfo
 
-getStop :: Connection -> String -> IO (Maybe StopInfo)
+getStop :: SQL.Connection -> String -> IO (Maybe StopInfo)
 getStop dbconn stopcode = do
-    stops <- query dbconn "SELECT * FROM stops WHERE stop_code = ? LIMIT 1"
+    stops <- SQL.query dbconn "SELECT * FROM stops WHERE stop_code = ? LIMIT 1"
                             [stopcode] :: IO [StopInfo]
     pure $ case stops of
         [] -> Nothing
         x:_ -> Just x
     
 
-includeUpdate :: Connection -> PosInfo -> IO Bool
+includeUpdate :: SQL.Connection -> PosInfo -> IO Bool
 includeUpdate dbconn m =
-    -- let t = m ! "type"
     let t = case (Map.lookup "type" m) of
             Just a -> a
             Nothing -> error $ "Missing type in " ++ show m
@@ -116,21 +140,14 @@ includeUpdate dbconn m =
                         Just a -> a
                         Nothing -> error $ "Missing userstopcode in " ++ show m)
                 pure $ isJust stop
-        
-    -- in (&&) <$> pure (t == "DEPARTURE" || t == "ARRIVAL")
-    -- <*> (isJust <$> (getStop dbconn (
-    --     case (Map.lookup "userstopcode" m) of
-    --         Just a -> a
-    --         Nothing -> error $ "Missing userstopcode in " ++ show m)))
-
 
 data StopInfo = StopInfo {
         stopCode :: String, name :: String,
         gpsLat :: Float, gpsLon :: Float
     } deriving Show
 
-instance FromRow StopInfo where
-    fromRow = StopInfo <$> field <*> field <*> field <*> field
+instance SQL.FromRow StopInfo where
+    fromRow = StopInfo <$> SQL.field <*> SQL.field <*> SQL.field <*> SQL.field
 
 decompressMessage :: WS.DataMessage -> (String, BS.ByteString)
 decompressMessage (WS.Text a _)
@@ -140,17 +157,6 @@ decompressMessage (WS.Binary a) | (BS.head a) == 0x1f
 decompressMessage (WS.Binary a)
     = ("data", a)
 
--- listen :: IO (Stream PosInfo)
--- listen = withSocketsDo $ WS.runClient "localhost" 9160 "/" listen'
-
--- listen :: ConduitT PosInfo Void IO r -> IO r
--- listen downstream =
---     WS.runClient "localhost" 9160 "/" (
---         \conn -> C.runConduit $ (listen' conn) .| downstream
---     )
-
-
---  -> ConduitT a Void IO ()
 filterConduit :: (a -> IO Bool) -> ConduitT a a IO ()
 filterConduit f = do
     a <- C.await
@@ -166,44 +172,15 @@ filterConduit f = do
 
 filterPosInfo :: (ConduitT PosInfo Void IO ()) -> ConduitT PosInfo Void IO ()
 filterPosInfo dst = do
-    dbconn <- liftIO $ open "database2.db"
+    dbconn <- liftIO $ SQL.open "database2.db"
     filterConduit (includeUpdate dbconn) .| dst
-    -- close dbconn
 
--- filterPosInfo downstream = do
---     posinfo <- await
---     case posinfo of
---         Nothing -> return ()
---         Just a -> do
---             include <- liftIO $ includeUpdate dbconn a
---             if include then do
---                 yield a
---                 filterPosInfo downstream
---             else
---                 filterPosInfo downstream
+    -- Won't be reached if the conduit runs forever
+    liftIO $ SQL.close dbconn
+
 
 listen :: ConduitT PosInfo Void IO () -> IO ()
 listen downstream = listenKV6 (filterPosInfo downstream)
-
-    -- listenKV6 (do
-    --     dbconn <- liftIO $ open "database2.db"
-    --     _ <- forever $ do
-    --         posinfo <- await
-    --         case posinfo of
-    --             Nothing -> return ()
-    --             Just a -> do
-    --                 include <- liftIO $ includeUpdate dbconn a
-    --                 if include then yield a else return ()
-    --     pure()
-    -- )
-
--- listen'' :: (PosInfo -> IO ()) -> WS.ClientApp ()
--- listen'' _ conn = do
---     liftIO $ listen' conn
-
--- data PosInfoStream = 
-
--- listenPosInfo :: PosInfoStream a -> IO a
 
 listenKV6 :: ConduitT PosInfo Void IO r -> IO r
 listenKV6 downstream =
@@ -219,58 +196,16 @@ listenKV6' conn = do
         case decompressMessage message of
             ("compressed data", msgData) -> do
                 let updates = extractPosInfo msgData
-                -- updates' <- liftIO $ filterM (includeUpdate dbconn) updates
                 mapM_ yield updates
             _ -> return ()
     pure ()
 
 
--- listen' :: WS.Connection -> ConduitT () PosInfo IO ()
--- listen' conn = do
---     liftIO $ putStrLn "Connected!"
-
---     dbconn <- liftIO $ open "database2.db"
-
---     _ <- forever $ do
---         message <- liftIO $ WS.receiveDataMessage conn
-
---         case decompressMessage message of
---             ("compressed data", msgData) -> do
---                 let updates = extractPosInfo msgData
---                 updates' <- liftIO $ filterM (includeUpdate dbconn) updates
---                 mapM_ yield updates'
---             _ -> return ()
-
---         -- let decompressed :: BS.ByteString
---         --     decompressed = snd $ decompressMessage message
-
---         -- error "test"
---     pure ()
-
-    -- let messages' :: IO (Stream WS.DataMessage)
-    --     messages' = (Cons <$> WS.receiveDataMessage conn <*> messages')
-
-    -- liftIO $ putStrLn "aa"
-    -- messages <- messages'
-    -- liftIO $ putStrLn "bb"
-
-    -- let decompressed :: Stream (BS.ByteString)
-    --     decompressed = 
-    --         Stream.map snd $
-    --         Stream.filter (\(t, _) -> t == "compressed data") $
-    --         Stream.map decompressMessage messages
-    
-    -- let updates :: Stream PosInfo
-    --     updates = 
-
-    -- error $ show decompressed
-
-
-app :: WS.ClientApp ()
-app conn = do
+testing :: WS.ClientApp ()
+testing conn = do
     putStrLn "Connected!"
 
-    dbconn <- liftIO $ open "database2.db"
+    dbconn <- liftIO $ SQL.open "database2.db"
     
     forever $ do
         msg <- WS.receiveDataMessage conn
@@ -290,7 +225,7 @@ app conn = do
 
         pure ()
 
-    close dbconn
+    SQL.close dbconn
     -- WS.sendClose conn ("Exit" :: Text)
 
 
