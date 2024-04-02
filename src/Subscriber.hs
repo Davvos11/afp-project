@@ -3,7 +3,7 @@
 module Subscriber (
     runWrite,
     runPrint,
-    PosInfo (..),
+    PosInfo,
     StopInfo (..),
     printPosInfos,
     writePosInfos,
@@ -89,7 +89,8 @@ writePosInfos = do
         \    punctuality INTEGER,\
         \    journey_id INTEGER,\
         \    lineplanningnumber TEXT,\
-        \    type TEXT\
+        \    type TEXT,\
+        \    dataownercode TEXT\
         \)"
 
     posinfo <- await
@@ -101,15 +102,16 @@ writePosInfos = do
         Just a -> do
             liftIO $ SQL.execute dbconn
                 "INSERT INTO actual_arrivals (timestamp, stop_code, \
-                \punctuality, journey_id, lineplanningnumber, type) \
-                \VALUES (?, ?, ?, ?, ?, ?)"
+                \punctuality, journey_id, lineplanningnumber, type, dataownercode) \
+                \VALUES (?, ?, ?, ?, ?, ?, ?)"
                 [
                     toField (a ! "timestamp"),
                     toField (a ! "userstopcode"),
                     toField (read (a ! "punctuality") :: Int),
                     toField (read (a ! "journeynumber") :: Int),
                     toField (a ! "lineplanningnumber"),
-                    toField (a ! "type")
+                    toField (a ! "type"),
+                    toField (a ! "dataownercode")
                 ]
 
             writePosInfos
@@ -248,7 +250,7 @@ testing conn = do
 
     dbconn <- liftIO $ SQL.open "database2.db"
     
-    forever $ do
+    _ <- forever $ do
         msg <- WS.receiveDataMessage conn
 
         -- For converting ByteString to Text or String, see
@@ -264,7 +266,8 @@ testing conn = do
 
         liftIO $ print updates'
 
-        pure ()
+        return ()
+    return ()
 
     SQL.close dbconn
     -- WS.sendClose conn ("Exit" :: Text)
