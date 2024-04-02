@@ -1,10 +1,7 @@
 module Main where
 
-import Parser
 import Database
-import Parser
 import Server
-import Data.Time (DayOfWeek(Thursday))
 
 main :: IO ()
 main = do
