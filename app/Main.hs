@@ -1,11 +1,12 @@
 module Main where
 
-import Parser
 import Database
 import Server
 
 main :: IO ()
 main = do
-  x <- Database.getFrequenciesForBusStop 1
-  mapM_ print x
+  putStrLn "Generating line and stop id's..."
+  -- TODO run this periodically?
+  Database.generateLines
+  Database.generateStops
   runServer

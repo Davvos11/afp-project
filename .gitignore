@@ -116,11 +116,7 @@ fabric.properties
 
 ### VisualStudioCode ###
 .vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-!.vscode/*.code-snippets
+
 
 # Local History for Visual Studio Code
 .history/
@@ -140,6 +136,5 @@ elm-stuff
 # elm-repl generated files
 repl-temp-*
 
-/database.db
-/database2.db
+.repos
 /*.db
