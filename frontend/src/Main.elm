@@ -66,14 +66,15 @@ update msg (Model m) = case msg of
                                                      PlusHour   -> addMinute m.momentInWeek 60
                         )}, Cmd.none)
     DayChange d     -> (Model {m | momentInWeek = (\(MomentInWeek momentInWeek) -> MomentInWeek {momentInWeek | day = d}) m.momentInWeek}, Cmd.none)
-    StopChange x d  -> (Model (case d of
+    StopChange x d  -> let 
+                        updated_model = Model (case d of
                            -- Stop changed, needs to be revalidated
                            -- Todo reset delays when these change
                            Departure   -> {m | departure   = NoStop x}
-                           Destination -> {m | destination = NoStop x}
-                      ), Cmd.none)
+                           Destination -> {m | destination = NoStop x})
+                        in update (ValidateStop d) updated_model
                            -- Same for the bus
-    BusChange x     -> (Model {m | bus = NoBus x}, Cmd.none)
+    BusChange x     -> update ValidateBus (Model {m | bus = NoBus x})
     ReverseStops    -> (Model {m | departure = m.destination, destination = m.departure}, Cmd.none)
     ValidateBus     -> (Model {m | bus = tryParseBus (m.bus) (m.buses)}, Cmd.none)
     ValidateStop d  -> (Model (case d of
