@@ -6850,8 +6850,19 @@ var $author$project$Msg$ValidateStop = function (a) {
 	return {$: 'ValidateStop', a: a};
 };
 var $elm$html$Html$button = _VirtualDom_node('button');
+var $elm$html$Html$datalist = _VirtualDom_node('datalist');
 var $elm$html$Html$div = _VirtualDom_node('div');
+var $elm$json$Json$Encode$string = _Json_wrap;
+var $elm$html$Html$Attributes$stringProperty = F2(
+	function (key, string) {
+		return A2(
+			_VirtualDom_property,
+			key,
+			$elm$json$Json$Encode$string(string));
+	});
+var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
 var $elm$html$Html$input = _VirtualDom_node('input');
+var $elm$html$Html$Attributes$list = _VirtualDom_attribute('list');
 var $elm$virtual_dom$VirtualDom$Normal = function (a) {
 	return {$: 'Normal', a: a};
 };
@@ -6900,15 +6911,9 @@ var $elm$html$Html$Events$onInput = function (tagger) {
 			$elm$html$Html$Events$alwaysStop,
 			A2($elm$json$Json$Decode$map, tagger, $elm$html$Html$Events$targetValue)));
 };
-var $elm$json$Json$Encode$string = _Json_wrap;
-var $elm$html$Html$Attributes$stringProperty = F2(
-	function (key, string) {
-		return A2(
-			_VirtualDom_property,
-			key,
-			$elm$json$Json$Encode$string(string));
-	});
+var $elm$html$Html$option = _VirtualDom_node('option');
 var $elm$html$Html$Attributes$placeholder = $elm$html$Html$Attributes$stringProperty('placeholder');
+var $elm$html$Html$select = _VirtualDom_node('select');
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
 var $author$project$Main$toDutchWeekday = function (t) {
@@ -6932,6 +6937,16 @@ var $author$project$Main$toDutchWeekday = function (t) {
 	}() + 'dag';
 };
 var $elm$html$Html$Attributes$value = $elm$html$Html$Attributes$stringProperty('value');
+var $elm$core$Dict$values = function (dict) {
+	return A3(
+		$elm$core$Dict$foldr,
+		F3(
+			function (key, value, valueList) {
+				return A2($elm$core$List$cons, value, valueList);
+			}),
+		_List_Nil,
+		dict);
+};
 var $author$project$Main$view = function (_v0) {
 	var m = _v0.a;
 	return A2(
@@ -7122,12 +7137,39 @@ var $author$project$Main$view = function (_v0) {
 											return x;
 										}
 									}()),
+									$elm$html$Html$Attributes$list('stops'),
 									$elm$html$Html$Events$onInput(
 									function (x) {
 										return A2($author$project$Msg$StopChange, x, $author$project$Msg$Departure);
 									})
 								]),
 							_List_Nil),
+							A2(
+							$elm$html$Html$datalist,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$id('stops')
+								]),
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$select,
+									_List_Nil,
+									A2(
+										$elm$core$List$map,
+										function (_v4) {
+											var k = _v4.a;
+											var v = _v4.b;
+											return A2(
+												$elm$html$Html$option,
+												_List_Nil,
+												_List_fromArray(
+													[
+														$elm$html$Html$text(v)
+													]));
+										},
+										$elm$core$Dict$values(m.stops)))
+								])),
 							A2(
 							$elm$html$Html$button,
 							_List_fromArray(
@@ -7141,23 +7183,23 @@ var $author$project$Main$view = function (_v0) {
 								]))
 						]),
 					function () {
-						var _v4 = m.departure;
-						if (_v4.$ === 'NoStop') {
-							var x = _v4.a;
+						var _v5 = m.departure;
+						if (_v5.$ === 'NoStop') {
+							var x = _v5.a;
 							return _List_Nil;
 						} else {
-							var i = _v4.a;
-							var f = _v4.b;
-							var _v5 = m.delays;
-							if (_v5.$ === 'Nothing') {
+							var i = _v5.a;
+							var f = _v5.b;
+							var _v6 = m.delays;
+							if (_v6.$ === 'Nothing') {
 								return _List_fromArray(
 									[
 										$elm$html$Html$text('Geldige halte')
 									]);
 							} else {
-								var _v6 = _v5.a;
-								var d1 = _v6.a;
-								var d2 = _v6.b;
+								var _v7 = _v6.a;
+								var d1 = _v7.a;
+								var d2 = _v7.b;
 								return _List_fromArray(
 									[
 										$elm$html$Html$text(
@@ -7193,15 +7235,16 @@ var $author$project$Main$view = function (_v0) {
 							_List_fromArray(
 								[
 									$elm$html$Html$Attributes$placeholder('Aankomsthalte'),
+									$elm$html$Html$Attributes$list('stops'),
 									$elm$html$Html$Attributes$value(
 									function () {
-										var _v7 = m.destination;
-										if (_v7.$ === 'Stop') {
-											var i = _v7.a;
-											var f = _v7.b;
+										var _v8 = m.destination;
+										if (_v8.$ === 'Stop') {
+											var i = _v8.a;
+											var f = _v8.b;
 											return f(_Utils_Tuple0);
 										} else {
-											var x = _v7.a;
+											var x = _v8.a;
 											return x;
 										}
 									}()),
@@ -7224,23 +7267,23 @@ var $author$project$Main$view = function (_v0) {
 								]))
 						]),
 					function () {
-						var _v8 = m.destination;
-						if (_v8.$ === 'NoStop') {
-							var x = _v8.a;
+						var _v9 = m.destination;
+						if (_v9.$ === 'NoStop') {
+							var x = _v9.a;
 							return _List_Nil;
 						} else {
-							var i = _v8.a;
-							var f = _v8.b;
-							var _v9 = m.delays;
-							if (_v9.$ === 'Nothing') {
+							var i = _v9.a;
+							var f = _v9.b;
+							var _v10 = m.delays;
+							if (_v10.$ === 'Nothing') {
 								return _List_fromArray(
 									[
 										$elm$html$Html$text('Geldige halte')
 									]);
 							} else {
-								var _v10 = _v9.a;
-								var d1 = _v10.a;
-								var d2 = _v10.b;
+								var _v11 = _v10.a;
+								var d1 = _v11.a;
+								var d2 = _v11.b;
 								return _List_fromArray(
 									[
 										$elm$html$Html$text(
@@ -7260,15 +7303,16 @@ var $author$project$Main$view = function (_v0) {
 							_List_fromArray(
 								[
 									$elm$html$Html$Attributes$placeholder('Bus'),
+									$elm$html$Html$Attributes$list('busses'),
 									$elm$html$Html$Attributes$value(
 									function () {
-										var _v11 = m.bus;
-										if (_v11.$ === 'Bus') {
-											var i = _v11.a;
-											var f = _v11.b;
+										var _v12 = m.bus;
+										if (_v12.$ === 'Bus') {
+											var i = _v12.a;
+											var f = _v12.b;
 											return f(_Utils_Tuple0);
 										} else {
-											var x = _v11.a;
+											var x = _v12.a;
 											return x;
 										}
 									}()),
@@ -7278,6 +7322,32 @@ var $author$project$Main$view = function (_v0) {
 									})
 								]),
 							_List_Nil),
+							A2(
+							$elm$html$Html$datalist,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$id('busses')
+								]),
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$select,
+									_List_Nil,
+									A2(
+										$elm$core$List$map,
+										function (_v13) {
+											var k = _v13.a;
+											var v = _v13.b;
+											return A2(
+												$elm$html$Html$option,
+												_List_Nil,
+												_List_fromArray(
+													[
+														$elm$html$Html$text(v)
+													]));
+										},
+										$elm$core$Dict$values(m.buses)))
+								])),
 							A2(
 							$elm$html$Html$button,
 							_List_fromArray(
@@ -7290,16 +7360,16 @@ var $author$project$Main$view = function (_v0) {
 								]))
 						]),
 					function () {
-						var _v12 = m.bus;
-						if (_v12.$ === 'Bus') {
-							var i = _v12.a;
-							var f = _v12.b;
+						var _v14 = m.bus;
+						if (_v14.$ === 'Bus') {
+							var i = _v14.a;
+							var f = _v14.b;
 							return _List_fromArray(
 								[
 									$elm$html$Html$text('Geldige bus')
 								]);
 						} else {
-							var x = _v12.a;
+							var x = _v14.a;
 							return _List_Nil;
 						}
 					}())),
