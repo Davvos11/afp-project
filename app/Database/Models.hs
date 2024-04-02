@@ -1,6 +1,6 @@
 {-# LANGUAGE DuplicateRecordFields #-}
 
-module Database.Models (ActualArrival, Frequency) where
+module Database.Models (ActualArrival(..), Frequency(..)) where
 
 import Database.SQLite.Simple
 

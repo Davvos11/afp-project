@@ -12,6 +12,7 @@ import Data.Map.Strict (Map)
 import qualified Data.Map.Strict as Map
 import Data.List (foldl')
 import Text.Read (readMaybe)
+import Data.Time (DayOfWeek)
 
 data TimeOfDay = TimeOfDay { hours :: Int, minutes :: Int }
 
@@ -19,26 +20,8 @@ instance Show TimeOfDay where
     show :: TimeOfDay -> String
     show (TimeOfDay h m) = printf "%02d" h ++ ":" ++ printf "%02d" m ++ ":00"
 
-data DayOfWeek = Mon | Tue | Wed | Thu | Fri | Sat | Sun
-
-instance Show DayOfWeek where
-  show :: DayOfWeek -> String
-  show Mon = "Monday"
-  show Tue = "Tuesday"
-  show Wed = "Wednesday"
-  show Thu = "Thursday"
-  show Fri = "Friday"
-  show Sat = "Saturday"
-  show Sun = "Sunday"
-
 weekToNumber :: DayOfWeek -> String
-weekToNumber Mon = "1"
-weekToNumber Tue = "2"
-weekToNumber Wed = "3"
-weekToNumber Thu = "4"
-weekToNumber Fri = "5"
-weekToNumber Sat = "6"
-weekToNumber Sun = "7"
+weekToNumber = show . fromEnum
 
 data Filter = Filter {
     startStop :: Maybe Int,
@@ -49,9 +32,12 @@ data Filter = Filter {
 } deriving Show
 
 -- | Get the frequency distribution of the punctualities for a given bus stop
-getFrequencies :: Filter -> IO [Frequency]
-getFrequencies (Filter mStartStop mEndStop mLine mTime mDay) = do
+-- The boolean `get_start` changes the behaviour of the method to get the delay at the start stop,
+-- instead of at the end_stop.
+getFrequencies :: Bool -> Filter -> IO [Frequency]
+getFrequencies get_start f@(Filter mStartStop mEndStop mLine mTime mDay) = do
     conn <- open "database-prod.db"
+    print f
     print queryString
     print parameters
     result <- queryNamed conn (Query queryString) parameters :: IO [Frequency]
@@ -65,22 +51,22 @@ getFrequencies (Filter mStartStop mEndStop mLine mTime mDay) = do
                             \WHERE a1.type = 'DEPARTURE' "
 
         (conditions, parameters) = foldr addFilter ([], []) [
-                fmap (\i -> ("s1.frontend_id = :end_stop_id", ":end_stop_id" := i)) mEndStop,
+                fmap (\i -> ("s1.frontend_id = :end_stop_id", ":end_stop_id" := i)) (if get_start then mStartStop else mEndStop),
                 fmap (\l -> ("l1.id = :line_id", ":line_id" := l)) mLine,
                 fmap (\t -> ("time(a1.timestamp) >= time(:time_of_day_0, '-15 minutes')", ":time_of_day_0" := show t)) mTime,
                 fmap (\t -> ("time(a1.timestamp) <= time(:time_of_day_1, '+15 minutes')", ":time_of_day_1" := show t)) mTime,
                 fmap (\d -> ("strftime('%w', a1.timestamp) = :day_of_week", ":day_of_week" := weekToNumber d)) mDay,
                 fmap (\i ->
-                    ("EXISTS (\
+                    (Text.concat ["EXISTS (\
                         \SELECT 1 \
                         \FROM actual_arrivals AS a2 \
                         \JOIN stop_names AS s2 ON s2.stop_code = a2.stop_code \
                         \WHERE a2.journey_id = a1.journey_id \
-                        \AND a2.timestamp < a1.timestamp \
+                        \AND a2.timestamp ", if get_start then ">" else "<" ," a1.timestamp \
                         \AND s2.frontend_id = :start_stop_id \
-                    \)",
+                    \)"],
                     ":start_stop_id" := i)
-                ) mStartStop
+                ) (if get_start then mEndStop else mStartStop)
             ]
 
         addFilter Nothing acc = acc
