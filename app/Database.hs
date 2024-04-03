@@ -53,8 +53,8 @@ getFrequencies get_start f@(Filter mStartStop mEndStop mLine mTime mDay) = do
         (conditions, parameters) = foldr addFilter ([], []) [
                 fmap (\i -> ("s1.frontend_id = :end_stop_id", ":end_stop_id" := i)) (if get_start then mStartStop else mEndStop),
                 fmap (\l -> ("l1.id = :line_id", ":line_id" := l)) mLine,
-                fmap (\t -> ("time(a1.timestamp) >= time(:time_of_day_0, '-15 minutes')", ":time_of_day_0" := show t)) mTime,
-                fmap (\t -> ("time(a1.timestamp) <= time(:time_of_day_1, '+15 minutes')", ":time_of_day_1" := show t)) mTime,
+                fmap (\t -> ("time(a1.timestamp) >= time(:time_of_day_0, '-30 minutes')", ":time_of_day_0" := show t)) mTime,
+                fmap (\t -> ("time(a1.timestamp) <= time(:time_of_day_1, '+30 minutes')", ":time_of_day_1" := show t)) mTime,
                 fmap (\d -> ("strftime('%w', a1.timestamp) = :day_of_week", ":day_of_week" := weekToNumber d)) mDay,
                 fmap (\i ->
                     (Text.concat ["EXISTS (\
