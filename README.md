@@ -11,6 +11,6 @@ docker build -t davvos11/afp-project .
 # Run container with volume mount to latest code changes and database
 docker run -it \
     -v ./app:/app/app \
-    -v ./database-prod:/app/database-prod \
+    -v ./database-prod.db:/app/database-prod.db \
     davvos11/afp-project
 ```
