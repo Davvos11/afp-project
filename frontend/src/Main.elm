@@ -16,6 +16,11 @@ import String
 
 import Model exposing (..)
 import Msg exposing (..)
+import Html exposing (datalist)
+import Html.Attributes exposing (id)
+import Html exposing (select)
+import Html exposing (option)
+import Html.Attributes exposing (list)
 
 main : Program () Model Msg
 main = Browser.element {init = init,
@@ -61,14 +66,15 @@ update msg (Model m) = case msg of
                                                      PlusHour   -> addMinute m.momentInWeek 60
                         )}, Cmd.none)
     DayChange d     -> (Model {m | momentInWeek = (\(MomentInWeek momentInWeek) -> MomentInWeek {momentInWeek | day = d}) m.momentInWeek}, Cmd.none)
-    StopChange x d  -> (Model (case d of
+    StopChange x d  -> let 
+                        updated_model = Model (case d of
                            -- Stop changed, needs to be revalidated
                            -- Todo reset delays when these change
                            Departure   -> {m | departure   = NoStop x}
-                           Destination -> {m | destination = NoStop x}
-                      ), Cmd.none)
+                           Destination -> {m | destination = NoStop x})
+                        in update (ValidateStop d) updated_model
                            -- Same for the bus
-    BusChange x     -> (Model {m | bus = NoBus x}, Cmd.none)
+    BusChange x     -> update ValidateBus (Model {m | bus = NoBus x})
     ReverseStops    -> (Model {m | departure = m.destination, destination = m.departure}, Cmd.none)
     ValidateBus     -> (Model {m | bus = tryParseBus (m.bus) (m.buses)}, Cmd.none)
     ValidateStop d  -> (Model (case d of
@@ -124,7 +130,7 @@ requestStatic singular plural msgToSend = Http.request { method = "GET",
                                                          headers = [],
                                                          url = Url.Builder.crossOrigin "http://localhost:3000" [plural] [],
                                                          body = Http.emptyBody,
-                                                         expect = Http.expectJson msgToSend (field plural (list (Json.Decode.map2 (\a b -> (a, b)) (field (singular ++ "Name") string) (field (singular ++ "Id") int)))),
+                                                         expect = Http.expectJson msgToSend (field plural (Json.Decode.list (Json.Decode.map2 (\a b -> (a, b)) (field (singular ++ "Name") string) (field (singular ++ "Id") int)))),
                                                          timeout = Nothing,
                                                          tracker = Nothing
                                                        }
@@ -159,7 +165,13 @@ view (Model m) = div [] [ -- Time changes, display in between - & +
                                          value (case m.departure of
                                                   Stop i f -> f ()
                                                   NoStop x -> x),
+                                         Html.Attributes.list "stops",
                                          onInput (\x -> StopChange x Departure)] [],
+                                  datalist [id "stops"] [
+                                    select [] (
+                                      Dict.values m.stops |> List.map (\(k, v) -> option [] [text v])
+                                    )
+                                  ],
                                   -- Validation. Shows whether the input parsed. Shows delay if calculated instead
                                   button [onClick (ValidateStop Departure)] [text "Check"]] ++ (case m.departure of
                                                                                                   NoStop x -> []
@@ -168,6 +180,7 @@ view (Model m) = div [] [ -- Time changes, display in between - & +
                                                                                                                 Just (d1, d2) -> [text (if d1 == 0 then "Op tijd!" else ("+" ++ (String.fromInt d1)))])),
                          div [] [button [onClick ReverseStops] [text "⇅"]],
                          div [] ([input [placeholder "Aankomsthalte",
+                                         Html.Attributes.list "stops",
                                          value (case m.destination of
                                                   Stop i f -> f ()
                                                   NoStop x -> x),
@@ -180,10 +193,16 @@ view (Model m) = div [] [ -- Time changes, display in between - & +
                                                                                                                 Just (d1, d2) -> [text (if d2 == 0 then "Op tijd!" else ("+" ++ (String.fromInt d2)))])),
                          -- Bus input
                          div [] ([input [placeholder "Bus",
+                                         Html.Attributes.list "busses",
                                          value (case m.bus of
                                                   Bus i f -> f ()
                                                   NoBus x -> x),
                                          onInput (\x -> BusChange x)] [],
+                                  datalist [id "busses"] [
+                                    select [] (
+                                      Dict.values m.buses |> List.map (\(k, v) -> option [] [text v])
+                                    )
+                                  ],
                                   button [onClick ValidateBus] [text "Check"]] ++ (case m.bus of
                                                                                                   Bus i f -> [text "Geldige bus"]
                                                                                                   NoBus x -> [])),
