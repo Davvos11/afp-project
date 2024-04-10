@@ -39,10 +39,10 @@ type TimeMod = PlusHour
 -- Week starts at Monday, index 0, and so on.
 toDayNumber : Time.Weekday -> Int
 toDayNumber t = case t of
-                  Time.Mon -> 0
-                  Time.Tue -> 1
-                  Time.Wed -> 2
-                  Time.Thu -> 3
-                  Time.Fri -> 4
-                  Time.Sat -> 5
-                  Time.Sun -> 6
+                  Time.Mon -> 1
+                  Time.Tue -> 2
+                  Time.Wed -> 3
+                  Time.Thu -> 4
+                  Time.Fri -> 5
+                  Time.Sat -> 6
+                  Time.Sun -> 7
