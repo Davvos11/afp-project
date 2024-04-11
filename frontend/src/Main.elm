@@ -215,7 +215,7 @@ view (Model m) = div [] [ -- Time changes, display in between - & +
                 ]
 
 plot : List (Int, Int) -> Html Msg
-plot ls = Chart.render (ls, {xGroup = always Nothing, xValue = (\(p, _) -> String.fromInt p), yValue = (\(_, f) -> toFloat f)}) (Chart.init { margin =
+plot ls = Chart.render (ls, {xGroup = always Nothing, xValue = (\(p, _) -> String.fromInt p ++ " min"), yValue = (\(_, f) -> toFloat f)}) (Chart.init { margin =
                                                                                                                                         { top = 10
                                                                                                                                         , right = 10
                                                                                                                                         , bottom = 30

@@ -28,4 +28,4 @@ busData = Buses $ map toBusPair exampleBuses
 
 delayData :: Delays
 delayData = Delays { departureDelays   = [DelayFrequency (-3) 1, DelayFrequency (-1) 3, DelayFrequency 0 8, DelayFrequency 1 4, DelayFrequency 3 3]
-                   , destinationDelays = [DelayFrequency (-2) 1, DelayFrequency 0 2, DelayFrequency 4 3, DelayFrequency 5 10, DelayFrequency 6 3]}
+                       , destinationDelays = [DelayFrequency (-2) 1, DelayFrequency 0 2, DelayFrequency 4 3, DelayFrequency 5 10, DelayFrequency 6 3]}

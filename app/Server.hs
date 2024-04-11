@@ -15,6 +15,7 @@ import MessageFormat
       toStopPair,
       toBusPair,
       parseDelayRequest )
+import TestServer
 import Network.HTTP.Types
 import Network.Wai
 import Network.Wai.Handler.Warp

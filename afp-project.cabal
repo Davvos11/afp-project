@@ -104,7 +104,8 @@ executable afp-project
     -- Modules included in this executable, other than Main.
     other-modules: Database,
                    Database.Models,
-                   Server
+                   Server,
+                   TestServer
 
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:
