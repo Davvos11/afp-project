@@ -10,7 +10,7 @@ import Data.Text (unpack)
 import Data.Text.Encoding (decodeUtf8)
 import Data.List
 import Text.Read
-import Data.Time.Calendar
+import Data.Time (DayOfWeek)
 
 data StopPair = StopPair {stopName :: String, stopId :: Int} deriving Generic
 data Stops = Stops {stops :: [StopPair]} deriving Generic
@@ -34,10 +34,13 @@ instance ToJSON Buses where
 toBusPair :: (String, Int) -> BusPair
 toBusPair (s, i) = BusPair s i
 
+data DelayFrequency = DelayFrequency {punct :: Int, freq:: Int} deriving Generic
+instance ToJSON DelayFrequency where
+
 data Delays = Delays { -- | Average delay at the departure stop, in minutes
-                      departureDelay :: Int,
+                      departureDelays :: [DelayFrequency],
                       -- | Average delay at the destination stop, in minutes
-                      destinationDelay :: Int} deriving Generic
+                      destinationDelays :: [DelayFrequency]} deriving Generic
 instance ToJSON Delays where
 
 data DelayRequest = DelayRequest { -- | Id of queried departure stop
@@ -48,16 +51,9 @@ data DelayRequest = DelayRequest { -- | Id of queried departure stop
                                   bus :: Int, weekday :: DayOfWeek, hour :: Int, minute :: Int}
 
 -- | Tries to parse a string to a weekday according to the encoded representation.
--- Week starts at Monday, index 0, and so on.
+-- Week starts at Monday, index 1, and so on.
 validWeekday :: String -> Maybe DayOfWeek
-validWeekday "0" = Just Monday
-validWeekday "1" = Just Tuesday
-validWeekday "2" = Just Wednesday
-validWeekday "3" = Just Thursday
-validWeekday "4" = Just Friday
-validWeekday "5" = Just Saturday
-validWeekday "6" = Just Sunday
-validWeekday  _  = Nothing
+validWeekday = Just . toEnum . read
 
 -- | Turns numbers outside the valid hour range (0-23) into Nothing.
 validHour :: Int -> Maybe Int
