@@ -22,6 +22,8 @@ import Html exposing (select)
 import Html exposing (option)
 import Html.Attributes exposing (list)
 
+import Chart.Bar as Chart
+
 main : Program () Model Msg
 main = Browser.element {init = init,
                         update = update,
@@ -66,7 +68,7 @@ update msg (Model m) = case msg of
                                                      PlusHour   -> addMinute m.momentInWeek 60
                         )}, Cmd.none)
     DayChange d     -> (Model {m | momentInWeek = (\(MomentInWeek momentInWeek) -> MomentInWeek {momentInWeek | day = d}) m.momentInWeek}, Cmd.none)
-    StopChange x d  -> let 
+    StopChange x d  -> let
                         updated_model = Model (case d of
                            -- Stop changed, needs to be revalidated
                            -- Todo reset delays when these change
@@ -83,7 +85,7 @@ update msg (Model m) = case msg of
                         ), Cmd.none)
     CalcDelay       -> (Model {m | loading = Loading}, requestDelays (Model m))
     GotDelays res   -> case res of
-                         Ok (d1, d2) -> (Model {m | delays = Just (d1, d2), loading = NotLoading}, Cmd.none)
+                         Ok dfdis -> (Model {m | delays = Just dfdis, loading = NotLoading}, Cmd.none)
                          Err _       -> (Model {m | loading = NotLoading}, Cmd.none)
 
 -- | Attempts to find the name in a bus field in its known dict of buses to create an identified bus
@@ -118,11 +120,14 @@ requestDelays (Model m) = case (m.departure, m.destination, m.bus) of
                                                                        ],
       body = Http.emptyBody,
       expect = Http.expectJson GotDelays
-      (Json.Decode.map2 (\a b -> (a, b)) (field "departureDelay" int) (field "destinationDelay" int)),
+      (Json.Decode.map2 (\a b -> (a, b)) (field "departureDelays" (Json.Decode.list decodeFrequency)) (field "destinationDelays" (Json.Decode.list decodeFrequency))),
       timeout = Nothing,
       tracker = Nothing
     }
   (_, _, _) -> Cmd.none
+
+decodeFrequency : Json.Decode.Decoder (Int, Int)
+decodeFrequency = Json.Decode.map2 (\a b -> (a, b)) (field "punct" int) (field "freq" int)
 
 -- | Factory method for the static buses/stops requests
 requestStatic : String -> String -> ((Result Http.Error (List (String, Int))) -> Msg) -> Cmd Msg
@@ -177,7 +182,7 @@ view (Model m) = div [] [ -- Time changes, display in between - & +
                                                                                                   NoStop x -> []
                                                                                                   Stop i f -> case m.delays of
                                                                                                                 Nothing       -> ([text "Geldige halte"])
-                                                                                                                Just (d1, d2) -> [text (if d1 == 0 then "Op tijd!" else ("+" ++ (String.fromInt d1)))])),
+                                                                                                                Just (d1, d2) -> [plot d1])),
                          div [] [button [onClick ReverseStops] [text "⇅"]],
                          div [] ([input [placeholder "Aankomsthalte",
                                          Html.Attributes.list "stops",
@@ -190,7 +195,7 @@ view (Model m) = div [] [ -- Time changes, display in between - & +
                                                                                                   NoStop x -> []
                                                                                                   Stop i f -> case m.delays of
                                                                                                                 Nothing       -> ([text "Geldige halte"])
-                                                                                                                Just (d1, d2) -> [text (if d2 == 0 then "Op tijd!" else ("+" ++ (String.fromInt d2)))])),
+                                                                                                                Just (d1, d2) -> [plot d2])),
                          -- Bus input
                          div [] ([input [placeholder "Bus",
                                          Html.Attributes.list "busses",
@@ -208,6 +213,17 @@ view (Model m) = div [] [ -- Time changes, display in between - & +
                                                                                                   NoBus x -> [])),
                          div [] [button [onClick CalcDelay] [text "Voorspel vertraging"]]
                 ]
+
+plot : List (Int, Int) -> Html Msg
+plot ls = Chart.render (ls, {xGroup = always Nothing, xValue = (\(p, _) -> String.fromInt p), yValue = (\(_, f) -> toFloat f)}) (Chart.init { margin =
+                                                                                                                                        { top = 10
+                                                                                                                                        , right = 10
+                                                                                                                                        , bottom = 30
+                                                                                                                                        , left = 30
+                                                                                                                                        }
+                                                                                                                                    , width = 500
+                                                                                                                                    , height = 200
+                                                                                                                                    })
 
 -- | Subtracts up to 60 minutes from a given MomentInWeek. Does not change 'day' on wrap-around
 subMinute : MomentInWeek -> Int -> MomentInWeek

@@ -27,5 +27,5 @@ type Bus = Bus Int (() -> String) --^ An identified bus, storing its id and a fu
 type LoadingState = Loading
                   | NotLoading
 
--- | Average delay in minutes at (departure, destination)
-type alias DelayInfo = Maybe (Int, Int)
+-- | Sorted frequency distribution of the delays at (departure, destination), in format (punctuality, frequency)
+type alias DelayInfo = Maybe (List (Int, Int), List (Int, Int))

@@ -60,6 +60,7 @@ getDelays (DelayRequest departure destination bus weekday hour minute) = do
   end_delay <- get False
   return Delays {departureDelays = toDelayFrequencies start_delay, destinationDelays = toDelayFrequencies end_delay}
   where
+    -- Would have added these two to MessageFormat.hs, but Frequency is the App source, not the Lib source
     toDelayFrequencies fs = sortOn punct $ map toDelayFrequency fs
     toDelayFrequency (Frequency _ p f) = DelayFrequency p f
     get get_start =

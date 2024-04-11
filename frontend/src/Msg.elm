@@ -21,7 +21,7 @@ type Msg = -- Input changes
          | GotStops (Result Http.Error (List (String, Int)))
          | GotBuses (Result Http.Error (List (String, Int)))
          -- Delay request
-         | GotDelays (Result Http.Error (Int, Int))
+         | GotDelays (Result Http.Error (List (Int, Int), List (Int, Int)))
 
 -- | Whether functionality involving a stop should work on the departure or destination stop
 type RouteEndpoint = Departure
