@@ -12,9 +12,6 @@ type Msg = -- Input changes
          | DayChange Time.Weekday
          | TimeChange TimeMod
          | ReverseStops
-         -- | Check that input in bus/stop field represents a valid bus/stop
-         | ValidateBus
-         | ValidateStop RouteEndpoint
          -- Request delay calculation
          | CalcDelay
          -- To set the default time to local time, not used afterwards

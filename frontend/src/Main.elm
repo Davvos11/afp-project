@@ -68,21 +68,14 @@ update msg (Model m) = case msg of
                                                      PlusHour   -> addMinute m.momentInWeek 60
                         )}, Cmd.none)
     DayChange d     -> (Model {m | momentInWeek = (\(MomentInWeek momentInWeek) -> MomentInWeek {momentInWeek | day = d}) m.momentInWeek}, Cmd.none)
-    StopChange x d  -> let
-                        updated_model = Model (case d of
-                           -- Stop changed, needs to be revalidated
-                           -- Todo reset delays when these change
-                           Departure   -> {m | departure   = NoStop x}
-                           Destination -> {m | destination = NoStop x})
-                        in update (ValidateStop d) updated_model
-                           -- Same for the bus
-    BusChange x     -> update ValidateBus (Model {m | bus = NoBus x})
+    StopChange x d  -> (Model (case d of
+                                -- Stop changed, needs to be revalidated
+                                Departure   -> {m | departure   = tryParseStop (NoStop x) m.stops}
+                                Destination -> {m | destination = tryParseStop (NoStop x) m.stops})
+                             , Cmd.none)
+                                -- Same for the bus
+    BusChange x     -> (Model {m | bus = tryParseBus (NoBus x) (m.buses)}, Cmd.none)
     ReverseStops    -> (Model {m | departure = m.destination, destination = m.departure}, Cmd.none)
-    ValidateBus     -> (Model {m | bus = tryParseBus (m.bus) (m.buses)}, Cmd.none)
-    ValidateStop d  -> (Model (case d of
-                           Departure   -> {m | departure   = tryParseStop m.departure   m.stops}
-                           Destination -> {m | destination = tryParseStop m.destination m.stops}
-                        ), Cmd.none)
     CalcDelay       -> (Model {m | loading = Loading}, requestDelays (Model m))
     GotDelays res   -> case res of
                          Ok (d1, d2) -> (Model {m | delays = Just (delayDataToFrequencies d1, delayDataToFrequencies d2), loading = NotLoading}, Cmd.none)
@@ -176,22 +169,19 @@ view (Model m) = div [] ([ -- Time changes, display in between - & +
                                     select [] (
                                       Dict.values m.stops |> List.map (\(k, v) -> option [] [text v])
                                     )
-                                  ],
-                                  -- Validation. Shows whether the input parsed. Shows delay if calculated instead
-                                  button [onClick (ValidateStop Departure)] [text "Check"]] ++ (case m.departure of
-                                                                                                  NoStop x -> []
-                                                                                                  Stop i f -> [text "Geldige halte"])),
+                                  ]] ++ (case m.departure of
+                                           NoStop x -> []
+                                           Stop i f -> [text "Geldige halte"])),
                          div [] [button [onClick ReverseStops] [text "⇅"]],
                          div [] ([input [placeholder "Aankomsthalte",
                                          Html.Attributes.list "stops",
                                          value (case m.destination of
                                                   Stop i f -> f ()
                                                   NoStop x -> x),
-                                         onInput (\x -> StopChange x Destination)] [],
-                                  -- Validation. Shows whether the input parsed. Shows delay if calculated instead
-                                  button [onClick (ValidateStop Destination)] [text "Check"]] ++ (case m.destination of
-                                                                                                  NoStop x -> []
-                                                                                                  Stop i f -> [text "Geldige halte"])),
+                                         onInput (\x -> StopChange x Destination)] []
+                                  ] ++ (case m.destination of
+                                          NoStop x -> []
+                                          Stop i f -> [text "Geldige halte"])),
                          -- Bus input
                          div [] ([input [placeholder "Bus",
                                          Html.Attributes.list "buses",
@@ -203,10 +193,9 @@ view (Model m) = div [] ([ -- Time changes, display in between - & +
                                     select [] (
                                       Dict.values m.buses |> List.map (\(k, v) -> option [] [text v])
                                     )
-                                  ],
-                                  button [onClick ValidateBus] [text "Check"]] ++ (case m.bus of
-                                                                                                  Bus i f -> [text "Geldige bus"]
-                                                                                                  NoBus x -> [])),
+                                  ]] ++ (case m.bus of
+                                           Bus i f -> [text "Geldige bus"]
+                                           NoBus x -> [])),
                          div [] [button [onClick CalcDelay] [text "Voorspel vertraging"]]
                 ] ++ (case m.departure of
                         NoStop x -> []
