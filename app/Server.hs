@@ -2,17 +2,20 @@
 
 module Server (runServer) where
 
-import Data.Aeson
+import Data.List (sortOn)
+import Data.Aeson ( encode )
 import Database (Filter (..), TimeOfDay (TimeOfDay), getFrequencies, getLines, getStops)
 import Database.Models (Frequency (..))
 import MessageFormat
     ( DelayRequest(DelayRequest),
       Delays(..),
+      DelayFrequency(..),
       Buses(Buses),
       Stops(Stops),
       toStopPair,
       toBusPair,
       parseDelayRequest )
+import TestServer
 import Network.HTTP.Types
 import Network.Wai
 import Network.Wai.Handler.Warp
@@ -56,8 +59,11 @@ getDelays :: DelayRequest -> IO Delays
 getDelays (DelayRequest departure destination bus weekday hour minute) = do
   start_delay <- get True
   end_delay <- get False
-  return Delays {departureDelay = encodeDelayFrequency start_delay, destinationDelay = encodeDelayFrequency end_delay}
+  return Delays {departureDelays = toDelayFrequencies start_delay, destinationDelays = toDelayFrequencies end_delay}
   where
+    -- Would have added these two to MessageFormat.hs, but Frequency is the App source, not the Lib source
+    toDelayFrequencies fs = sortOn punct $ map toDelayFrequency fs
+    toDelayFrequency (Frequency _ p f) = DelayFrequency p f
     get get_start =
       getFrequencies get_start $
         Filter
