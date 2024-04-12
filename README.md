@@ -6,14 +6,14 @@ cabal run afp-project
 # Alternatively, to not re-generate the stop and bus id's
 cabal run afp-project -- skip-generate
 
-## Subscriber:
+## Subscriber (New Terminal):
 # Once
 pip install zmq
 pip install asyncio
 pip install websockets
 # First:
 python src/zmq_to_ws_relay.py
-# Second, in a separate terminal:
+# Second, (yet another new terminal):
 cabal run afp-subscriber
 ```
 
