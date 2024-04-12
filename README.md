@@ -4,6 +4,8 @@
 cabal run
 ```
 
+When the server is ready, open `fronted/index.html` in your browser.
+
 ## Run with docker
 ```bash
 # Build image (re-run this after adding dependencies)
