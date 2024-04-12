@@ -8,4 +8,4 @@ COPY . /app/
 
 RUN cabal install
 
-CMD [ "cabal", "run" ]
+CMD [ "afp-project" ]

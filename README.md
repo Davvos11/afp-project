@@ -14,3 +14,5 @@ docker run -it \
     -v ./database-prod.db:/app/database-prod.db \
     davvos11/afp-project
 ```
+
+If you run this using `docker-compose`, make sure to add `- tty: true`. For some reason it will not print logs run without a shell.
