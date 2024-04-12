@@ -208,7 +208,7 @@ view (Model m) = div [] ([ -- Time changes, display in between - & +
                 )
 -- | Plots the frequency distribution of delays at the given stop
 plot : DelayFrequencies -> String -> Html Msg
-plot (ls, tot) n = div [] [text ("Vertraging bij halte " ++ n ++ ":"),
+plot (ls, tot) n = div [] [text ("Verwachte vertraging bij halte " ++ n ++ ":"),
                            Chart.render (ls, {xGroup = always Nothing,
                                               xValue = (\(p, _) -> String.fromInt p ++ " min"),
                                               yValue = (\(_, f) -> toFloat f / toFloat tot * 100)})
