@@ -113,7 +113,7 @@ printPosInfos = do
 
 writePosInfos :: ConduitT PosInfo Void IO ()
 writePosInfos = do
-    dbconn <- liftIO $ SQL.open "initial_database.db"
+    dbconn <- liftIO $ SQL.open "database-subscriber.db"
     liftIO $ SQL.execute_ dbconn
         "CREATE TABLE IF NOT EXISTS actual_arrivals ( \
         \    timestamp TEXT,\
@@ -250,7 +250,7 @@ decompressMessage (WS.Binary a)
 
 filterPosInfo :: ConduitT PosInfo Void IO () -> ConduitT PosInfo Void IO ()
 filterPosInfo dst = do
-    dbconn <- liftIO $ SQL.open "initial_database.db"
+    dbconn <- liftIO $ SQL.open "database-subscriber.db"
     filterConduit (includeUpdate dbconn) .| dst
 
     -- Won't be reached if the conduit runs forever
@@ -280,7 +280,7 @@ testing :: WS.ClientApp ()
 testing conn = do
     putStrLn "Connected!"
 
-    dbconn <- liftIO $ SQL.open "initial_database.db"
+    dbconn <- liftIO $ SQL.open "database-subscriber.db"
     _ <- forever $ do
         msg <- WS.receiveDataMessage conn
 
