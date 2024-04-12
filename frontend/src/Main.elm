@@ -16,6 +16,16 @@ import String
 
 import Model exposing (..)
 import Msg exposing (..)
+import Html exposing (datalist)
+import Html.Attributes exposing (id)
+import Html exposing (select)
+import Html exposing (option)
+import Html.Attributes exposing (list)
+
+import Chart.Bar as Chart
+
+backend_url = "http://localhost:3000"
+-- backend_url = "https://delay-forecast-api.dovatvis.nl"
 
 main : Program () Model Msg
 main = Browser.element {init = init,
@@ -62,22 +72,16 @@ update msg (Model m) = case msg of
                         )}, Cmd.none)
     DayChange d     -> (Model {m | momentInWeek = (\(MomentInWeek momentInWeek) -> MomentInWeek {momentInWeek | day = d}) m.momentInWeek}, Cmd.none)
     StopChange x d  -> (Model (case d of
-                           -- Stop changed, needs to be revalidated
-                           -- Todo reset delays when these change
-                           Departure   -> {m | departure   = NoStop x}
-                           Destination -> {m | destination = NoStop x}
-                      ), Cmd.none)
-                           -- Same for the bus
-    BusChange x     -> (Model {m | bus = NoBus x}, Cmd.none)
+                                -- Stop changed, needs to be revalidated
+                                Departure   -> {m | departure   = tryParseStop (NoStop x) m.stops}
+                                Destination -> {m | destination = tryParseStop (NoStop x) m.stops})
+                             , Cmd.none)
+                                -- Same for the bus
+    BusChange x     -> (Model {m | bus = tryParseBus (NoBus x) (m.buses)}, Cmd.none)
     ReverseStops    -> (Model {m | departure = m.destination, destination = m.departure}, Cmd.none)
-    ValidateBus     -> (Model {m | bus = tryParseBus (m.bus) (m.buses)}, Cmd.none)
-    ValidateStop d  -> (Model (case d of
-                           Departure   -> {m | departure   = tryParseStop m.departure   m.stops}
-                           Destination -> {m | destination = tryParseStop m.destination m.stops}
-                        ), Cmd.none)
     CalcDelay       -> (Model {m | loading = Loading}, requestDelays (Model m))
     GotDelays res   -> case res of
-                         Ok (d1, d2) -> (Model {m | delays = Just (d1, d2), loading = NotLoading}, Cmd.none)
+                         Ok (d1, d2) -> (Model {m | delays = Just (delayDataToFrequencies d1, delayDataToFrequencies d2), loading = NotLoading}, Cmd.none)
                          Err _       -> (Model {m | loading = NotLoading}, Cmd.none)
 
 -- | Attempts to find the name in a bus field in its known dict of buses to create an identified bus
@@ -86,7 +90,7 @@ tryParseBus b dict = case b of
     Bus i f -> Bus i f
     NoBus x -> case Dict.get (String.toLower x) dict of
                Nothing          -> NoBus x
-               Just (i, xprime) -> Bus i (always xprime)
+               Just (i, xprime) -> Bus (always i) (always xprime)
 
 -- | Attempts to find the name in a stop field in its known dict of stops to create an identified stop
 tryParseStop : Stop -> Dict.Dict String (Int, String) -> Stop
@@ -94,7 +98,7 @@ tryParseStop s dict = case s of
     Stop i f -> Stop i f
     NoStop x -> case Dict.get (String.toLower x) dict of
                Nothing          -> NoStop x
-               Just (i, xprime) -> Stop i (always xprime)
+               Just (i, xprime) -> Stop (always i) (always xprime)
 
 -- | Creates the request to calculate the delays for this bus and these stops
 -- Idea to consider and discuss: don't send request if departure/destination are equal, or keep as feature instead to poll only a single stop
@@ -103,28 +107,31 @@ requestDelays (Model m) = case (m.departure, m.destination, m.bus) of
   (Stop i1 _, Stop i2 _, Bus i3 _) -> Http.request
     { method = "GET",
       headers = [],
-      url = Url.Builder.crossOrigin "http://localhost:3000" ["delays"] [Url.Builder.int "departure" i1,
-                                                                        Url.Builder.int "destination" i2,
-                                                                        Url.Builder.int "bus" i3,
-                                                                        Url.Builder.int "day"    ((\(MomentInWeek momentInWeek) -> toDayNumber momentInWeek.day)    m.momentInWeek),
-                                                                        Url.Builder.int "hour"   ((\(MomentInWeek momentInWeek) ->             momentInWeek.hour)   m.momentInWeek),
-                                                                        Url.Builder.int "minute" ((\(MomentInWeek momentInWeek) ->             momentInWeek.minute) m.momentInWeek)
-                                                                       ],
+      url = Url.Builder.crossOrigin backend_url ["delays"] [Url.Builder.int "departure"   (i1 ()),
+                                                            Url.Builder.int "destination" (i2 ()),
+                                                            Url.Builder.int "bus"         (i3 ()),
+                                                            Url.Builder.int "day"    ((\(MomentInWeek momentInWeek) -> toDayNumber momentInWeek.day)    m.momentInWeek),
+                                                            Url.Builder.int "hour"   ((\(MomentInWeek momentInWeek) ->             momentInWeek.hour)   m.momentInWeek),
+                                                            Url.Builder.int "minute" ((\(MomentInWeek momentInWeek) ->             momentInWeek.minute) m.momentInWeek)
+                                                           ],
       body = Http.emptyBody,
       expect = Http.expectJson GotDelays
-      (Json.Decode.map2 (\a b -> (a, b)) (field "departureDelay" int) (field "destinationDelay" int)),
+      (Json.Decode.map2 (\a b -> (a, b)) (field "departureDelays" (Json.Decode.list decodeFrequency)) (field "destinationDelays" (Json.Decode.list decodeFrequency))),
       timeout = Nothing,
       tracker = Nothing
     }
   (_, _, _) -> Cmd.none
 
+decodeFrequency : Json.Decode.Decoder (Int, Int)
+decodeFrequency = Json.Decode.map2 (\a b -> (a, b)) (field "punct" int) (field "freq" int)
+
 -- | Factory method for the static buses/stops requests
 requestStatic : String -> String -> ((Result Http.Error (List (String, Int))) -> Msg) -> Cmd Msg
 requestStatic singular plural msgToSend = Http.request { method = "GET",
                                                          headers = [],
-                                                         url = Url.Builder.crossOrigin "http://localhost:3000" [plural] [],
+                                                         url = Url.Builder.crossOrigin backend_url [plural] [],
                                                          body = Http.emptyBody,
-                                                         expect = Http.expectJson msgToSend (field plural (list (Json.Decode.map2 (\a b -> (a, b)) (field (singular ++ "Name") string) (field (singular ++ "Id") int)))),
+                                                         expect = Http.expectJson msgToSend (field plural (Json.Decode.list (Json.Decode.map2 (\a b -> (a, b)) (field (singular ++ "Name") string) (field (singular ++ "Id") int)))),
                                                          timeout = Nothing,
                                                          tracker = Nothing
                                                        }
@@ -137,7 +144,7 @@ requestBuses = requestStatic "bus" "buses" GotBuses
 -- | How to display the model
 -- Massive todo, turn this into smaller, digestable bits
 view : Model -> Html Msg
-view (Model m) = div [] [ -- Time changes, display in between - & +
+view (Model m) = div [] ([ -- Time changes, display in between - & +
                          button [onClick (TimeChange Minus5Min)] [text "-5"],
                          button [onClick (TimeChange Minus15Min)] [text "-15"],
                          button [onClick (TimeChange MinusHour)] [text "-60"],
@@ -159,36 +166,67 @@ view (Model m) = div [] [ -- Time changes, display in between - & +
                                          value (case m.departure of
                                                   Stop i f -> f ()
                                                   NoStop x -> x),
+                                         Html.Attributes.list "stops",
                                          onInput (\x -> StopChange x Departure)] [],
-                                  -- Validation. Shows whether the input parsed. Shows delay if calculated instead
-                                  button [onClick (ValidateStop Departure)] [text "Check"]] ++ (case m.departure of
-                                                                                                  NoStop x -> []
-                                                                                                  Stop i f -> case m.delays of
-                                                                                                                Nothing       -> ([text "Geldige halte"])
-                                                                                                                Just (d1, d2) -> [text (if d1 == 0 then "Op tijd!" else ("+" ++ (String.fromInt d1)))])),
+                                  datalist [id "stops"] [
+                                    select [] (
+                                      Dict.values m.stops |> List.map (\(k, v) -> option [] [text v])
+                                    )
+                                  ]] ++ (case m.departure of
+                                           NoStop x -> []
+                                           Stop i f -> [text "Geldige halte"])),
                          div [] [button [onClick ReverseStops] [text "⇅"]],
                          div [] ([input [placeholder "Aankomsthalte",
+                                         Html.Attributes.list "stops",
                                          value (case m.destination of
                                                   Stop i f -> f ()
                                                   NoStop x -> x),
-                                         onInput (\x -> StopChange x Destination)] [],
-                                  -- Validation. Shows whether the input parsed. Shows delay if calculated instead
-                                  button [onClick (ValidateStop Destination)] [text "Check"]] ++ (case m.destination of
-                                                                                                  NoStop x -> []
-                                                                                                  Stop i f -> case m.delays of
-                                                                                                                Nothing       -> ([text "Geldige halte"])
-                                                                                                                Just (d1, d2) -> [text (if d2 == 0 then "Op tijd!" else ("+" ++ (String.fromInt d2)))])),
+                                         onInput (\x -> StopChange x Destination)] []
+                                  ] ++ (case m.destination of
+                                          NoStop x -> []
+                                          Stop i f -> [text "Geldige halte"])),
                          -- Bus input
                          div [] ([input [placeholder "Bus",
+                                         Html.Attributes.list "buses",
                                          value (case m.bus of
                                                   Bus i f -> f ()
                                                   NoBus x -> x),
                                          onInput (\x -> BusChange x)] [],
-                                  button [onClick ValidateBus] [text "Check"]] ++ (case m.bus of
-                                                                                                  Bus i f -> [text "Geldige bus"]
-                                                                                                  NoBus x -> [])),
+                                  datalist [id "buses"] [
+                                    select [] (
+                                      Dict.values m.buses |> List.map (\(k, v) -> option [] [text v])
+                                    )
+                                  ]] ++ (case m.bus of
+                                           Bus i f -> [text "Geldige bus"]
+                                           NoBus x -> [])),
                          div [] [button [onClick CalcDelay] [text "Voorspel vertraging"]]
-                ]
+                ] ++ (case m.departure of
+                        NoStop x -> []
+                        Stop i f -> case m.delays of
+                                      Nothing       -> []
+                                      Just (d1, d2) -> [plot d1 (f ())])
+                ++ (case m.destination of
+                        NoStop x -> []
+                        Stop i f -> case m.delays of
+                                      Nothing       -> []
+                                      Just (d1, d2) -> [plot d2 (f ())])
+                )
+-- | Plots the frequency distribution of delays at the given stop
+plot : DelayFrequencies -> String -> Html Msg
+plot (ls, tot) n = div [] [text ("Vertraging bij halte " ++ n ++ ":"),
+                           Chart.render (ls, {xGroup = always Nothing,
+                                              xValue = (\(p, _) -> String.fromInt p ++ " min"),
+                                              yValue = (\(_, f) -> toFloat f / toFloat tot * 100)})
+                                        ((Chart.init { margin =
+                                                          { top = 10
+                                                          , right = 10
+                                                          , bottom = 30
+                                                          , left = 30
+                                                          }
+                                                      , width = 500
+                                                      , height = 200
+                                                      }) {- |> Can add more configuration here -})
+                           ]
 
 -- | Subtracts up to 60 minutes from a given MomentInWeek. Does not change 'day' on wrap-around
 subMinute : MomentInWeek -> Int -> MomentInWeek

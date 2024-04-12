@@ -1,11 +1,17 @@
 module Main where
 
-import Parser
 import Database
 import Server
+import System.Environment
+import Control.Monad
+
 
 main :: IO ()
 main = do
-  x <- Database.getFrequenciesForBusStop 1
-  mapM_ print x
+  args <- getArgs -- Command line arguments
+  unless ("skip-generate" `elem` args) $ do
+      putStrLn "Generating line and stop id's..."
+      -- TODO run this periodically?
+      Database.generateLines
+      Database.generateStops
   runServer
