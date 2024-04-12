@@ -11683,29 +11683,37 @@ var $data_viz_lab$elm_chart_builder$Chart$Bar$render = F2(
 				return $elm$html$Html$text('');
 		}
 	});
-var $author$project$Main$plot = function (ls) {
-	return A2(
-		$data_viz_lab$elm_chart_builder$Chart$Bar$render,
-		_Utils_Tuple2(
-			ls,
-			{
-				xGroup: $elm$core$Basics$always($elm$core$Maybe$Nothing),
-				xValue: function (_v0) {
-					var p = _v0.a;
-					return $elm$core$String$fromInt(p) + ' min';
-				},
-				yValue: function (_v1) {
-					var f = _v1.b;
-					return f;
-				}
-			}),
-		$data_viz_lab$elm_chart_builder$Chart$Bar$init(
-			{
-				height: 200,
-				margin: {bottom: 30, left: 30, right: 10, top: 10},
-				width: 500
-			}));
-};
+var $author$project$Main$plot = F2(
+	function (ls, n) {
+		return A2(
+			$elm$html$Html$div,
+			_List_Nil,
+			_List_fromArray(
+				[
+					$elm$html$Html$text('Vertraging bij halte ' + (n + 'n')),
+					A2(
+					$data_viz_lab$elm_chart_builder$Chart$Bar$render,
+					_Utils_Tuple2(
+						ls,
+						{
+							xGroup: $elm$core$Basics$always($elm$core$Maybe$Nothing),
+							xValue: function (_v0) {
+								var p = _v0.a;
+								return $elm$core$String$fromInt(p) + ' min';
+							},
+							yValue: function (_v1) {
+								var f = _v1.b;
+								return f;
+							}
+						}),
+					$data_viz_lab$elm_chart_builder$Chart$Bar$init(
+						{
+							height: 200,
+							margin: {bottom: 30, left: 30, right: 10, top: 10},
+							width: 500
+						}))
+				]));
+	});
 var $elm$html$Html$select = _VirtualDom_node('select');
 var $author$project$Main$toDutchWeekday = function (t) {
 	return function () {
@@ -12176,7 +12184,10 @@ var $author$project$Main$view = function (_v0) {
 							var d2 = _v13.b;
 							return _List_fromArray(
 								[
-									$author$project$Main$plot(d1)
+									A2(
+									$author$project$Main$plot,
+									d1,
+									f(_Utils_Tuple0))
 								]);
 						}
 					}
@@ -12198,7 +12209,10 @@ var $author$project$Main$view = function (_v0) {
 							var d2 = _v16.b;
 							return _List_fromArray(
 								[
-									$author$project$Main$plot(d2)
+									A2(
+									$author$project$Main$plot,
+									d2,
+									f(_Utils_Tuple0))
 								]);
 						}
 					}

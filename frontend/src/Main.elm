@@ -212,27 +212,29 @@ view (Model m) = div [] ([ -- Time changes, display in between - & +
                         NoStop x -> []
                         Stop i f -> case m.delays of
                                       Nothing       -> []
-                                      Just (d1, d2) -> [plot d1])
+                                      Just (d1, d2) -> [plot d1 (f ())])
                 ++ (case m.destination of
                         NoStop x -> []
                         Stop i f -> case m.delays of
                                       Nothing       -> []
-                                      Just (d1, d2) -> [plot d2])
+                                      Just (d1, d2) -> [plot d2 (f ())])
                 )
-
-plot : List (Int, Int) -> Html Msg
-plot ls = Chart.render (ls, {xGroup = always Nothing,
-                             xValue = (\(p, _) -> String.fromInt p ++ " min"),
-                             yValue = (\(_, f) -> toFloat f)})
-                        (Chart.init { margin =
-                                        { top = 10
-                                        , right = 10
-                                        , bottom = 30
-                                        , left = 30
-                                        }
-                                    , width = 500
-                                    , height = 200
-                                    })
+-- | Plots the frequency distribution of delays at the given stop
+plot : List (Int, Int) -> String -> Html Msg
+plot ls n = div [] [text ("Vertraging bij halte " ++ n ++ "n"),
+                    Chart.render (ls, {xGroup = always Nothing,
+                                       xValue = (\(p, _) -> String.fromInt p ++ " min"),
+                                       yValue = (\(_, f) -> toFloat f)})
+                                 (Chart.init { margin =
+                                                  { top = 10
+                                                  , right = 10
+                                                  , bottom = 30
+                                                  , left = 30
+                                                  }
+                                              , width = 500
+                                              , height = 200
+                                              })
+                    ]
 
 -- | Subtracts up to 60 minutes from a given MomentInWeek. Does not change 'day' on wrap-around
 subMinute : MomentInWeek -> Int -> MomentInWeek
