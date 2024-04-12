@@ -184,6 +184,10 @@ includeUpdate dbconn m =
                     case Map.lookup "userstopcode" m of
                         Just a -> a
                         Nothing -> error $ "Missing userstopcode in " ++ show m)
+
+                -- If the stop is not found in the database, it means it is
+                -- outside the geographic region of interest. We therefore
+                -- exclude this PosInfo from the database.
                 pure $ isJust stop
 
 
