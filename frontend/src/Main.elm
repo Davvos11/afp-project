@@ -107,13 +107,13 @@ requestDelays (Model m) = case (m.departure, m.destination, m.bus) of
   (Stop i1 _, Stop i2 _, Bus i3 _) -> Http.request
     { method = "GET",
       headers = [],
-      url = Url.Builder.crossOrigin backend_url ["delays"] [Url.Builder.int "departure" (i1 ()),
-                                                                        Url.Builder.int "destination" (i2 ()),
-                                                                        Url.Builder.int "bus" (i3 ()),
-                                                                        Url.Builder.int "day"    ((\(MomentInWeek momentInWeek) -> toDayNumber momentInWeek.day)    m.momentInWeek),
-                                                                        Url.Builder.int "hour"   ((\(MomentInWeek momentInWeek) ->             momentInWeek.hour)   m.momentInWeek),
-                                                                        Url.Builder.int "minute" ((\(MomentInWeek momentInWeek) ->             momentInWeek.minute) m.momentInWeek)
-                                                                       ],
+      url = Url.Builder.crossOrigin backend_url ["delays"] [Url.Builder.int "departure"   (i1 ()),
+                                                            Url.Builder.int "destination" (i2 ()),
+                                                            Url.Builder.int "bus"         (i3 ()),
+                                                            Url.Builder.int "day"    ((\(MomentInWeek momentInWeek) -> toDayNumber momentInWeek.day)    m.momentInWeek),
+                                                            Url.Builder.int "hour"   ((\(MomentInWeek momentInWeek) ->             momentInWeek.hour)   m.momentInWeek),
+                                                            Url.Builder.int "minute" ((\(MomentInWeek momentInWeek) ->             momentInWeek.minute) m.momentInWeek)
+                                                           ],
       body = Http.emptyBody,
       expect = Http.expectJson GotDelays
       (Json.Decode.map2 (\a b -> (a, b)) (field "departureDelays" (Json.Decode.list decodeFrequency)) (field "destinationDelays" (Json.Decode.list decodeFrequency))),
