@@ -1,36 +1,36 @@
 {-
 This file contains code from https://github.com/jaspervdj/websockets/blob/master/example/client.hs, which is licensed under the following terms:
 
-Copyright Jasper Van der Jeugt, 2011
+    Copyright Jasper Van der Jeugt, 2011
 
-All rights reserved.
+    All rights reserved.
 
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+        * Redistributions of source code must retain the above copyright
+        notice, this list of conditions and the following disclaimer.
 
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following
-      disclaimer in the documentation and/or other materials provided
-      with the distribution.
+        * Redistributions in binary form must reproduce the above
+        copyright notice, this list of conditions and the following
+        disclaimer in the documentation and/or other materials provided
+        with the distribution.
 
-    * Neither the name of Siniša Biđin nor the names of other
-      contributors may be used to endorse or promote products derived
-      from this software without specific prior written permission.
+        * Neither the name of Siniša Biđin nor the names of other
+        contributors may be used to endorse or promote products derived
+        from this software without specific prior written permission.
 
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+    "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+    A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+    OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+    SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+    LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+    DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+    THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+    (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -}
 
 {-# LANGUAGE OverloadedStrings #-}
@@ -113,7 +113,7 @@ printPosInfos = do
 
 writePosInfos :: ConduitT PosInfo Void IO ()
 writePosInfos = do
-    dbconn <- liftIO $ SQL.open "database2.db"
+    dbconn <- liftIO $ SQL.open "initial_database.db"
     liftIO $ SQL.execute_ dbconn
         "CREATE TABLE IF NOT EXISTS actual_arrivals ( \
         \    timestamp TEXT,\
@@ -250,7 +250,7 @@ decompressMessage (WS.Binary a)
 
 filterPosInfo :: ConduitT PosInfo Void IO () -> ConduitT PosInfo Void IO ()
 filterPosInfo dst = do
-    dbconn <- liftIO $ SQL.open "database2.db"
+    dbconn <- liftIO $ SQL.open "initial_database.db"
     filterConduit (includeUpdate dbconn) .| dst
 
     -- Won't be reached if the conduit runs forever
@@ -280,7 +280,7 @@ testing :: WS.ClientApp ()
 testing conn = do
     putStrLn "Connected!"
 
-    dbconn <- liftIO $ SQL.open "database2.db"
+    dbconn <- liftIO $ SQL.open "initial_database.db"
     _ <- forever $ do
         msg <- WS.receiveDataMessage conn
 

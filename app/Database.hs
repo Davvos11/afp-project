@@ -36,7 +36,7 @@ data Filter = Filter {
 -- instead of at the end_stop.
 getFrequencies :: Bool -> Filter -> IO [Frequency]
 getFrequencies get_start f@(Filter mStartStop mEndStop mLine mTime mDay) = do
-    conn <- open "database-prod.db"
+    conn <- open "database4.db"
     print f
     print queryString
     print parameters
@@ -81,7 +81,7 @@ getFrequencies get_start f@(Filter mStartStop mEndStop mLine mTime mDay) = do
 -- | Get an enumerated list of bus lines, from the `lines` db table.
 getLines :: IO [(String, Int)]
 getLines = do
-    conn <- open "database-prod.db"
+    conn <- open "database4.db"
     result <- query_ conn queryString :: IO [(String, Int)]
     close conn
     return result
@@ -91,7 +91,7 @@ getLines = do
 -- | Generate a list of bus lines and save it to the `lines` db table.
 generateLines :: IO ()
 generateLines = do
-    conn <- open "database-prod.db"
+    conn <- open "database4.db"
     execute_ conn dropTable
     execute_ conn createTable
     execute_ conn insertLines
@@ -109,7 +109,7 @@ generateLines = do
 -- | Get an enumerated list of bus stops, from the `stops` db table.
 getStops :: IO [(String, Int)]
 getStops = do
-    conn <- open "database-prod.db"
+    conn <- open "database4.db"
     result <- query_ conn queryString :: IO [(String, Int)]
     close conn
     return result
@@ -142,7 +142,7 @@ mapListToEnumTupleList = fst . Map.foldrWithKey convert ([], 0)
 -- | Generate a list of bus stops and save it to the `stops` db table.
 generateStops :: IO ()
 generateStops = do
-    conn <- open "database-prod.db"
+    conn <- open "database4.db"
     execute_ conn dropTable
     execute_ conn createTable
     stops <- query_ conn getNames :: IO [(String, String)]
