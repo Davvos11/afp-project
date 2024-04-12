@@ -1,9 +1,9 @@
 module Main exposing (..)
 
 import Browser
-import Html exposing (text, div, Html, button, input)
+import Html exposing (text, div, Html, button, input, Attribute)
 import Html.Events exposing (onClick, onInput)
-import Html.Attributes exposing (value, placeholder)
+import Html.Attributes exposing (value, placeholder, style, class, attribute)
 import Http
 import Url.Builder
 import Json.Decode exposing (field, string, int, list)
@@ -134,26 +134,60 @@ requestStops = requestStatic "stop" "stops" GotStops
 requestBuses : Cmd Msg
 requestBuses = requestStatic "bus" "buses" GotBuses
 
+weekdaySelectionButtonStyle : List (Attribute Msg)
+weekdaySelectionButtonStyle = [
+    attribute "type" "button",
+    class "weekdayButton btn btn-outline-primary"
+    -- style "background-color" "white",
+    -- style "color" "black",
+    -- style "border" "1px solid black",
+    -- style "border-radius" "5px",
+    -- style "margin" "5px",
+    -- style "padding" "5px",
+    -- style "cursor" "pointer"
+  ]
+
+weekdaySelectionButton : Time.Weekday -> String -> Html Msg
+weekdaySelectionButton d s = button ([onClick (DayChange d)] ++ weekdaySelectionButtonStyle) [text s]
+
+weekdaySelector : Model -> Html Msg
+weekdaySelector (Model m) = div [class "weekdayselector"] [
+    weekdaySelectionButton Time.Mon "Ma",
+    weekdaySelectionButton Time.Tue "Di",
+    weekdaySelectionButton Time.Wed "Wo",
+    weekdaySelectionButton Time.Thu "Do",
+    weekdaySelectionButton Time.Fri "Vr",
+    weekdaySelectionButton Time.Sat "Za",
+    weekdaySelectionButton Time.Sun "Zo",
+
+  -- button [onClick (DayChange Time.Mon)] [text "Maaa"],
+  --                                button [onClick (DayChange Time.Tue)] [text "Di"],
+  --                                button [onClick (DayChange Time.Wed)] [text "Wo"],
+  --                                button [onClick (DayChange Time.Thu)] [text "Do"],
+  --                                button [onClick (DayChange Time.Fri)] [text "Vr"],
+  --                                button [onClick (DayChange Time.Sat)] [text "Za"],
+  --                                button [onClick (DayChange Time.Sun)] [text "Zo"],
+  text (toDutchWeekday ((\(MomentInWeek momentInWeek) -> momentInWeek.day) m.momentInWeek))]
+
+timeSelectionButton : 
+
+timeSelector : Model -> Html Msg
+timeSelector (Model m) = div [class "timeselector"] [
+    button [onClick (TimeChange Minus5Min)] [text "-5"],
+    button [onClick (TimeChange Minus15Min)] [text "-15"],
+    button [onClick (TimeChange MinusHour)] [text "-60"],
+    text ((\(MomentInWeek momentInWeek) -> (if momentInWeek.hour < 10 then "0" else "") ++ String.fromInt momentInWeek.hour ++ ":" ++ (if momentInWeek.minute < 10 then "0" else "") ++ String.fromInt momentInWeek.minute) m.momentInWeek),
+    button [onClick (TimeChange PlusHour)] [text "+60"],
+    button [onClick (TimeChange Plus15Min)] [text "+15"],
+    button [onClick (TimeChange Plus5Min)] [text "+5"]]
+
 -- | How to display the model
 -- Massive todo, turn this into smaller, digestable bits
 view : Model -> Html Msg
-view (Model m) = div [] [ -- Time changes, display in between - & +
-                         button [onClick (TimeChange Minus5Min)] [text "-5"],
-                         button [onClick (TimeChange Minus15Min)] [text "-15"],
-                         button [onClick (TimeChange MinusHour)] [text "-60"],
-                         text ((\(MomentInWeek momentInWeek) -> (if momentInWeek.hour < 10 then "0" else "") ++ String.fromInt momentInWeek.hour ++ ":" ++ (if momentInWeek.minute < 10 then "0" else "") ++ String.fromInt momentInWeek.minute) m.momentInWeek),
-                         button [onClick (TimeChange PlusHour)] [text "+60"],
-                         button [onClick (TimeChange Plus15Min)] [text "+15"],
-                         button [onClick (TimeChange Plus5Min)] [text "+5"],
+view (Model m) = div [class "main"] [ -- Time changes, display in between - & +
+                         timeSelector (Model m),
                          -- Day selection
-                         div [] [button [onClick (DayChange Time.Mon)] [text "Ma"],
-                                 button [onClick (DayChange Time.Tue)] [text "Di"],
-                                 button [onClick (DayChange Time.Wed)] [text "Wo"],
-                                 button [onClick (DayChange Time.Thu)] [text "Do"],
-                                 button [onClick (DayChange Time.Fri)] [text "Vr"],
-                                 button [onClick (DayChange Time.Sat)] [text "Za"],
-                                 button [onClick (DayChange Time.Sun)] [text "Zo"],
-                                 text (toDutchWeekday ((\(MomentInWeek momentInWeek) -> momentInWeek.day) m.momentInWeek))],
+                         weekdaySelector (Model m),
                         -- Stop input
                          div [] ([input [placeholder "Vertrekhalte",
                                          value (case m.departure of

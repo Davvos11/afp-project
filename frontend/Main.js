@@ -1,17 +1,3 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Main</title>
-  <style>body { padding: 0; margin: 0; }</style>
-</head>
-
-<body>
-
-<pre id="elm"></pre>
-
-<script>
-try {
 (function(scope){
 'use strict';
 
@@ -6828,25 +6814,25 @@ var $author$project$Msg$BusChange = function (a) {
 var $author$project$Msg$CalcDelay = {$: 'CalcDelay'};
 var $author$project$Msg$Departure = {$: 'Departure'};
 var $author$project$Msg$Destination = {$: 'Destination'};
-var $author$project$Msg$Minus15Min = {$: 'Minus15Min'};
-var $author$project$Msg$Minus5Min = {$: 'Minus5Min'};
-var $author$project$Msg$MinusHour = {$: 'MinusHour'};
-var $author$project$Msg$Plus15Min = {$: 'Plus15Min'};
-var $author$project$Msg$Plus5Min = {$: 'Plus5Min'};
-var $author$project$Msg$PlusHour = {$: 'PlusHour'};
 var $author$project$Msg$ReverseStops = {$: 'ReverseStops'};
 var $author$project$Msg$StopChange = F2(
 	function (a, b) {
 		return {$: 'StopChange', a: a, b: b};
 	});
-var $author$project$Msg$TimeChange = function (a) {
-	return {$: 'TimeChange', a: a};
-};
 var $author$project$Msg$ValidateBus = {$: 'ValidateBus'};
 var $author$project$Msg$ValidateStop = function (a) {
 	return {$: 'ValidateStop', a: a};
 };
 var $elm$html$Html$button = _VirtualDom_node('button');
+var $elm$json$Json$Encode$string = _Json_wrap;
+var $elm$html$Html$Attributes$stringProperty = F2(
+	function (key, string) {
+		return A2(
+			_VirtualDom_property,
+			key,
+			$elm$json$Json$Encode$string(string));
+	});
+var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
 var $elm$html$Html$div = _VirtualDom_node('div');
 var $elm$html$Html$input = _VirtualDom_node('input');
 var $elm$virtual_dom$VirtualDom$Normal = function (a) {
@@ -6897,98 +6883,26 @@ var $elm$html$Html$Events$onInput = function (tagger) {
 			$elm$html$Html$Events$alwaysStop,
 			A2($elm$json$Json$Decode$map, tagger, $elm$html$Html$Events$targetValue)));
 };
-var $elm$json$Json$Encode$string = _Json_wrap;
-var $elm$html$Html$Attributes$stringProperty = F2(
-	function (key, string) {
-		return A2(
-			_VirtualDom_property,
-			key,
-			$elm$json$Json$Encode$string(string));
-	});
 var $elm$html$Html$Attributes$placeholder = $elm$html$Html$Attributes$stringProperty('placeholder');
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
-var $elm$html$Html$Attributes$value = $elm$html$Html$Attributes$stringProperty('value');
-var $author$project$Main$toDutchWeekday = function (t) {
-	return function () {
-		switch (t.$) {
-			case 'Mon':
-				return 'Maan';
-			case 'Tue':
-				return 'Dins';
-			case 'Wed':
-				return 'Woens';
-			case 'Thu':
-				return 'Donder';
-			case 'Fri':
-				return 'Vrij';
-			case 'Sat':
-				return 'Zater';
-			default:
-				return 'Zon';
-		}
-	}() + 'dag';
+var $author$project$Msg$Minus15Min = {$: 'Minus15Min'};
+var $author$project$Msg$Minus5Min = {$: 'Minus5Min'};
+var $author$project$Msg$MinusHour = {$: 'MinusHour'};
+var $author$project$Msg$Plus15Min = {$: 'Plus15Min'};
+var $author$project$Msg$Plus5Min = {$: 'Plus5Min'};
+var $author$project$Msg$PlusHour = {$: 'PlusHour'};
+var $author$project$Msg$TimeChange = function (a) {
+	return {$: 'TimeChange', a: a};
 };
-var $author$project$Msg$DayChange = function (a) {
-	return {$: 'DayChange', a: a};
-};
-var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
-var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
-var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
-var $author$project$Main$weekdaySelectionButtonStyle = _List_fromArray(
-	[
-		$elm$html$Html$Attributes$class('weekdayButton'),
-		A2($elm$html$Html$Attributes$style, 'background-color', 'white'),
-		A2($elm$html$Html$Attributes$style, 'color', 'black'),
-		A2($elm$html$Html$Attributes$style, 'border', '1px solid black'),
-		A2($elm$html$Html$Attributes$style, 'border-radius', '5px'),
-		A2($elm$html$Html$Attributes$style, 'margin', '5px'),
-		A2($elm$html$Html$Attributes$style, 'padding', '5px'),
-		A2($elm$html$Html$Attributes$style, 'cursor', 'pointer')
-	]);
-var $author$project$Main$weekdaySelectionButton = F2(
-	function (d, s) {
-		return A2(
-			$elm$html$Html$button,
-			_Utils_ap(
-				_List_fromArray(
-					[
-						$elm$html$Html$Events$onClick(
-						$author$project$Msg$DayChange(d))
-					]),
-				$author$project$Main$weekdaySelectionButtonStyle),
-			_List_fromArray(
-				[
-					$elm$html$Html$text(s)
-				]));
-	});
-var $author$project$Main$weekdaySelector = function (_v0) {
+var $author$project$Main$timeSelector = function (_v0) {
 	var m = _v0.a;
 	return A2(
 		$elm$html$Html$div,
-		_List_Nil,
 		_List_fromArray(
 			[
-				A2($author$project$Main$weekdaySelectionButton, $elm$time$Time$Mon, 'Ma'),
-				A2($author$project$Main$weekdaySelectionButton, $elm$time$Time$Tue, 'Di'),
-				A2($author$project$Main$weekdaySelectionButton, $elm$time$Time$Wed, 'Wo'),
-				A2($author$project$Main$weekdaySelectionButton, $elm$time$Time$Thu, 'Do'),
-				A2($author$project$Main$weekdaySelectionButton, $elm$time$Time$Fri, 'Vr'),
-				A2($author$project$Main$weekdaySelectionButton, $elm$time$Time$Sat, 'Za'),
-				A2($author$project$Main$weekdaySelectionButton, $elm$time$Time$Sun, 'Zo'),
-				$elm$html$Html$text(
-				$author$project$Main$toDutchWeekday(
-					function (_v1) {
-						var momentInWeek = _v1.a;
-						return momentInWeek.day;
-					}(m.momentInWeek)))
-			]));
-};
-var $author$project$Main$view = function (_v0) {
-	var m = _v0.a;
-	return A2(
-		$elm$html$Html$div,
-		_List_Nil,
+				$elm$html$Html$Attributes$class('timeselector')
+			]),
 		_List_fromArray(
 			[
 				A2(
@@ -7061,7 +6975,99 @@ var $author$project$Main$view = function (_v0) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text('+5')
-					])),
+					]))
+			]));
+};
+var $elm$html$Html$Attributes$value = $elm$html$Html$Attributes$stringProperty('value');
+var $author$project$Main$toDutchWeekday = function (t) {
+	return function () {
+		switch (t.$) {
+			case 'Mon':
+				return 'Maan';
+			case 'Tue':
+				return 'Dins';
+			case 'Wed':
+				return 'Woens';
+			case 'Thu':
+				return 'Donder';
+			case 'Fri':
+				return 'Vrij';
+			case 'Sat':
+				return 'Zater';
+			default:
+				return 'Zon';
+		}
+	}() + 'dag';
+};
+var $author$project$Msg$DayChange = function (a) {
+	return {$: 'DayChange', a: a};
+};
+var $elm$virtual_dom$VirtualDom$attribute = F2(
+	function (key, value) {
+		return A2(
+			_VirtualDom_attribute,
+			_VirtualDom_noOnOrFormAction(key),
+			_VirtualDom_noJavaScriptOrHtmlUri(value));
+	});
+var $elm$html$Html$Attributes$attribute = $elm$virtual_dom$VirtualDom$attribute;
+var $author$project$Main$weekdaySelectionButtonStyle = _List_fromArray(
+	[
+		A2($elm$html$Html$Attributes$attribute, 'type', 'button'),
+		$elm$html$Html$Attributes$class('weekdayButton btn btn-outline-primary')
+	]);
+var $author$project$Main$weekdaySelectionButton = F2(
+	function (d, s) {
+		return A2(
+			$elm$html$Html$button,
+			_Utils_ap(
+				_List_fromArray(
+					[
+						$elm$html$Html$Events$onClick(
+						$author$project$Msg$DayChange(d))
+					]),
+				$author$project$Main$weekdaySelectionButtonStyle),
+			_List_fromArray(
+				[
+					$elm$html$Html$text(s)
+				]));
+	});
+var $author$project$Main$weekdaySelector = function (_v0) {
+	var m = _v0.a;
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('weekdayselector')
+			]),
+		_List_fromArray(
+			[
+				A2($author$project$Main$weekdaySelectionButton, $elm$time$Time$Mon, 'Ma'),
+				A2($author$project$Main$weekdaySelectionButton, $elm$time$Time$Tue, 'Di'),
+				A2($author$project$Main$weekdaySelectionButton, $elm$time$Time$Wed, 'Wo'),
+				A2($author$project$Main$weekdaySelectionButton, $elm$time$Time$Thu, 'Do'),
+				A2($author$project$Main$weekdaySelectionButton, $elm$time$Time$Fri, 'Vr'),
+				A2($author$project$Main$weekdaySelectionButton, $elm$time$Time$Sat, 'Za'),
+				A2($author$project$Main$weekdaySelectionButton, $elm$time$Time$Sun, 'Zo'),
+				$elm$html$Html$text(
+				$author$project$Main$toDutchWeekday(
+					function (_v1) {
+						var momentInWeek = _v1.a;
+						return momentInWeek.day;
+					}(m.momentInWeek)))
+			]));
+};
+var $author$project$Main$view = function (_v0) {
+	var m = _v0.a;
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('main')
+			]),
+		_List_fromArray(
+			[
+				$author$project$Main$timeSelector(
+				$author$project$Model$Model(m)),
 				$author$project$Main$weekdaySelector(
 				$author$project$Model$Model(m)),
 				A2(
@@ -7077,13 +7083,13 @@ var $author$project$Main$view = function (_v0) {
 									$elm$html$Html$Attributes$placeholder('Vertrekhalte'),
 									$elm$html$Html$Attributes$value(
 									function () {
-										var _v2 = m.departure;
-										if (_v2.$ === 'Stop') {
-											var i = _v2.a;
-											var f = _v2.b;
+										var _v1 = m.departure;
+										if (_v1.$ === 'Stop') {
+											var i = _v1.a;
+											var f = _v1.b;
 											return f(_Utils_Tuple0);
 										} else {
-											var x = _v2.a;
+											var x = _v1.a;
 											return x;
 										}
 									}()),
@@ -7106,23 +7112,23 @@ var $author$project$Main$view = function (_v0) {
 								]))
 						]),
 					function () {
-						var _v3 = m.departure;
-						if (_v3.$ === 'NoStop') {
-							var x = _v3.a;
+						var _v2 = m.departure;
+						if (_v2.$ === 'NoStop') {
+							var x = _v2.a;
 							return _List_Nil;
 						} else {
-							var i = _v3.a;
-							var f = _v3.b;
-							var _v4 = m.delays;
-							if (_v4.$ === 'Nothing') {
+							var i = _v2.a;
+							var f = _v2.b;
+							var _v3 = m.delays;
+							if (_v3.$ === 'Nothing') {
 								return _List_fromArray(
 									[
 										$elm$html$Html$text('Geldige halte')
 									]);
 							} else {
-								var _v5 = _v4.a;
-								var d1 = _v5.a;
-								var d2 = _v5.b;
+								var _v4 = _v3.a;
+								var d1 = _v4.a;
+								var d2 = _v4.b;
 								return _List_fromArray(
 									[
 										$elm$html$Html$text(
@@ -7160,13 +7166,13 @@ var $author$project$Main$view = function (_v0) {
 									$elm$html$Html$Attributes$placeholder('Aankomsthalte'),
 									$elm$html$Html$Attributes$value(
 									function () {
-										var _v6 = m.destination;
-										if (_v6.$ === 'Stop') {
-											var i = _v6.a;
-											var f = _v6.b;
+										var _v5 = m.destination;
+										if (_v5.$ === 'Stop') {
+											var i = _v5.a;
+											var f = _v5.b;
 											return f(_Utils_Tuple0);
 										} else {
-											var x = _v6.a;
+											var x = _v5.a;
 											return x;
 										}
 									}()),
@@ -7189,23 +7195,23 @@ var $author$project$Main$view = function (_v0) {
 								]))
 						]),
 					function () {
-						var _v7 = m.destination;
-						if (_v7.$ === 'NoStop') {
-							var x = _v7.a;
+						var _v6 = m.destination;
+						if (_v6.$ === 'NoStop') {
+							var x = _v6.a;
 							return _List_Nil;
 						} else {
-							var i = _v7.a;
-							var f = _v7.b;
-							var _v8 = m.delays;
-							if (_v8.$ === 'Nothing') {
+							var i = _v6.a;
+							var f = _v6.b;
+							var _v7 = m.delays;
+							if (_v7.$ === 'Nothing') {
 								return _List_fromArray(
 									[
 										$elm$html$Html$text('Geldige halte')
 									]);
 							} else {
-								var _v9 = _v8.a;
-								var d1 = _v9.a;
-								var d2 = _v9.b;
+								var _v8 = _v7.a;
+								var d1 = _v8.a;
+								var d2 = _v8.b;
 								return _List_fromArray(
 									[
 										$elm$html$Html$text(
@@ -7227,13 +7233,13 @@ var $author$project$Main$view = function (_v0) {
 									$elm$html$Html$Attributes$placeholder('Bus'),
 									$elm$html$Html$Attributes$value(
 									function () {
-										var _v10 = m.bus;
-										if (_v10.$ === 'Bus') {
-											var i = _v10.a;
-											var f = _v10.b;
+										var _v9 = m.bus;
+										if (_v9.$ === 'Bus') {
+											var i = _v9.a;
+											var f = _v9.b;
 											return f(_Utils_Tuple0);
 										} else {
-											var x = _v10.a;
+											var x = _v9.a;
 											return x;
 										}
 									}()),
@@ -7255,16 +7261,16 @@ var $author$project$Main$view = function (_v0) {
 								]))
 						]),
 					function () {
-						var _v11 = m.bus;
-						if (_v11.$ === 'Bus') {
-							var i = _v11.a;
-							var f = _v11.b;
+						var _v10 = m.bus;
+						if (_v10.$ === 'Bus') {
+							var i = _v10.a;
+							var f = _v10.b;
 							return _List_fromArray(
 								[
 									$elm$html$Html$text('Geldige bus')
 								]);
 						} else {
-							var x = _v11.a;
+							var x = _v10.a;
 							return _List_Nil;
 						}
 					}())),
@@ -7290,21 +7296,3 @@ var $author$project$Main$main = $elm$browser$Browser$element(
 	{init: $author$project$Main$init, subscriptions: $author$project$Main$subscriptions, update: $author$project$Main$update, view: $author$project$Main$view});
 _Platform_export({'Main':{'init':$author$project$Main$main(
 	$elm$json$Json$Decode$succeed(_Utils_Tuple0))(0)}});}(this));
-
-  var app = Elm.Main.init({ node: document.getElementById("elm") });
-}
-catch (e)
-{
-  // display initialization errors (e.g. bad flags, infinite recursion)
-  var header = document.createElement("h1");
-  header.style.fontFamily = "monospace";
-  header.innerText = "Initialization Error";
-  var pre = document.getElementById("elm");
-  document.body.insertBefore(header, pre);
-  pre.innerText = e;
-  throw e;
-}
-</script>
-
-</body>
-</html>
