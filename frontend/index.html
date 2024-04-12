@@ -5529,6 +5529,19 @@ var $author$project$Main$addMinute = F2(
 					minute: ((m.minute + x) > 59) ? ((m.minute + x) - 60) : (m.minute + x)
 				}));
 	});
+var $elm$core$Tuple$second = function (_v0) {
+	var y = _v0.b;
+	return y;
+};
+var $author$project$Model$delayDataToFrequencies = function (ls) {
+	return _Utils_Tuple2(
+		ls,
+		A3(
+			$elm$core$List$foldr,
+			$elm$core$Basics$add,
+			0,
+			A2($elm$core$List$map, $elm$core$Tuple$second, ls)));
+};
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Msg$GotBuses = function (a) {
@@ -6861,13 +6874,18 @@ var $author$project$Main$update = F2(
 				default:
 					var res = msg.a;
 					if (res.$ === 'Ok') {
-						var dfdis = res.a;
+						var _v9 = res.a;
+						var d1 = _v9.a;
+						var d2 = _v9.b;
 						return _Utils_Tuple2(
 							$author$project$Model$Model(
 								_Utils_update(
 									m,
 									{
-										delays: $elm$core$Maybe$Just(dfdis),
+										delays: $elm$core$Maybe$Just(
+											_Utils_Tuple2(
+												$author$project$Model$delayDataToFrequencies(d1),
+												$author$project$Model$delayDataToFrequencies(d2))),
 										loading: $author$project$Model$NotLoading
 									})),
 							$elm$core$Platform$Cmd$none);
@@ -7340,10 +7358,6 @@ var $elm_community$list_extra$List$Extra$groupWhile = F2(
 			_List_Nil,
 			items);
 	});
-var $elm$core$Tuple$second = function (_v0) {
-	var y = _v0.b;
-	return y;
-};
 var $elm$core$List$sortWith = _List_sortWith;
 var $elm$core$String$toFloat = _String_toFloat;
 var $data_viz_lab$elm_chart_builder$Chart$Internal$Helpers$sortStrings = F2(
@@ -11683,8 +11697,60 @@ var $data_viz_lab$elm_chart_builder$Chart$Bar$render = F2(
 				return $elm$html$Html$text('');
 		}
 	});
+var $data_viz_lab$elm_chart_builder$Chart$Internal$Type$StackedColumnTitle = function (a) {
+	return {$: 'StackedColumnTitle', a: a};
+};
+var $data_viz_lab$elm_chart_builder$Chart$Internal$Type$showStackedColumnTitle = F2(
+	function (formatter, _v0) {
+		var c = _v0.a;
+		return $data_viz_lab$elm_chart_builder$Chart$Internal$Type$toConfig(
+			_Utils_update(
+				c,
+				{
+					showColumnTitle: $data_viz_lab$elm_chart_builder$Chart$Internal$Type$StackedColumnTitle(formatter)
+				}));
+	});
+var $data_viz_lab$elm_chart_builder$Chart$Internal$Type$XOrdinalColumnTitle = {$: 'XOrdinalColumnTitle'};
+var $data_viz_lab$elm_chart_builder$Chart$Internal$Type$showXOrdinalColumnTitle = function (_v0) {
+	var c = _v0.a;
+	return $data_viz_lab$elm_chart_builder$Chart$Internal$Type$toConfig(
+		_Utils_update(
+			c,
+			{showColumnTitle: $data_viz_lab$elm_chart_builder$Chart$Internal$Type$XOrdinalColumnTitle}));
+};
+var $data_viz_lab$elm_chart_builder$Chart$Internal$Type$YColumnTitle = function (a) {
+	return {$: 'YColumnTitle', a: a};
+};
+var $data_viz_lab$elm_chart_builder$Chart$Internal$Type$showYColumnTitle = F2(
+	function (formatter, _v0) {
+		var c = _v0.a;
+		return $data_viz_lab$elm_chart_builder$Chart$Internal$Type$toConfig(
+			_Utils_update(
+				c,
+				{
+					showColumnTitle: $data_viz_lab$elm_chart_builder$Chart$Internal$Type$YColumnTitle(formatter)
+				}));
+	});
+var $data_viz_lab$elm_chart_builder$Chart$Bar$withColumnTitle = F2(
+	function (title, config) {
+		switch (title.$) {
+			case 'YColumnTitle':
+				var formatter = title.a;
+				return A2($data_viz_lab$elm_chart_builder$Chart$Internal$Type$showYColumnTitle, formatter, config);
+			case 'XOrdinalColumnTitle':
+				return $data_viz_lab$elm_chart_builder$Chart$Internal$Type$showXOrdinalColumnTitle(config);
+			case 'StackedColumnTitle':
+				var formatter = title.a;
+				return A2($data_viz_lab$elm_chart_builder$Chart$Internal$Type$showStackedColumnTitle, formatter, config);
+			default:
+				return config;
+		}
+	});
+var $data_viz_lab$elm_chart_builder$Chart$Bar$yColumnTitle = $data_viz_lab$elm_chart_builder$Chart$Internal$Type$YColumnTitle;
 var $author$project$Main$plot = F2(
-	function (ls, n) {
+	function (_v0, n) {
+		var ls = _v0.a;
+		var tot = _v0.b;
 		return A2(
 			$elm$html$Html$div,
 			_List_Nil,
@@ -11697,21 +11763,25 @@ var $author$project$Main$plot = F2(
 						ls,
 						{
 							xGroup: $elm$core$Basics$always($elm$core$Maybe$Nothing),
-							xValue: function (_v0) {
-								var p = _v0.a;
+							xValue: function (_v1) {
+								var p = _v1.a;
 								return $elm$core$String$fromInt(p) + ' min';
 							},
-							yValue: function (_v1) {
-								var f = _v1.b;
-								return f;
+							yValue: function (_v2) {
+								var f = _v2.b;
+								return (f / tot) * 100;
 							}
 						}),
-					$data_viz_lab$elm_chart_builder$Chart$Bar$init(
-						{
-							height: 200,
-							margin: {bottom: 30, left: 30, right: 10, top: 10},
-							width: 500
-						}))
+					A2(
+						$data_viz_lab$elm_chart_builder$Chart$Bar$withColumnTitle,
+						$data_viz_lab$elm_chart_builder$Chart$Bar$yColumnTitle(
+							$elm$core$Basics$always('%')),
+						$data_viz_lab$elm_chart_builder$Chart$Bar$init(
+							{
+								height: 200,
+								margin: {bottom: 30, left: 30, right: 10, top: 10},
+								width: 500
+							})))
 				]));
 	});
 var $elm$html$Html$select = _VirtualDom_node('select');

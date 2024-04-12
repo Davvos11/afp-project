@@ -2,6 +2,7 @@ module Model exposing (..)
 
 import Time
 import Dict
+import List exposing (map, foldr)
 
 type Model = Model {departure : Stop,
                     destination : Stop,
@@ -27,5 +28,11 @@ type Bus = Bus Int (() -> String) --^ An identified bus, storing its id and a fu
 type LoadingState = Loading
                   | NotLoading
 
+-- | Punctualities, Frequencies + Sum of Frequencies
+type alias DelayFrequencies = (List (Int, Int), Int)
+
+delayDataToFrequencies : List (Int, Int) -> DelayFrequencies
+delayDataToFrequencies ls = (ls, foldr (+) 0 (map Tuple.second ls))
+
 -- | Sorted frequency distribution of the delays at (departure, destination), in format (punctuality, frequency)
-type alias DelayInfo = Maybe (List (Int, Int), List (Int, Int))
+type alias DelayInfo = Maybe (DelayFrequencies, DelayFrequencies)

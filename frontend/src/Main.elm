@@ -85,7 +85,7 @@ update msg (Model m) = case msg of
                         ), Cmd.none)
     CalcDelay       -> (Model {m | loading = Loading}, requestDelays (Model m))
     GotDelays res   -> case res of
-                         Ok dfdis -> (Model {m | delays = Just dfdis, loading = NotLoading}, Cmd.none)
+                         Ok (d1, d2) -> (Model {m | delays = Just (delayDataToFrequencies d1, delayDataToFrequencies d2), loading = NotLoading}, Cmd.none)
                          Err _       -> (Model {m | loading = NotLoading}, Cmd.none)
 
 -- | Attempts to find the name in a bus field in its known dict of buses to create an identified bus
@@ -220,21 +220,21 @@ view (Model m) = div [] ([ -- Time changes, display in between - & +
                                       Just (d1, d2) -> [plot d2 (f ())])
                 )
 -- | Plots the frequency distribution of delays at the given stop
-plot : List (Int, Int) -> String -> Html Msg
-plot ls n = div [] [text ("Vertraging bij halte " ++ n ++ "n"),
-                    Chart.render (ls, {xGroup = always Nothing,
-                                       xValue = (\(p, _) -> String.fromInt p ++ " min"),
-                                       yValue = (\(_, f) -> toFloat f)})
-                                 (Chart.init { margin =
-                                                  { top = 10
-                                                  , right = 10
-                                                  , bottom = 30
-                                                  , left = 30
-                                                  }
-                                              , width = 500
-                                              , height = 200
-                                              })
-                    ]
+plot : DelayFrequencies -> String -> Html Msg
+plot (ls, tot) n = div [] [text ("Vertraging bij halte " ++ n ++ "n"),
+                           Chart.render (ls, {xGroup = always Nothing,
+                                              xValue = (\(p, _) -> String.fromInt p ++ " min"),
+                                              yValue = (\(_, f) -> toFloat f / toFloat tot * 100)})
+                                        ((Chart.init { margin =
+                                                          { top = 10
+                                                          , right = 10
+                                                          , bottom = 30
+                                                          , left = 30
+                                                          }
+                                                      , width = 500
+                                                      , height = 200
+                                                      }) {- |> Can add more configuration here -})
+                           ]
 
 -- | Subtracts up to 60 minutes from a given MomentInWeek. Does not change 'day' on wrap-around
 subMinute : MomentInWeek -> Int -> MomentInWeek
