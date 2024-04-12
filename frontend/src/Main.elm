@@ -1,12 +1,12 @@
 module Main exposing (..)
 
 import Browser
-import Html exposing (text, div, Html, button, input)
+import Html exposing (text, div, Html, button, input, datalist, select, option)
 import Html.Events exposing (onClick, onInput)
-import Html.Attributes exposing (value, placeholder)
+import Html.Attributes exposing (value, placeholder, id, list)
 import Http
 import Url.Builder
-import Json.Decode exposing (field, string, int, list)
+import Json.Decode exposing (field, string, int)
 import Task
 
 import Time exposing (utc, toHour, toMinute, toWeekday)
@@ -16,11 +16,6 @@ import String
 
 import Model exposing (..)
 import Msg exposing (..)
-import Html exposing (datalist)
-import Html.Attributes exposing (id)
-import Html exposing (select)
-import Html exposing (option)
-import Html.Attributes exposing (list)
 
 import Chart.Bar as Chart
 
