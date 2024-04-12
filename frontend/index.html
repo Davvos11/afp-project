@@ -11743,442 +11743,466 @@ var $author$project$Main$view = function (_v0) {
 	return A2(
 		$elm$html$Html$div,
 		_List_Nil,
-		_List_fromArray(
-			[
-				A2(
-				$elm$html$Html$button,
-				_List_fromArray(
-					[
-						$elm$html$Html$Events$onClick(
-						$author$project$Msg$TimeChange($author$project$Msg$Minus5Min))
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('-5')
-					])),
-				A2(
-				$elm$html$Html$button,
-				_List_fromArray(
-					[
-						$elm$html$Html$Events$onClick(
-						$author$project$Msg$TimeChange($author$project$Msg$Minus15Min))
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('-15')
-					])),
-				A2(
-				$elm$html$Html$button,
-				_List_fromArray(
-					[
-						$elm$html$Html$Events$onClick(
-						$author$project$Msg$TimeChange($author$project$Msg$MinusHour))
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('-60')
-					])),
-				$elm$html$Html$text(
-				function (_v1) {
-					var momentInWeek = _v1.a;
-					return ((momentInWeek.hour < 10) ? '0' : '') + ($elm$core$String$fromInt(momentInWeek.hour) + (':' + (((momentInWeek.minute < 10) ? '0' : '') + $elm$core$String$fromInt(momentInWeek.minute))));
-				}(m.momentInWeek)),
-				A2(
-				$elm$html$Html$button,
-				_List_fromArray(
-					[
-						$elm$html$Html$Events$onClick(
-						$author$project$Msg$TimeChange($author$project$Msg$PlusHour))
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('+60')
-					])),
-				A2(
-				$elm$html$Html$button,
-				_List_fromArray(
-					[
-						$elm$html$Html$Events$onClick(
-						$author$project$Msg$TimeChange($author$project$Msg$Plus15Min))
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('+15')
-					])),
-				A2(
-				$elm$html$Html$button,
-				_List_fromArray(
-					[
-						$elm$html$Html$Events$onClick(
-						$author$project$Msg$TimeChange($author$project$Msg$Plus5Min))
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('+5')
-					])),
-				A2(
-				$elm$html$Html$div,
-				_List_Nil,
-				_List_fromArray(
-					[
-						A2(
-						$elm$html$Html$button,
-						_List_fromArray(
-							[
-								$elm$html$Html$Events$onClick(
-								$author$project$Msg$DayChange($elm$time$Time$Mon))
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text('Ma')
-							])),
-						A2(
-						$elm$html$Html$button,
-						_List_fromArray(
-							[
-								$elm$html$Html$Events$onClick(
-								$author$project$Msg$DayChange($elm$time$Time$Tue))
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text('Di')
-							])),
-						A2(
-						$elm$html$Html$button,
-						_List_fromArray(
-							[
-								$elm$html$Html$Events$onClick(
-								$author$project$Msg$DayChange($elm$time$Time$Wed))
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text('Wo')
-							])),
-						A2(
-						$elm$html$Html$button,
-						_List_fromArray(
-							[
-								$elm$html$Html$Events$onClick(
-								$author$project$Msg$DayChange($elm$time$Time$Thu))
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text('Do')
-							])),
-						A2(
-						$elm$html$Html$button,
-						_List_fromArray(
-							[
-								$elm$html$Html$Events$onClick(
-								$author$project$Msg$DayChange($elm$time$Time$Fri))
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text('Vr')
-							])),
-						A2(
-						$elm$html$Html$button,
-						_List_fromArray(
-							[
-								$elm$html$Html$Events$onClick(
-								$author$project$Msg$DayChange($elm$time$Time$Sat))
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text('Za')
-							])),
-						A2(
-						$elm$html$Html$button,
-						_List_fromArray(
-							[
-								$elm$html$Html$Events$onClick(
-								$author$project$Msg$DayChange($elm$time$Time$Sun))
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text('Zo')
-							])),
-						$elm$html$Html$text(
-						$author$project$Main$toDutchWeekday(
-							function (_v2) {
-								var momentInWeek = _v2.a;
-								return momentInWeek.day;
-							}(m.momentInWeek)))
-					])),
-				A2(
-				$elm$html$Html$div,
-				_List_Nil,
-				_Utils_ap(
+		_Utils_ap(
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$button,
+					_List_fromArray(
+						[
+							$elm$html$Html$Events$onClick(
+							$author$project$Msg$TimeChange($author$project$Msg$Minus5Min))
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text('-5')
+						])),
+					A2(
+					$elm$html$Html$button,
+					_List_fromArray(
+						[
+							$elm$html$Html$Events$onClick(
+							$author$project$Msg$TimeChange($author$project$Msg$Minus15Min))
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text('-15')
+						])),
+					A2(
+					$elm$html$Html$button,
+					_List_fromArray(
+						[
+							$elm$html$Html$Events$onClick(
+							$author$project$Msg$TimeChange($author$project$Msg$MinusHour))
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text('-60')
+						])),
+					$elm$html$Html$text(
+					function (_v1) {
+						var momentInWeek = _v1.a;
+						return ((momentInWeek.hour < 10) ? '0' : '') + ($elm$core$String$fromInt(momentInWeek.hour) + (':' + (((momentInWeek.minute < 10) ? '0' : '') + $elm$core$String$fromInt(momentInWeek.minute))));
+					}(m.momentInWeek)),
+					A2(
+					$elm$html$Html$button,
+					_List_fromArray(
+						[
+							$elm$html$Html$Events$onClick(
+							$author$project$Msg$TimeChange($author$project$Msg$PlusHour))
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text('+60')
+						])),
+					A2(
+					$elm$html$Html$button,
+					_List_fromArray(
+						[
+							$elm$html$Html$Events$onClick(
+							$author$project$Msg$TimeChange($author$project$Msg$Plus15Min))
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text('+15')
+						])),
+					A2(
+					$elm$html$Html$button,
+					_List_fromArray(
+						[
+							$elm$html$Html$Events$onClick(
+							$author$project$Msg$TimeChange($author$project$Msg$Plus5Min))
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text('+5')
+						])),
+					A2(
+					$elm$html$Html$div,
+					_List_Nil,
 					_List_fromArray(
 						[
 							A2(
-							$elm$html$Html$input,
+							$elm$html$Html$button,
 							_List_fromArray(
 								[
-									$elm$html$Html$Attributes$placeholder('Vertrekhalte'),
-									$elm$html$Html$Attributes$value(
-									function () {
-										var _v3 = m.departure;
-										if (_v3.$ === 'Stop') {
-											var i = _v3.a;
-											var f = _v3.b;
-											return f(_Utils_Tuple0);
-										} else {
-											var x = _v3.a;
-											return x;
-										}
-									}()),
-									$elm$html$Html$Attributes$list('stops'),
-									$elm$html$Html$Events$onInput(
-									function (x) {
-										return A2($author$project$Msg$StopChange, x, $author$project$Msg$Departure);
-									})
-								]),
-							_List_Nil),
-							A2(
-							$elm$html$Html$datalist,
-							_List_fromArray(
-								[
-									$elm$html$Html$Attributes$id('stops')
+									$elm$html$Html$Events$onClick(
+									$author$project$Msg$DayChange($elm$time$Time$Mon))
 								]),
 							_List_fromArray(
 								[
-									A2(
-									$elm$html$Html$select,
-									_List_Nil,
-									A2(
-										$elm$core$List$map,
-										function (_v4) {
-											var k = _v4.a;
-											var v = _v4.b;
-											return A2(
-												$elm$html$Html$option,
-												_List_Nil,
-												_List_fromArray(
-													[
-														$elm$html$Html$text(v)
-													]));
-										},
-										$elm$core$Dict$values(m.stops)))
+									$elm$html$Html$text('Ma')
 								])),
 							A2(
 							$elm$html$Html$button,
 							_List_fromArray(
 								[
 									$elm$html$Html$Events$onClick(
-									$author$project$Msg$ValidateStop($author$project$Msg$Departure))
+									$author$project$Msg$DayChange($elm$time$Time$Tue))
 								]),
 							_List_fromArray(
 								[
-									$elm$html$Html$text('Check')
-								]))
-						]),
-					function () {
-						var _v5 = m.departure;
-						if (_v5.$ === 'NoStop') {
-							var x = _v5.a;
-							return _List_Nil;
-						} else {
-							var i = _v5.a;
-							var f = _v5.b;
-							var _v6 = m.delays;
-							if (_v6.$ === 'Nothing') {
-								return _List_fromArray(
-									[
-										$elm$html$Html$text('Geldige halte')
-									]);
-							} else {
-								var _v7 = _v6.a;
-								var d1 = _v7.a;
-								var d2 = _v7.b;
-								return _List_fromArray(
-									[
-										$author$project$Main$plot(d1)
-									]);
-							}
-						}
-					}())),
-				A2(
-				$elm$html$Html$div,
-				_List_Nil,
-				_List_fromArray(
-					[
-						A2(
-						$elm$html$Html$button,
-						_List_fromArray(
-							[
-								$elm$html$Html$Events$onClick($author$project$Msg$ReverseStops)
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text('⇅')
-							]))
-					])),
-				A2(
-				$elm$html$Html$div,
-				_List_Nil,
-				_Utils_ap(
-					_List_fromArray(
-						[
-							A2(
-							$elm$html$Html$input,
-							_List_fromArray(
-								[
-									$elm$html$Html$Attributes$placeholder('Aankomsthalte'),
-									$elm$html$Html$Attributes$list('stops'),
-									$elm$html$Html$Attributes$value(
-									function () {
-										var _v8 = m.destination;
-										if (_v8.$ === 'Stop') {
-											var i = _v8.a;
-											var f = _v8.b;
-											return f(_Utils_Tuple0);
-										} else {
-											var x = _v8.a;
-											return x;
-										}
-									}()),
-									$elm$html$Html$Events$onInput(
-									function (x) {
-										return A2($author$project$Msg$StopChange, x, $author$project$Msg$Destination);
-									})
-								]),
-							_List_Nil),
-							A2(
-							$elm$html$Html$button,
-							_List_fromArray(
-								[
-									$elm$html$Html$Events$onClick(
-									$author$project$Msg$ValidateStop($author$project$Msg$Destination))
-								]),
-							_List_fromArray(
-								[
-									$elm$html$Html$text('Check')
-								]))
-						]),
-					function () {
-						var _v9 = m.destination;
-						if (_v9.$ === 'NoStop') {
-							var x = _v9.a;
-							return _List_Nil;
-						} else {
-							var i = _v9.a;
-							var f = _v9.b;
-							var _v10 = m.delays;
-							if (_v10.$ === 'Nothing') {
-								return _List_fromArray(
-									[
-										$elm$html$Html$text('Geldige halte')
-									]);
-							} else {
-								var _v11 = _v10.a;
-								var d1 = _v11.a;
-								var d2 = _v11.b;
-								return _List_fromArray(
-									[
-										$author$project$Main$plot(d2)
-									]);
-							}
-						}
-					}())),
-				A2(
-				$elm$html$Html$div,
-				_List_Nil,
-				_Utils_ap(
-					_List_fromArray(
-						[
-							A2(
-							$elm$html$Html$input,
-							_List_fromArray(
-								[
-									$elm$html$Html$Attributes$placeholder('Bus'),
-									$elm$html$Html$Attributes$list('busses'),
-									$elm$html$Html$Attributes$value(
-									function () {
-										var _v12 = m.bus;
-										if (_v12.$ === 'Bus') {
-											var i = _v12.a;
-											var f = _v12.b;
-											return f(_Utils_Tuple0);
-										} else {
-											var x = _v12.a;
-											return x;
-										}
-									}()),
-									$elm$html$Html$Events$onInput(
-									function (x) {
-										return $author$project$Msg$BusChange(x);
-									})
-								]),
-							_List_Nil),
-							A2(
-							$elm$html$Html$datalist,
-							_List_fromArray(
-								[
-									$elm$html$Html$Attributes$id('busses')
-								]),
-							_List_fromArray(
-								[
-									A2(
-									$elm$html$Html$select,
-									_List_Nil,
-									A2(
-										$elm$core$List$map,
-										function (_v13) {
-											var k = _v13.a;
-											var v = _v13.b;
-											return A2(
-												$elm$html$Html$option,
-												_List_Nil,
-												_List_fromArray(
-													[
-														$elm$html$Html$text(v)
-													]));
-										},
-										$elm$core$Dict$values(m.buses)))
+									$elm$html$Html$text('Di')
 								])),
 							A2(
 							$elm$html$Html$button,
 							_List_fromArray(
 								[
-									$elm$html$Html$Events$onClick($author$project$Msg$ValidateBus)
+									$elm$html$Html$Events$onClick(
+									$author$project$Msg$DayChange($elm$time$Time$Wed))
 								]),
 							_List_fromArray(
 								[
-									$elm$html$Html$text('Check')
+									$elm$html$Html$text('Wo')
+								])),
+							A2(
+							$elm$html$Html$button,
+							_List_fromArray(
+								[
+									$elm$html$Html$Events$onClick(
+									$author$project$Msg$DayChange($elm$time$Time$Thu))
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text('Do')
+								])),
+							A2(
+							$elm$html$Html$button,
+							_List_fromArray(
+								[
+									$elm$html$Html$Events$onClick(
+									$author$project$Msg$DayChange($elm$time$Time$Fri))
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text('Vr')
+								])),
+							A2(
+							$elm$html$Html$button,
+							_List_fromArray(
+								[
+									$elm$html$Html$Events$onClick(
+									$author$project$Msg$DayChange($elm$time$Time$Sat))
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text('Za')
+								])),
+							A2(
+							$elm$html$Html$button,
+							_List_fromArray(
+								[
+									$elm$html$Html$Events$onClick(
+									$author$project$Msg$DayChange($elm$time$Time$Sun))
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text('Zo')
+								])),
+							$elm$html$Html$text(
+							$author$project$Main$toDutchWeekday(
+								function (_v2) {
+									var momentInWeek = _v2.a;
+									return momentInWeek.day;
+								}(m.momentInWeek)))
+						])),
+					A2(
+					$elm$html$Html$div,
+					_List_Nil,
+					_Utils_ap(
+						_List_fromArray(
+							[
+								A2(
+								$elm$html$Html$input,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$placeholder('Vertrekhalte'),
+										$elm$html$Html$Attributes$value(
+										function () {
+											var _v3 = m.departure;
+											if (_v3.$ === 'Stop') {
+												var i = _v3.a;
+												var f = _v3.b;
+												return f(_Utils_Tuple0);
+											} else {
+												var x = _v3.a;
+												return x;
+											}
+										}()),
+										$elm$html$Html$Attributes$list('stops'),
+										$elm$html$Html$Events$onInput(
+										function (x) {
+											return A2($author$project$Msg$StopChange, x, $author$project$Msg$Departure);
+										})
+									]),
+								_List_Nil),
+								A2(
+								$elm$html$Html$datalist,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$id('stops')
+									]),
+								_List_fromArray(
+									[
+										A2(
+										$elm$html$Html$select,
+										_List_Nil,
+										A2(
+											$elm$core$List$map,
+											function (_v4) {
+												var k = _v4.a;
+												var v = _v4.b;
+												return A2(
+													$elm$html$Html$option,
+													_List_Nil,
+													_List_fromArray(
+														[
+															$elm$html$Html$text(v)
+														]));
+											},
+											$elm$core$Dict$values(m.stops)))
+									])),
+								A2(
+								$elm$html$Html$button,
+								_List_fromArray(
+									[
+										$elm$html$Html$Events$onClick(
+										$author$project$Msg$ValidateStop($author$project$Msg$Departure))
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text('Check')
+									]))
+							]),
+						function () {
+							var _v5 = m.departure;
+							if (_v5.$ === 'NoStop') {
+								var x = _v5.a;
+								return _List_Nil;
+							} else {
+								var i = _v5.a;
+								var f = _v5.b;
+								return _List_fromArray(
+									[
+										$elm$html$Html$text('Geldige halte')
+									]);
+							}
+						}())),
+					A2(
+					$elm$html$Html$div,
+					_List_Nil,
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$button,
+							_List_fromArray(
+								[
+									$elm$html$Html$Events$onClick($author$project$Msg$ReverseStops)
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text('⇅')
 								]))
-						]),
-					function () {
-						var _v14 = m.bus;
-						if (_v14.$ === 'Bus') {
-							var i = _v14.a;
-							var f = _v14.b;
+						])),
+					A2(
+					$elm$html$Html$div,
+					_List_Nil,
+					_Utils_ap(
+						_List_fromArray(
+							[
+								A2(
+								$elm$html$Html$input,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$placeholder('Aankomsthalte'),
+										$elm$html$Html$Attributes$list('stops'),
+										$elm$html$Html$Attributes$value(
+										function () {
+											var _v6 = m.destination;
+											if (_v6.$ === 'Stop') {
+												var i = _v6.a;
+												var f = _v6.b;
+												return f(_Utils_Tuple0);
+											} else {
+												var x = _v6.a;
+												return x;
+											}
+										}()),
+										$elm$html$Html$Events$onInput(
+										function (x) {
+											return A2($author$project$Msg$StopChange, x, $author$project$Msg$Destination);
+										})
+									]),
+								_List_Nil),
+								A2(
+								$elm$html$Html$button,
+								_List_fromArray(
+									[
+										$elm$html$Html$Events$onClick(
+										$author$project$Msg$ValidateStop($author$project$Msg$Destination))
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text('Check')
+									]))
+							]),
+						function () {
+							var _v7 = m.destination;
+							if (_v7.$ === 'NoStop') {
+								var x = _v7.a;
+								return _List_Nil;
+							} else {
+								var i = _v7.a;
+								var f = _v7.b;
+								return _List_fromArray(
+									[
+										$elm$html$Html$text('Geldige halte')
+									]);
+							}
+						}())),
+					A2(
+					$elm$html$Html$div,
+					_List_Nil,
+					_Utils_ap(
+						_List_fromArray(
+							[
+								A2(
+								$elm$html$Html$input,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$placeholder('Bus'),
+										$elm$html$Html$Attributes$list('buses'),
+										$elm$html$Html$Attributes$value(
+										function () {
+											var _v8 = m.bus;
+											if (_v8.$ === 'Bus') {
+												var i = _v8.a;
+												var f = _v8.b;
+												return f(_Utils_Tuple0);
+											} else {
+												var x = _v8.a;
+												return x;
+											}
+										}()),
+										$elm$html$Html$Events$onInput(
+										function (x) {
+											return $author$project$Msg$BusChange(x);
+										})
+									]),
+								_List_Nil),
+								A2(
+								$elm$html$Html$datalist,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$id('buses')
+									]),
+								_List_fromArray(
+									[
+										A2(
+										$elm$html$Html$select,
+										_List_Nil,
+										A2(
+											$elm$core$List$map,
+											function (_v9) {
+												var k = _v9.a;
+												var v = _v9.b;
+												return A2(
+													$elm$html$Html$option,
+													_List_Nil,
+													_List_fromArray(
+														[
+															$elm$html$Html$text(v)
+														]));
+											},
+											$elm$core$Dict$values(m.buses)))
+									])),
+								A2(
+								$elm$html$Html$button,
+								_List_fromArray(
+									[
+										$elm$html$Html$Events$onClick($author$project$Msg$ValidateBus)
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text('Check')
+									]))
+							]),
+						function () {
+							var _v10 = m.bus;
+							if (_v10.$ === 'Bus') {
+								var i = _v10.a;
+								var f = _v10.b;
+								return _List_fromArray(
+									[
+										$elm$html$Html$text('Geldige bus')
+									]);
+							} else {
+								var x = _v10.a;
+								return _List_Nil;
+							}
+						}())),
+					A2(
+					$elm$html$Html$div,
+					_List_Nil,
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$button,
+							_List_fromArray(
+								[
+									$elm$html$Html$Events$onClick($author$project$Msg$CalcDelay)
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text('Voorspel vertraging')
+								]))
+						]))
+				]),
+			_Utils_ap(
+				function () {
+					var _v11 = m.departure;
+					if (_v11.$ === 'NoStop') {
+						var x = _v11.a;
+						return _List_Nil;
+					} else {
+						var i = _v11.a;
+						var f = _v11.b;
+						var _v12 = m.delays;
+						if (_v12.$ === 'Nothing') {
+							return _List_Nil;
+						} else {
+							var _v13 = _v12.a;
+							var d1 = _v13.a;
+							var d2 = _v13.b;
 							return _List_fromArray(
 								[
-									$elm$html$Html$text('Geldige bus')
+									$author$project$Main$plot(d1)
 								]);
-						} else {
-							var x = _v14.a;
-							return _List_Nil;
 						}
-					}())),
-				A2(
-				$elm$html$Html$div,
-				_List_Nil,
-				_List_fromArray(
-					[
-						A2(
-						$elm$html$Html$button,
-						_List_fromArray(
-							[
-								$elm$html$Html$Events$onClick($author$project$Msg$CalcDelay)
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text('Voorspel vertraging')
-							]))
-					]))
-			]));
+					}
+				}(),
+				function () {
+					var _v14 = m.destination;
+					if (_v14.$ === 'NoStop') {
+						var x = _v14.a;
+						return _List_Nil;
+					} else {
+						var i = _v14.a;
+						var f = _v14.b;
+						var _v15 = m.delays;
+						if (_v15.$ === 'Nothing') {
+							return _List_Nil;
+						} else {
+							var _v16 = _v15.a;
+							var d1 = _v16.a;
+							var d2 = _v16.b;
+							return _List_fromArray(
+								[
+									$author$project$Main$plot(d2)
+								]);
+						}
+					}
+				}())));
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
 	{init: $author$project$Main$init, subscriptions: $author$project$Main$subscriptions, update: $author$project$Main$update, view: $author$project$Main$view});

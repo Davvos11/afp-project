@@ -148,7 +148,7 @@ requestBuses = requestStatic "bus" "buses" GotBuses
 -- | How to display the model
 -- Massive todo, turn this into smaller, digestable bits
 view : Model -> Html Msg
-view (Model m) = div [] [ -- Time changes, display in between - & +
+view (Model m) = div [] ([ -- Time changes, display in between - & +
                          button [onClick (TimeChange Minus5Min)] [text "-5"],
                          button [onClick (TimeChange Minus15Min)] [text "-15"],
                          button [onClick (TimeChange MinusHour)] [text "-60"],
@@ -180,9 +180,7 @@ view (Model m) = div [] [ -- Time changes, display in between - & +
                                   -- Validation. Shows whether the input parsed. Shows delay if calculated instead
                                   button [onClick (ValidateStop Departure)] [text "Check"]] ++ (case m.departure of
                                                                                                   NoStop x -> []
-                                                                                                  Stop i f -> case m.delays of
-                                                                                                                Nothing       -> ([text "Geldige halte"])
-                                                                                                                Just (d1, d2) -> [plot d1])),
+                                                                                                  Stop i f -> [text "Geldige halte"])),
                          div [] [button [onClick ReverseStops] [text "⇅"]],
                          div [] ([input [placeholder "Aankomsthalte",
                                          Html.Attributes.list "stops",
@@ -193,17 +191,15 @@ view (Model m) = div [] [ -- Time changes, display in between - & +
                                   -- Validation. Shows whether the input parsed. Shows delay if calculated instead
                                   button [onClick (ValidateStop Destination)] [text "Check"]] ++ (case m.destination of
                                                                                                   NoStop x -> []
-                                                                                                  Stop i f -> case m.delays of
-                                                                                                                Nothing       -> ([text "Geldige halte"])
-                                                                                                                Just (d1, d2) -> [plot d2])),
+                                                                                                  Stop i f -> [text "Geldige halte"])),
                          -- Bus input
                          div [] ([input [placeholder "Bus",
-                                         Html.Attributes.list "busses",
+                                         Html.Attributes.list "buses",
                                          value (case m.bus of
                                                   Bus i f -> f ()
                                                   NoBus x -> x),
                                          onInput (\x -> BusChange x)] [],
-                                  datalist [id "busses"] [
+                                  datalist [id "buses"] [
                                     select [] (
                                       Dict.values m.buses |> List.map (\(k, v) -> option [] [text v])
                                     )
@@ -212,18 +208,31 @@ view (Model m) = div [] [ -- Time changes, display in between - & +
                                                                                                   Bus i f -> [text "Geldige bus"]
                                                                                                   NoBus x -> [])),
                          div [] [button [onClick CalcDelay] [text "Voorspel vertraging"]]
-                ]
+                ] ++ (case m.departure of
+                        NoStop x -> []
+                        Stop i f -> case m.delays of
+                                      Nothing       -> []
+                                      Just (d1, d2) -> [plot d1])
+                ++ (case m.destination of
+                        NoStop x -> []
+                        Stop i f -> case m.delays of
+                                      Nothing       -> []
+                                      Just (d1, d2) -> [plot d2])
+                )
 
 plot : List (Int, Int) -> Html Msg
-plot ls = Chart.render (ls, {xGroup = always Nothing, xValue = (\(p, _) -> String.fromInt p ++ " min"), yValue = (\(_, f) -> toFloat f)}) (Chart.init { margin =
-                                                                                                                                        { top = 10
-                                                                                                                                        , right = 10
-                                                                                                                                        , bottom = 30
-                                                                                                                                        , left = 30
-                                                                                                                                        }
-                                                                                                                                    , width = 500
-                                                                                                                                    , height = 200
-                                                                                                                                    })
+plot ls = Chart.render (ls, {xGroup = always Nothing,
+                             xValue = (\(p, _) -> String.fromInt p ++ " min"),
+                             yValue = (\(_, f) -> toFloat f)})
+                        (Chart.init { margin =
+                                        { top = 10
+                                        , right = 10
+                                        , bottom = 30
+                                        , left = 30
+                                        }
+                                    , width = 500
+                                    , height = 200
+                                    })
 
 -- | Subtracts up to 60 minutes from a given MomentInWeek. Does not change 'day' on wrap-around
 subMinute : MomentInWeek -> Int -> MomentInWeek
