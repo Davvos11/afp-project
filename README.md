@@ -1,7 +1,20 @@
 # Usage
 ## Run locally
 ```bash
-cabal run
+## Server:
+cabal run afp-project
+# Alternatively, to not re-generate the stop and bus id's
+cabal run afp-project -- skip-generate
+
+## Subscriber:
+# Once
+pip install zmq
+pip install asyncio
+pip install websockets
+# First:
+python src/zmq_to_ws_relay.py
+# Second, in a separate terminal:
+cabal run afp-subscriber
 ```
 
 When the server is ready, open `fronted/index.html` in your browser.
@@ -22,6 +35,5 @@ docker run -it \
     davvos11/afp-project \
     cabal run
 ```
-Optionally, replace `cabal run` with `cabal run exes -- skip-generate` to skip regenerating bus and line numbers.
 
 If you run this using `docker-compose`, make sure to add `- tty: true`. For some reason it will not print logs without a shell.
