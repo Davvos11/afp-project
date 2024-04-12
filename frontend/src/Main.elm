@@ -22,6 +22,8 @@ import Html exposing (select)
 import Html exposing (option)
 import Html.Attributes exposing (list)
 
+backend_url = "http://localhost:3000"
+
 main : Program () Model Msg
 main = Browser.element {init = init,
                         update = update,
@@ -109,7 +111,7 @@ requestDelays (Model m) = case (m.departure, m.destination, m.bus) of
   (Stop i1 _, Stop i2 _, Bus i3 _) -> Http.request
     { method = "GET",
       headers = [],
-      url = Url.Builder.crossOrigin "http://localhost:3000" ["delays"] [Url.Builder.int "departure" i1,
+      url = Url.Builder.crossOrigin backend_url ["delays"] [Url.Builder.int "departure" i1,
                                                                         Url.Builder.int "destination" i2,
                                                                         Url.Builder.int "bus" i3,
                                                                         Url.Builder.int "day"    ((\(MomentInWeek momentInWeek) -> toDayNumber momentInWeek.day)    m.momentInWeek),
@@ -128,7 +130,7 @@ requestDelays (Model m) = case (m.departure, m.destination, m.bus) of
 requestStatic : String -> String -> ((Result Http.Error (List (String, Int))) -> Msg) -> Cmd Msg
 requestStatic singular plural msgToSend = Http.request { method = "GET",
                                                          headers = [],
-                                                         url = Url.Builder.crossOrigin "http://localhost:3000" [plural] [],
+                                                         url = Url.Builder.crossOrigin backend_url [plural] [],
                                                          body = Http.emptyBody,
                                                          expect = Http.expectJson msgToSend (field plural (Json.Decode.list (Json.Decode.map2 (\a b -> (a, b)) (field (singular ++ "Name") string) (field (singular ++ "Id") int)))),
                                                          timeout = Nothing,
