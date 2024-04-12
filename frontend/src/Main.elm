@@ -94,7 +94,7 @@ tryParseBus b dict = case b of
     Bus i f -> Bus i f
     NoBus x -> case Dict.get (String.toLower x) dict of
                Nothing          -> NoBus x
-               Just (i, xprime) -> Bus i (always xprime)
+               Just (i, xprime) -> Bus (always i) (always xprime)
 
 -- | Attempts to find the name in a stop field in its known dict of stops to create an identified stop
 tryParseStop : Stop -> Dict.Dict String (Int, String) -> Stop
@@ -102,7 +102,7 @@ tryParseStop s dict = case s of
     Stop i f -> Stop i f
     NoStop x -> case Dict.get (String.toLower x) dict of
                Nothing          -> NoStop x
-               Just (i, xprime) -> Stop i (always xprime)
+               Just (i, xprime) -> Stop (always i) (always xprime)
 
 -- | Creates the request to calculate the delays for this bus and these stops
 -- Idea to consider and discuss: don't send request if departure/destination are equal, or keep as feature instead to poll only a single stop
@@ -111,9 +111,9 @@ requestDelays (Model m) = case (m.departure, m.destination, m.bus) of
   (Stop i1 _, Stop i2 _, Bus i3 _) -> Http.request
     { method = "GET",
       headers = [],
-      url = Url.Builder.crossOrigin "http://localhost:3000" ["delays"] [Url.Builder.int "departure" i1,
-                                                                        Url.Builder.int "destination" i2,
-                                                                        Url.Builder.int "bus" i3,
+      url = Url.Builder.crossOrigin "http://localhost:3000" ["delays"] [Url.Builder.int "departure" (i1 ()),
+                                                                        Url.Builder.int "destination" (i2 ()),
+                                                                        Url.Builder.int "bus" (i3 ()),
                                                                         Url.Builder.int "day"    ((\(MomentInWeek momentInWeek) -> toDayNumber momentInWeek.day)    m.momentInWeek),
                                                                         Url.Builder.int "hour"   ((\(MomentInWeek momentInWeek) ->             momentInWeek.hour)   m.momentInWeek),
                                                                         Url.Builder.int "minute" ((\(MomentInWeek momentInWeek) ->             momentInWeek.minute) m.momentInWeek)

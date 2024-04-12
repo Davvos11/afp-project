@@ -2,6 +2,9 @@ module Msg exposing (..)
 
 import Time
 import Http
+import List exposing (map, foldr)
+
+import Model exposing (..)
 
 type Msg = -- Input changes
            BusChange String
@@ -34,6 +37,9 @@ type TimeMod = PlusHour
              | Minus15Min
              | Plus5Min
              | Minus5Min
+
+delayDataToFrequencies : List (Int, Int) -> DelayFrequencies
+delayDataToFrequencies ls = (ls, foldr (+) 0 (map Tuple.second ls))
 
 -- | Encodes weekday as int for query.
 -- Week starts at Monday, index 0, and so on.
