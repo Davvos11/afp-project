@@ -36,6 +36,7 @@ data Filter = Filter {
 -- instead of at the end_stop.
 getFrequencies :: Bool -> Filter -> IO [Frequency]
 getFrequencies get_start f@(Filter mStartStop mEndStop mLine mTime mDay) = do
+    createIndices
     conn <- open "database-prod.db"
     print f
     print queryString
@@ -163,4 +164,14 @@ generateStops = do
         getNames = "SELECT DISTINCT name, stop_code FROM stops"
         insertStops = "INSERT INTO stop_names (frontend_id, name, stop_code) VALUES (?, ?, ?)"
 
+
+createIndices :: IO ()
+createIndices = do
+    conn <_ open "database-prod.db"
+    execute_ conn "CREATE INDEX IF NOT EXISTS idx_actual_arrivals_stop_code ON actual_arrivals (stop_code, type)"
+    execute_ conn "CREATE INDEX IF NOT EXISTS idx_actual_arrivals_timestamp ON actual_arrivals (timestamp)"
+    execute_ conn "CREATE INDEX IF NOT EXISTS idx_actual_arrivals_journey_id ON actual_arrivals (journey_id)"
+    execute_ conn "CREATE INDEX IF NOT EXISTS idx_actual_arrivals_lineplanningnumber ON actual_arrivals (lineplanningnumber)"
+    execute_ conn "CREATE INDEX IF NOT EXISTS idx_stops_name ON stops (name)"
+    close conn
 
